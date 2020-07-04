@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- twitter bootstrap CSS stylesheet - included to make things pretty, not needed or used by cornerstone -->
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+
+        <h1>
+            Sample PET/CT scan
+        </h1>
+
+        <br>
+        <br>
+
+        <div id="dicomImage" style="width:512px;height:512px"
+            oncontextmenu="return false"
+            onmousedown="return false">
+            
+        </div>
+        <div id="imageSelector" class="menuItem"></div>
+        <button id="playMovie" type="button" class="menuItem">Play Movie</button>
+    </div>
+</body>
+
+<!-- include libraries -->
+<script src="dist/cornerstone.js"></script>
+<script src="dist/dicomParser.js"></script>
+<script src="imageLoaders/cornerstoneWADOImageLoader.js"></script>
+<script src="utils/initializeWebWorkers.js"></script>
+<script src="https://unpkg.com/mathjs@7.0.2/dist/math.js"></script>
+
+<script src="image_viewer.js"></script>
+
+</html>
