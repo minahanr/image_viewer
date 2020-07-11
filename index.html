@@ -15,23 +15,32 @@
         <br>
         <br>
 
-        <div id="dicomImage" style="width:512px;height:512px"
+        <div id="image" style="width:512px;height:512px"
             oncontextmenu="return false"
             onmousedown="return false">
             
         </div>
         <div id="imageSelector" class="menuItem"></div>
         <button id="playMovie" type="button" class="menuItem">Play Movie</button>
+        <button id="segment" type="button" class="menuItem">Start Segmentation</button>
     </div>
 </body>
 
 <!-- include libraries -->
-<script src="dist/cornerstone.js"></script>
-<script src="dist/dicomParser.js"></script>
-<script src="imageLoaders/cornerstoneWADOImageLoader.js"></script>
-<script src="utils/initializeWebWorkers.js"></script>
-<script src="https://unpkg.com/mathjs@7.0.2/dist/math.js"></script>
+<script type="text/javascript" src="dist/cornerstone.js"></script>
+<script type="text/javascript" src="dist/cornerstoneMath.js"></script>
+<script type="text/javascript" src="dist/hammer.js"></script>
+<script type="text/javascript" src="dist/cornerstoneTools.js"></script>
+<script type="text/javascript" src="parsers/dicomParser.js"></script>
+<script type="text/javascript" src="imageLoaders/cornerstoneWADOImageLoader.js"></script>
+<script type="text/javascript" src="imageLoaders/cornerstoneWebImageLoader.js"></script>
+<script type="text/javascript" src="utils/initializeWebWorkers.js"></script>
+<script type="text/javascript" src="dist/cornerstoneMath.js"></script>
 
-<script src="image_viewer.js"></script>
+<!-- define global variables -->
+<script src="utils/defineVariables.js"></script>
+
+<!-- run main script -->
+<script type="module" src="image_viewer.js"></script>
 
 </html>

@@ -1,33 +1,54 @@
-cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
+import parseTiff from './parsers/tiffParser/parseTiff.js';
+import ScrollWheelUpdaterTool from './tools/ScrollWheelUpdater.js';
+import updateImageSelector from './utils/updateImageSelector.js';
 
-const element = document.getElementById('dicomImage');
+cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
+cornerstoneWebImageLoader.external.cornerstone = cornerstone;
+
+const element = document.getElementById('image');
+cornerstoneTools.external.cornerstone = cornerstone;
+cornerstoneTools.external.Hammer = Hammer;
+cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
+cornerstoneTools.init({
+    mouseEnabled: true,
+    showSVGcursors: false
+});
 cornerstone.enable(element);
 
-let imageIds = [];
-let currentImageIndex = 0;
-let movieReverse = false;
 
-const filePath = 'https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT'
 
-let num_images = 113;
 
-max_str_len = Math.floor(Math.log10(num_images));
-for (let i = 1; i <= num_images; i++) {
-    let i_str_len = Math.floor(Math.log10(i));
-    let i_str = '0'.repeat(max_str_len - i_str_len) + i
 
-    imageIds.push('wadouri:' + filePath + '/' + 1 + '-' + i_str + '.dcm?raw=true')
+cornerstoneTools.register('tool', 'ScrollWheelUpdater', ScrollWheelUpdaterTool);
+const ScrollWheel = ScrollWheelUpdaterTool;
+cornerstoneTools.addTool(ScrollWheel);
+cornerstoneTools.setToolActive('ScrollWheelUpdater', {});
+const BrushTool = cornerstoneTools.addTool(cornerstoneTools['BrushTool']);
+
+var test = new XMLHttpRequest();
+test.open('GET', 'https://github.com/minahanr/image_viewer/blob/master/test_tiff/1-01.tiff?raw=true', true);
+test.responseType = 'blob';
+test.onload = function(e) {
+    if(this.status == 200) {
+        let image = this.response.arrayBuffer().then(buffer => { 
+            var Uint8View = new Uint8Array(buffer);
+            var tags = parseTiff(Uint8View);
+            for (let i = 0; i < supportedTags.length; i++) {
+                console.log(supportedTags[i] + ': ' + tags.getMetadata(supportedTags[i]));
+            }
+        });
+        
+    }
 }
 
-function updateImageSelector(imageIndex) {
-    document.getElementById('imageSelector').innerHTML = 'image ' + (currentImageIndex + 1) + '/' + imageIds.length ;
-}
-
+test.send();
 // show image #1 initially
 function updateTheImage(imageIndex) {
-    currentImageIndex = imageIndex;
-    var element = document.getElementById('dicomImage');
-    cornerstone.loadAndCacheImage(imageIds[currentImageIndex]).then(function(image) {
+    stack['currentImageIdIndex'] = imageIndex;
+    var element = document.getElementById('image');
+    cornerstone.loadAndCacheImage(stack['imageIds'][stack['currentImageIdIndex']]).then(function(image) {
+        cornerstoneTools.addStackStateManager(element, ['stack']);
+        cornerstoneTools.addToolState(element, 'stack', stack)
         let prev_viewport = cornerstone.getViewport(element);
         var new_viewport = cornerstone.getDefaultViewportForImage(element, image);
 
@@ -38,37 +59,33 @@ function updateTheImage(imageIndex) {
 
         cornerstone.displayImage(element, image, new_viewport);
     });
-    updateImageSelector(imageIndex);
+    updateImageSelector(imageIndex, stack, num_images);
 }
 
 updateTheImage(0);
 
 // Add event handlers to change images
 
-const wheelEvents = ['mousewheel', 'DOMMouseScroll'];
-
-wheelEvents.forEach((eventType) => {
-  element.addEventListener(eventType, function (e) {
+function mouseWheel_handler(e) {
     // Firefox e.detail > 0 scroll back, < 0 scroll forward
     // chrome/safari e.wheelDelta < 0 scroll back, > 0 scroll forward
     if (e.wheelDelta < 0 || e.detail > 0) {
-      if (currentImageIndex < imageIds.length - 1) {
-        currentImageIndex += 1;
-        updateTheImage(currentImageIndex);
+      if (stack['currentImageIdIndex'] < stack['imageIds'].length - 1) {
+        stack['currentImageIdIndex'] += 1;
+        updateTheImage(stack['currentImageIdIndex']);
       }
     } else {
-      if (currentImageIndex > 0) {
-        currentImageIndex -= 1;
-        updateTheImage(currentImageIndex);
+      if (stack['currentImageIdIndex'] > 0) {
+        stack['currentImageIdIndex'] -= 1;
+        updateTheImage(stack['currentImageIdIndex']);
       }
     }
 
     // Prevent page fom scrolling
     return false;
-  });
-});
+}
 
-element.addEventListener('mousedown', function (e) {
+function mousedown_handler(e) {
     if (e.button === 0) {
         let X = e.pageX;
         let Y = e.pageY;
@@ -113,15 +130,19 @@ element.addEventListener('mousedown', function (e) {
         document.addEventListener('mousemove', mouseMoveHandler);
         document.addEventListener('mouseup', mouseUpHandler);
     }
-})
+}
 
 
 
 function playMovie() {
-    if (currentImageIndex === num_images - 1)
+    if (num_images === 1)
+        return;
+    else if (stack['currentImageIdIndex'] === num_images - 1)
         movieReverse = true;
+    else if (stack['currentImageIdIndex'] === 0)
+        movieReverse = false;
 
-    movieButton = document.getElementById('playMovie');
+    var movieButton = document.getElementById('playMovie');
 
     if (movieReverse)
         movieHandlerReverse();
@@ -136,10 +157,10 @@ function playMovie() {
     }
 
     function movieHandlerForward() {
-        currentImageIndex += 1;
-        updateTheImage(currentImageIndex);
+        stack['currentImageIdIndex'] += 1;
+        updateTheImage(stack['currentImageIdIndex']);
         
-        if (currentImageIndex === num_images - 1) {
+        if (stack['currentImageIdIndex'] === num_images - 1) {
             clearInterval(movie);
             movieReverse = true;
             setTimeout(movieHandlerReverse, 1000);
@@ -148,10 +169,10 @@ function playMovie() {
 
     function movieHandlerReverse() {
         function Reverse() {
-            currentImageIndex -= 1;
-            updateTheImage(currentImageIndex);
+            stack['currentImageIdIndex'] -= 1;
+            updateTheImage(stack['currentImageIdIndex']);
 
-            if (currentImageIndex === 0) {
+            if (stack['currentImageIdIndex'] === 0) {
                 movieReverse = false;
                 pauseMovie();
             }
@@ -164,4 +185,32 @@ function playMovie() {
     movieButton.innerHTML = 'Pause Movie';
 }
 
+function segment() {
+    cornerstoneTools.setToolActive('Brush', { mouseButtonMask : 1} );
+    var segmentButton = document.getElementById('segment');
+
+    segmentButton.innerHTML = 'Stop Segmentation';
+
+    function stop_segment_handler() {
+        cornerstoneTools.setToolEnabled('Brush', { mouseButtonMask : 1} );
+        localStorage.setItem("debug", "cornerstoneTools");
+        element.addEventListener('mousedown', mousedown_handler);
+        segmentButton.addEventListener('click', segment);
+        segmentButton.removeEventListener('click', stop_segment_handler)
+        segmentButton.innerHTML = 'Start Segmentation';
+    }
+
+    element.removeEventListener('mousedown', mousedown_handler);
+    segmentButton.removeEventListener('click', segment);
+    segmentButton.addEventListener('click', stop_segment_handler);
+}
+
+element.addEventListener('mousedown', mousedown_handler);
 document.getElementById('playMovie').addEventListener('click', playMovie);
+document.getElementById('segment').addEventListener('click', segment);
+
+const wheelEvents = ['mousewheel', 'DOMMouseScroll'];
+
+for (event in wheelEvents) {
+    element.addEventListener(event, mouseWheel_handler);
+}
