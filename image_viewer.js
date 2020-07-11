@@ -132,7 +132,11 @@ function mousedown_handler(e) {
     }
 }
 
-
+function interpolate() {
+    let viewport = cornerstone.getViewport(element);
+    viewport.pixelReplication = !viewport.pixelReplication;
+    cornerstone.setViewport(element, viewport);
+}
 
 function playMovie() {
     if (num_images === 1)
@@ -208,6 +212,7 @@ function segment() {
 element.addEventListener('mousedown', mousedown_handler);
 document.getElementById('playMovie').addEventListener('click', playMovie);
 document.getElementById('segment').addEventListener('click', segment);
+document.getElementById('interpolator').addEventListener('click', interpolate);
 
 const wheelEvents = ['mousewheel', 'DOMMouseScroll'];
 
