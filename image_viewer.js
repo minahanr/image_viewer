@@ -1,6 +1,6 @@
 import parseTiff from './parsers/tiffParser/parseTiff.js';
 import ScrollWheelUpdaterTool from './tools/ScrollWheelUpdater.js';
-import updateTheImage from './utils/updateImageSelector.js';
+import { updateTheImage } from './utils/updateImageSelector.js';
 import getFileMetadata from './getFileMetadata.js';
 import CSImage from './utils/CSImage.js';
 
@@ -31,7 +31,7 @@ function loadTools(element) {
     cornerstoneTools.setToolActiveForElement(element, 'Pan', { mouseButtonMask: 1});
     
     cornerstoneTools.addStackStateManager(element, ['stack']);
-    cornerstoneTools.addToolState(element, 'stack', stack[element.id.slice(-1)]);
+    cornerstoneTools.addToolState(element, 'stack', CSImage.instances.get(element).stack);
     cornerstoneTools.addToolForElement(element, ScrollWheelUpdaterTool);
     cornerstoneTools.setToolActiveForElement(element, 'ScrollWheelUpdater', {});
 
@@ -137,10 +137,7 @@ function populateGrid(e) {
     let element = e.target;
     let frame = e.target.classList.value.slice(-1);
 
-    if (frame === '0')
-        var CSimage = new CSImage(element, 'https://github.com/minahanr/image_viewer/blob/master/test_LungCT', 64, 'dcm', 'dicom')
-    else
-        var CSimage = new CSImage(element, 'https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT', 113, 'dcm', 'dicom');
+
 
     element.style.display = 'none';
     let div = document.createElement('div');
@@ -148,6 +145,11 @@ function populateGrid(e) {
     div.id = 'image_' + frame;
     let container = element.parentElement;
     container.appendChild(div);
+
+    if (frame === '0')
+        var CSimage = new CSImage(div, 'https://github.com/minahanr/image_viewer/blob/master/test_LungCT', 64, 'dcm', 'dicom')
+    else
+        var CSimage = new CSImage(div, 'https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT', 113, 'dcm', 'dicom');
 
     let topLeft = document.createElement('div');
     let topRight = document.createElement('div');
@@ -219,14 +221,14 @@ function populateGrid(e) {
     cornerstone.enable(div);
     loadTools(div);
     
-    
-
-    
-    CSimage.stack['imageIds'].forEach(imageId => cornerstone.loadAndCacheImage(imageId));
-    updateTheImage(CSimage, 0);
     movieButton.addEventListener('click', playMovie);
     showMetadata.addEventListener('click', showMetadataFn);
     deleteImage.addEventListener('click', deleteImageFn);
+
+    
+    CSimage.stack['imageIds'].forEach(imageId => cornerstone.loadAndCacheImage(imageId));
+    updateTheImage(div, 0);
+
     element.removeEventListener('click', populateGrid);
 }
 
@@ -238,19 +240,18 @@ function interpolate(e) {
 }
 
 function playMovie(e) {
-    let frame = e.target.parentElement.parentElement.id.slice(-1);
-    let image = CSImage.instances(e.target.parentElement.parentElement);
-    if (image.numImages === 1)
+    let CSimage = CSImage.instances.get(e.target.parentElement.parentElement);
+    if (CSimage.numImages === 1)
         return;
-    else if (image.stack['currentImageIdIndex'] === image.numImages - 1)
-        image.movieReverse = true;
-    else if (image.stack['currentImageIdIndex'] === 0)
-        image.movieReverse = false;
+    else if (CSimage.stack['currentImageIdIndex'] === CSimage.numImages - 1)
+        CSimage.movieReverse = true;
+    else if (CSimage.stack['currentImageIdIndex'] === 0)
+        CSimage.movieReverse = false;
 
     var movieButton = e.target;
     var movieTimeout = undefined;
 
-    if (image.movieReverse)
+    if (CSimage.movieReverse)
         movieHandlerReverse();
     else 
         var movie = setInterval(movieHandlerForward, 1000/24);
@@ -264,23 +265,23 @@ function playMovie(e) {
     }
 
     function movieHandlerForward() {
-        image.stack['currentImageIdIndex'] += 1;
-        updateTheImage(frame, stack[frame]['currentImageIdIndex']);
+        CSimage.stack['currentImageIdIndex'] += 1;
+        updateTheImage(CSimage.element, CSimage.stack['currentImageIdIndex']);
         
-        if (image.stack['currentImageIdIndex'] === image.numImages - 1) {
+        if (CSimage.stack['currentImageIdIndex'] === CSimage.numImages - 1) {
             clearInterval(movie);
-            image.movieReverse = true;
+            CSimage.movieReverse = true;
             movieTimeout = setTimeout(movieHandlerReverse, 1000);
         }
     }
 
     function movieHandlerReverse() {
         function Reverse() {
-            image.stack['currentImageIdIndex'] -= 1;
-            updateTheImage(frame, image.stack['currentImageIdIndex']);
+            CSimage.stack['currentImageIdIndex'] -= 1;
+            updateTheImage(CSimage.element, CSimage.stack['currentImageIdIndex']);
 
-            if (image.stack['currentImageIdIndex'] === 0) {
-                image.movieReverse = false;
+            if (CSimage.stack['currentImageIdIndex'] === 0) {
+                CSimage.movieReverse = false;
                 pauseMovie();
             }
         }

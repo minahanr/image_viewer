@@ -1,12 +1,13 @@
 export default class CSImage {
-    static instances = new WeakMap();
+    
 
     constructor(element, filePath, numImages, extension, format) {
-        let max_str_len = Math.floor(Math.log10(numImages[numImages.length - 1]));
+        let max_str_len = Math.floor(Math.log10(numImages));
 
         this.format = format;
         this.movieReverse = false;
         this.element = element;
+        this.numImages = numImages;
         this.stack = {
             currentImageIdIndex: 0,
             imageIds: []
@@ -17,6 +18,9 @@ export default class CSImage {
     
             this.stack['imageIds'].push(filePath + '/' + 1 + '-' + i_str + '.' + extension + '?raw=true')
         }
-        instances.set(element, this);
+        CSImage.instances.set(element, this);
+        
     }
+
+    static instances = new WeakMap();
 }

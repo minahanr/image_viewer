@@ -1,4 +1,5 @@
 import { updateTheImage } from '../utils/updateImageSelector.js';
+import CSImage from '../utils/CSImage.js';
 
 export default class ScrollWheelUpdaterTool extends cornerstoneTools.StackScrollMouseWheelTool {
     constructor(props = {}) {
@@ -16,16 +17,16 @@ export default class ScrollWheelUpdaterTool extends cornerstoneTools.StackScroll
     }
 
     mouseWheelCallback(evt) {
-        let frame = evt.target.id.slice(-1);
+      let CSimage = CSImage.instances.get(evt.target);
         if (evt.detail.direction > 0) {
-            if (stack[frame]['currentImageIdIndex'] < stack[frame]['imageIds'].length - 1) {
-              stack[frame]['currentImageIdIndex'] += 1;
-              updateTheImage(frame, stack[frame]['currentImageIdIndex']);
+            if (CSimage.stack['currentImageIdIndex'] < CSimage.numImages - 1) {
+              CSimage.stack['currentImageIdIndex'] += 1;
+              updateTheImage(evt.target, CSimage.stack['currentImageIdIndex']);
             }
           } else {
-            if (stack[frame]['currentImageIdIndex'] > 0) {
-              stack[frame]['currentImageIdIndex'] -= 1;
-              updateTheImage(frame, stack[frame]['currentImageIdIndex']);
+            if (CSimage.stack['currentImageIdIndex'] > 0) {
+              CSimage.stack['currentImageIdIndex'] -= 1;
+              updateTheImage(evt.target, CSimage.stack['currentImageIdIndex']);
             }
         }
     }
