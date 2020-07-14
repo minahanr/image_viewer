@@ -1,11 +1,11 @@
 import parseTiff from './parsers/tiffParser/parseTiff.js';
 import ScrollWheelUpdaterTool from './tools/ScrollWheelUpdater.js';
-import updateImageSelector from './utils/updateImageSelector.js';
+import { updateTheImage, updateImageSelector } from './utils/updateImageSelector.js';
+import getFileMetadata from './getFileMetadata.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
 
-const element = document.getElementById('image');
 cornerstoneTools.external.cornerstone = cornerstone;
 cornerstoneTools.external.Hammer = Hammer;
 cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
@@ -13,17 +13,43 @@ cornerstoneTools.init({
     mouseEnabled: true,
     showSVGcursors: false
 });
-cornerstone.enable(element);
 
 
 
+function loadTools(element) {
+    //load tools that are initially active
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.ZoomTool, {
+        configuration: {
+            invert: false,
+            preventZoomOutsideImage: false,
+        }
+    });
+    cornerstoneTools.setToolActiveForElement(element, 'Zoom', { mouseButtonMask: 2});
 
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.PanTool);
+    cornerstoneTools.setToolActiveForElement(element, 'Pan', { mouseButtonMask: 1});
+    
+    cornerstoneTools.addStackStateManager(element, ['stack']);
+    cornerstoneTools.addToolState(element, 'stack', stack[element.id.slice(-1)]);
+    cornerstoneTools.addToolForElement(element, ScrollWheelUpdaterTool);
+    cornerstoneTools.setToolActiveForElement(element, 'ScrollWheelUpdater', {});
 
-cornerstoneTools.register('tool', 'ScrollWheelUpdater', ScrollWheelUpdaterTool);
-const ScrollWheel = ScrollWheelUpdaterTool;
-cornerstoneTools.addTool(ScrollWheel);
-cornerstoneTools.setToolActive('ScrollWheelUpdater', {});
-const BrushTool = cornerstoneTools.addTool(cornerstoneTools['BrushTool']);
+    //load tools that are initially inactive
+    cornerstoneTools.addToolForElement(element, cornerstoneTools['BrushTool']);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.MagnifyTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.RotateTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.WwwcTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.WwwcRegionTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.AngleTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.CobbAngleTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.EllipticalRoiTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.RectangleRoiTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.FreehandRoiTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.LengthTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.ProbeTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.ArrowAnnotateTool);
+    cornerstoneTools.addToolForElement(element, cornerstoneTools.BidirectionalTool);
+}
 
 var test = new XMLHttpRequest();
 test.open('GET', 'https://github.com/minahanr/image_viewer/blob/master/test_tiff/1-01.tiff?raw=true', true);
@@ -42,142 +68,214 @@ test.onload = function(e) {
 }
 
 test.send();
-// show image #1 initially
-function updateTheImage(imageIndex) {
-    stack['currentImageIdIndex'] = imageIndex;
-    var element = document.getElementById('image');
-    cornerstone.loadAndCacheImage(stack['imageIds'][stack['currentImageIdIndex']]).then(function(image) {
-        cornerstoneTools.addStackStateManager(element, ['stack']);
-        cornerstoneTools.addToolState(element, 'stack', stack)
-        let prev_viewport = cornerstone.getViewport(element);
-        var new_viewport = cornerstone.getDefaultViewportForImage(element, image);
 
-        if (prev_viewport !== undefined) {
-            new_viewport.scale = prev_viewport.scale;
-            new_viewport.translation = prev_viewport.translation;
-        }
-
-        cornerstone.displayImage(element, image, new_viewport);
+function createVariables_series1(frame) {
+    let currentfileFormat = 'dcm';
+    let filePath = 'https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT';
+    numImages.push(113);
+    let max_str_len = Math.floor(Math.log10(numImages[numImages.length - 1]));
+    
+    stack.push({
+        currentImageIdIndex: 0,
+        imageIds: [],
     });
-    updateImageSelector(imageIndex, stack, num_images);
-}
 
-updateTheImage(0);
+    for (let i = 1; i <= numImages[numImages.length - 1]; i++) {
+        let i_str_len = Math.floor(Math.log10(i));
+        let i_str = '0'.repeat(max_str_len - i_str_len) + i
 
-// Add event handlers to change images
-
-function mouseWheel_handler(e) {
-    // Firefox e.detail > 0 scroll back, < 0 scroll forward
-    // chrome/safari e.wheelDelta < 0 scroll back, > 0 scroll forward
-    if (e.wheelDelta < 0 || e.detail > 0) {
-      if (stack['currentImageIdIndex'] < stack['imageIds'].length - 1) {
-        stack['currentImageIdIndex'] += 1;
-        updateTheImage(stack['currentImageIdIndex']);
-      }
-    } else {
-      if (stack['currentImageIdIndex'] > 0) {
-        stack['currentImageIdIndex'] -= 1;
-        updateTheImage(stack['currentImageIdIndex']);
-      }
+        stack[stack.length - 1]['imageIds'].push(filePath + '/' + 1 + '-' + i_str + '.' + currentfileFormat + '?raw=true')
+        movieReverse.push(false);
     }
 
-    // Prevent page fom scrolling
-    return false;
+    formats.push('dicom');
 }
 
-function mousedown_handler(e) {
-    if (e.button === 0) {
-        let X = e.pageX;
-        let Y = e.pageY;
+function createVariables_series2(frame) {
+    let currentfileFormat = 'dcm';
+    let filePath = 'https://github.com/minahanr/image_viewer/blob/master/test_LungCT';
+    numImages.push(64);
+    let max_str_len = Math.floor(Math.log10(numImages[numImages.length - 1]));
+    
+    stack.push({
+        currentImageIdIndex: 0,
+        imageIds: [],
+    });
 
-        function mouseMoveHandler(e) {
-            const deltaX = e.pageX - X;
-            const deltaY = e.pageY - Y;
-            X = e.pageX;
-            Y = e.pageY;
+    for (let i = 1; i <= numImages[numImages.length - 1]; i++) {
+        let i_str_len = Math.floor(Math.log10(i));
+        let i_str = '0'.repeat(max_str_len - i_str_len) + i
 
-            const viewport = cornerstone.getViewport(element);
-            viewport.translation.x += (deltaX / viewport.scale);
-            viewport.translation.y += (deltaY / viewport.scale);
-            cornerstone.setViewport(element, viewport);
-        }
-
-        function mouseUpHandler(e) {
-            document.removeEventListener('mousemove', mouseMoveHandler);
-            document.removeEventListener('mouseup', mouseUpHandler);
-        }
-
-        document.addEventListener('mousemove', mouseMoveHandler);
-        document.addEventListener('mouseup', mouseUpHandler);
+        stack[stack.length - 1]['imageIds'].push(filePath + '/' + 1 + '-' + i_str + '.' + currentfileFormat + '?raw=true')
     }
-    else if (e.button === 2) {
-        let Y = e.pageY
 
-        function mouseMoveHandler(e) {
-            const deltaY = e.pageY - Y;
-            Y = e.pageY;
-    
-            const viewport = cornerstone.getViewport(element);
-            viewport.scale += 0.005 * deltaY;
-            cornerstone.setViewport(element, viewport);
-        }
-    
-        function mouseUpHandler(e) {
-            document.removeEventListener('mousemove', mouseMoveHandler);
-            document.removeEventListener('mouseup', mouseUpHandler);
-        }
-    
-        document.addEventListener('mousemove', mouseMoveHandler);
-        document.addEventListener('mouseup', mouseUpHandler);
+    formats.push('dicom');
+    movieReverse.push(false);
+}
+
+function createGrid(rows, cols) {
+    let grid = document.getElementById('grid');
+
+    for(let i = 0; i < rows * cols; i++) {
+        let container = document.createElement('div');
+        container.style.position = 'relative';
+        container.classList = 'hasBorder image_' + i;
+        container.style.height = "calc((100% - var(--toolbar-height)) / " + rows + ")";
+        container.style.width = "calc(100% / " + cols + ")";
+        grid.appendChild(container);
+        
+        let addImage = document.createElement('div');
+        addImage.innerHTML = 'add image';
+        addImage.classList = 'addImage image_' + i;
+        container.appendChild(addImage);
+        addImage.addEventListener('click', populateGrid);
     }
 }
 
-function interpolate() {
+function populateGrid(e) {
+    let frame = e.target.classList.value.slice(-1);
+    if (frame === '1')
+        createVariables_series1(1);
+    else
+        createVariables_series2(1);
+    e.target.style.display = 'none';
+    let div = document.createElement('div');
+    div.classList.add('image');
+    div.id = 'image_' + frame;
+    let container = e.target.parentElement;
+    container.appendChild(div);
+
+    let topLeft = document.createElement('div');
+    let topRight = document.createElement('div');
+    let botLeftMetadata = document.createElement('div');
+    let botLeftViewer = document.createElement('div');
+    let botRight = document.createElement('div');
+    let movieButton = document.createElement('img');
+    let text = document.createElement('div');
+    let metadataText = document.createElement('div');
+    let interpolation = document.createElement('div');
+    let showMetadata = document.createElement('img');
+    let metadata = document.createElement('div');
+    let border = document.createElement('div');
+    let patientName = document.createElement('div');
+    let series = document.createElement('div');
+    let modality = document.createElement('div');
+    let date = document.createElement('div');
+    let deleteImage = document.createElement('img');
+    let switchMetadata = document.createElement('div');
+
+    topLeft.classList = 'overlay topLeft';
+    topRight.classList = 'overlay topRight';
+    botLeftViewer.classList = 'overlay botLeft';
+    botLeftMetadata.classList = 'overlay botLeft';
+    botRight.classList = 'overlay botRight delete';
+    text.classList = 'text item';
+    movieButton.classList = 'imageOverlay item button';
+    deleteImage.classList = 'imageOverlay item button';
+    showMetadata.classList = 'imageOverlay item button';
+    metadataText.classList = 'metadata-text';
+    metadata.classList = 'metadata delete';
+    border.classList = 'border delete';
+
+    patientName.innerHTML = 'patientName: ';
+    series.innerHTML = 'series: ';
+    modality.innerHTML = 'modality: ';
+    date.innerHTML = 'date: ';
+    deleteImage.src = './images/delete.png';
+    switchMetadata.innerHTML = 'change metadata';
+    div.style.borderRadius = '0';
+    movieButton.src =  './images/playButton.png';
+    showMetadata.src = './images/metadata.png';
+    interpolation.innerHTML = 'interpolation';
+
+    //experimenting
+    switchMetadata.style.display = 'none';
+
+    interpolation.addEventListener('click', interpolate);
+
+    div.appendChild(topLeft);
+    div.appendChild(topRight);
+    div.appendChild(botLeftViewer);
+    metadata.appendChild(metadataText);
+    metadata.appendChild(botLeftMetadata);
+    container.appendChild(botRight);
+    topLeft.appendChild(movieButton);
+    topLeft.appendChild(text);
+    botLeftViewer.appendChild(interpolation);
+    topRight.appendChild(patientName);
+    topRight.appendChild(series);
+    topRight.appendChild(modality);
+    topRight.appendChild(date);
+    botLeftMetadata.appendChild(switchMetadata);
+    botRight.appendChild(showMetadata);
+    botRight.appendChild(deleteImage);
+    container.appendChild(border);
+    container.appendChild(metadata);
+
+    cornerstone.enable(div);
+    loadTools(div);
+    
+    updateTheImage(frame, stack[frame]['currentImageIdIndex']);
+
+    
+    stack[frame]['imageIds'].forEach(imageId => cornerstone.loadAndCacheImage(imageId));
+    updateImageSelector(frame);
+    movieButton.addEventListener('click', playMovie);
+    showMetadata.addEventListener('click', showMetadataFn);
+    deleteImage.addEventListener('click', deleteImageFn);
+    e.target.removeEventListener('click', populateGrid);
+}
+
+function interpolate(e) {
+    let element = e.target.parentElement.parentElement;
     let viewport = cornerstone.getViewport(element);
     viewport.pixelReplication = !viewport.pixelReplication;
     cornerstone.setViewport(element, viewport);
 }
 
-function playMovie() {
-    if (num_images === 1)
+function playMovie(e) {
+    let frame = e.target.parentElement.parentElement.id.slice(-1);
+    if (numImages[frame] === 1)
         return;
-    else if (stack['currentImageIdIndex'] === num_images - 1)
-        movieReverse = true;
-    else if (stack['currentImageIdIndex'] === 0)
-        movieReverse = false;
+    else if (stack[frame]['currentImageIdIndex'] === numImages[frame] - 1)
+        movieReverse[frame] = true;
+    else if (stack[frame]['currentImageIdIndex'] === 0)
+        movieReverse[frame] = false;
 
-    var movieButton = document.getElementById('playMovie');
+    var movieButton = e.target;
+    var movieTimeout = undefined;
 
-    if (movieReverse)
+    if (movieReverse[frame])
         movieHandlerReverse();
     else 
         var movie = setInterval(movieHandlerForward, 1000/24);
-    
+        
     function pauseMovie() {
         clearInterval(movie);
-        movieButton.innerHTML = 'Play Movie';
+        clearTimeout(movieTimeout);
+        movieButton.src =  './images/playButton.png';
         movieButton.removeEventListener('click', pauseMovie);
         movieButton.addEventListener('click', playMovie);
     }
 
     function movieHandlerForward() {
-        stack['currentImageIdIndex'] += 1;
-        updateTheImage(stack['currentImageIdIndex']);
+        stack[frame]['currentImageIdIndex'] += 1;
+        updateTheImage(frame, stack[frame]['currentImageIdIndex']);
         
-        if (stack['currentImageIdIndex'] === num_images - 1) {
+        if (stack[frame]['currentImageIdIndex'] === numImages[frame] - 1) {
             clearInterval(movie);
-            movieReverse = true;
-            setTimeout(movieHandlerReverse, 1000);
+            movieReverse[frame] = true;
+            movieTimeout = setTimeout(movieHandlerReverse, 1000);
         }
     }
 
     function movieHandlerReverse() {
         function Reverse() {
-            stack['currentImageIdIndex'] -= 1;
-            updateTheImage(stack['currentImageIdIndex']);
+            stack[frame]['currentImageIdIndex'] -= 1;
+            updateTheImage(frame, stack[frame]['currentImageIdIndex']);
 
-            if (stack['currentImageIdIndex'] === 0) {
-                movieReverse = false;
+            if (stack[frame]['currentImageIdIndex'] === 0) {
+                movieReverse[frame] = false;
                 pauseMovie();
             }
         }
@@ -186,36 +284,69 @@ function playMovie() {
 
     movieButton.addEventListener('click', pauseMovie);
     movieButton.removeEventListener('click', playMovie);
-    movieButton.innerHTML = 'Pause Movie';
+    movieButton.src =  './images/pauseButton.png';
 }
 
-function segment() {
-    cornerstoneTools.setToolActive('Brush', { mouseButtonMask : 1} );
-    var segmentButton = document.getElementById('segment');
+function showMetadataFn(e) {
+    let element = document.getElementById(e.target.parentElement.parentElement.classList[1]);
+    let metadata = element.parentElement.getElementsByClassName('metadata')[0];
+    let frame = element.id.slice(-1);
 
-    segmentButton.innerHTML = 'Stop Segmentation';
-
-    function stop_segment_handler() {
-        cornerstoneTools.setToolEnabled('Brush', { mouseButtonMask : 1} );
-        localStorage.setItem("debug", "cornerstoneTools");
-        element.addEventListener('mousedown', mousedown_handler);
-        segmentButton.addEventListener('click', segment);
-        segmentButton.removeEventListener('click', stop_segment_handler)
-        segmentButton.innerHTML = 'Start Segmentation';
+    metadata.style.display = 'inline-block';
+    //element.parentElement.getElementsByClassName('border')[0].style.display = 'inline-block';
+    //element.style.width = 'calc(50% - 0.125em)';
+    //cornerstone.resize(element);
+    element.style.display = 'none';
+    
+    function hideMetadataFn(e) {
+        metadata.style.display = 'none';
+        element.parentElement.getElementsByClassName('border')[0].style.display = 'none';
+        //element.style.width = '100%';
+        //cornerstone.resize(element);
+        element.style.display = 'inline-block';
+        e.target.addEventListener('click', showMetadataFn);
     }
 
-    element.removeEventListener('mousedown', mousedown_handler);
-    segmentButton.removeEventListener('click', segment);
-    segmentButton.addEventListener('click', stop_segment_handler);
+    e.target.removeEventListener('click', showMetadataFn);
+    e.target.addEventListener('click', hideMetadataFn);
+    getFileMetadata(frame);
 }
 
-element.addEventListener('mousedown', mousedown_handler);
-document.getElementById('playMovie').addEventListener('click', playMovie);
-document.getElementById('segment').addEventListener('click', segment);
-document.getElementById('interpolator').addEventListener('click', interpolate);
+function deleteImageFn(e) {
+    let image = e.target.parentElement.parentElement;
+    document.getElementById(image.classList[1]).remove();
+    
+    let elements = image.getElementsByClassName('delete'),
+        ele;
 
-const wheelEvents = ['mousewheel', 'DOMMouseScroll'];
-
-for (event in wheelEvents) {
-    element.addEventListener(event, mouseWheel_handler);
+    while (ele = elements[0]) {
+        ele.parentElement.removeChild(ele);
+    }
+    image.getElementsByClassName('addImage')[0].style.display = 'inline-block';
+    image.getElementsByClassName('addImage')[0].addEventListener('click', populateGrid);
 }
+
+function switchTool(newTool, mouseButton) {
+    if (newTool in Object.values(mouseButtons)) {
+        return;
+    }
+
+    cornerstoneTools.setToolEnabled(mouseButtons[mouseButton], {});
+    cornerstoneTools.setToolActive(newTool, { mouseButtonMask : mouseButton } );
+    mouseButtons[mouseButton] = newTool;
+}
+
+document.getElementById('toolbar').getElementsByClassName('mouseLeft').forEach(element => {
+    element.addEventListener('click', function() {
+        switchTool(element.parentElement.parentElement.id, 1);
+    });
+});
+
+document.getElementById('toolbar').getElementsByClassName('mouseRight').forEach(element => {
+    element.addEventListener('click', function() {
+        switchTool(element.parentElement.parentElement.id, 2);
+    });
+});
+
+createGrid(2, 2);
+

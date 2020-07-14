@@ -1,4 +1,4 @@
-import updateImageSelector from '../utils/updateImageSelector.js';
+import { updateTheImage } from '../utils/updateImageSelector.js';
 
 export default class ScrollWheelUpdaterTool extends cornerstoneTools.StackScrollMouseWheelTool {
     constructor(props = {}) {
@@ -16,7 +16,17 @@ export default class ScrollWheelUpdaterTool extends cornerstoneTools.StackScroll
     }
 
     mouseWheelCallback(evt) {
-        super.mouseWheelCallback(evt);
-        updateImageSelector(stack['currentImageIdIndex']);
+        let frame = evt.target.id.slice(-1);
+        if (evt.detail.direction > 0) {
+            if (stack[frame]['currentImageIdIndex'] < stack[frame]['imageIds'].length - 1) {
+              stack[frame]['currentImageIdIndex'] += 1;
+              updateTheImage(frame, stack[frame]['currentImageIdIndex']);
+            }
+          } else {
+            if (stack[frame]['currentImageIdIndex'] > 0) {
+              stack[frame]['currentImageIdIndex'] -= 1;
+              updateTheImage(frame, stack[frame]['currentImageIdIndex']);
+            }
+        }
     }
 }

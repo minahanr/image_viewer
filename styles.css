@@ -1,12 +1,165 @@
-.menuItem {
-    float: left;
-    padding: 6px 12px 6px 12px;
-    border: 2px;
-    border-style: solid;
-    border-radius: 5px;
-    margin-top: 2px;
+html, body {
+    height: 100%;
 }
 
+:root {
+    height: 100%;
+    --toolbar-height: 40px;
+}
+
+.container {
+    height: 100%;
+    margin: 0;
+}
+
+.tool {
+    display: inline-block;
+    color: white;
+    background-color: black;
+    border-radius: 2px;
+    position: relative;
+}
+
+.tool ul {
+    background-color: black;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    z-index: 1;
+}
+
+.hasBorder {
+    border-width: 0 0.25em 0.25em 0;
+    border-color: white;
+    border-style: solid;
+    border-radius: 0;
+}
+
+.addImage {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    color: white;
+}
+
+.image {
+    display: flex;
+    width: 100%;
+    height: calc((100% - var(--toolbar-height)));
+    border-width: 0;
+    position: relative;
+    overflow: hidden;
+    background-color: black;
+}
+
+.tool:hover ul{
+    display: block;
+}
+
+.overlay {
+    position: absolute;
+    color: white;
+    overflow-wrap: break-word;
+}
+
+.topLeft {
+    top: 0.25em;
+    left: 0.5em;
+}
+
+.topRight {
+    text-align: right;
+    top: 0.25em;
+    right: 0.5em;
+}
+
+.botLeft {
+    bottom: 0.25em;
+    left: 0.5em;
+}
+
+.botRight {
+    bottom: 0.25em;
+    right: 0.5em;
+}
+
+.item {
+    display: inline-block;
+    margin: 0 0.25em 0 0.25em;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+.imageOverlay {
+    background-size: 1em;
+    width: 1em;
+    height: 1em;
+}
+
+.post .imageOverlay {
+    background: transparent;
+}
+
+.border {
+    width: 0.25em;
+    height: 100%;
+    margin: 0;
+    display: none;
+}
+
+.metadata {
+    border-style: solid;
+    border-width: 0 0 0 0;
+    margin: 0;
+    display: none;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+}
+
+.metadata-text {
+    margin: 0.25em 0.5em 0.25em 0.5em;
+    height: calc(100% - 2em);
+    color: white;
+    overflow-wrap: anywhere;
+    overflow-x: hidden;
+}
+
+.image {
+    border-width: 0 0 0.25em 0;
+    height: 100%;
+    width: 100%; 
+    margin-right: 0;
+    display: inline-block;
+    border-color: white;
+}
+
+#root-container {
+    height: calc(100% - var(--toolbar-height));
+    width: 100%;
+    position: relative;
+}
+#toolbar {
+    overflow: visible;
+    position: relative;
+    height: var(--toolbar-height);
+}
+
+#grid {
+    overflow: scroll;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+#image {
+    width: 100%;
+    height: calc(100% - var(--toolbar-height));
+}
 #imageSelector {
     width: 120px;
 }
