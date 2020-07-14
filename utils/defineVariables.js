@@ -50,20 +50,16 @@ const supportedTags = [
     'documentName'
 ];
 
-const filePath = 'https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT'
-const currentfileFormat = 'dcm';
-const num_images = 113;
-var movieReverse = false;
 
-var stack = {
-    currentImageIdIndex: 0,
-    imageIds: []
-}
 
-const max_str_len = Math.floor(Math.log10(num_images));
-for (let i = 1; i <= num_images; i++) {
-    let i_str_len = Math.floor(Math.log10(i));
-    let i_str = '0'.repeat(max_str_len - i_str_len) + i
+var stack = [];
+var numImages = [];
+var movieReverse = [];
+var formats = [];
+var mouseButtons = {
+    1: 'Pan',
+    2: 'Zoom'
+};
 
-    stack['imageIds'].push(fileFormats[currentfileFormat] + filePath + '/' + 1 + '-' + i_str + '.' + currentfileFormat + '?raw=true')
-}
+var numViewports = 0;
+

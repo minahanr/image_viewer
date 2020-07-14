@@ -4,27 +4,126 @@
     <!-- twitter bootstrap CSS stylesheet - included to make things pretty, not needed or used by cornerstone -->
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
+    <link href="dist/simpleBar/simplebar.css" rel="stylesheet">
+    <noscript>
+        <style>
+          [data-simplebar] {
+            overflow: auto;
+          }
+        </style>
+      </noscript>
+    
 </head>
 <body>
-    <div class="container">
+    <root>
+        <div class="container" id="root-container">
+            <div id="toolbar">
+                <div id="Zoom" class="tool">Zoom
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                    
+                <div id="Pan" class="tool">Pan
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="Magnify" class="tool">Magnify
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="Rotate" class="tool">Rotate
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="Brush" class="tool">Brush
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="Wwwc" class="tool">Wwwc
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="WwwcRegion" class="tool">WwwcRegion
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="Angle" class="tool">Angle
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="CobbAngle" class="tool">CobbAngle
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="EllipticalRoi" class="tool">Elliptical
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="RectangleRoi" class="tool">Rectangle
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="FreehandRoi" class="tool">FreehandRoi
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="Length" class="tool">Length
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="Probe" class="tool">Probe
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="ArrowAnnotate" class="tool">ArrowAnnotate
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
+                <div id="Bidirectional" class="tool">Bidirectional
+                    <ul>
+                        <li class='mouseLeft'>Left Click</li>
+                        <li class='mouseRight'>Right Click</li>
+                    </ul>
+                </div>
 
-        <h1>
-            Sample PET/CT scan
-        </h1>
+            </div>
 
-        <br>
-        <br>
 
-        <div id="image" style="width:512px;height:512px"
-            oncontextmenu="return false"
-            onmousedown="return false">
-            
+            <div id="grid" class="container" oncontextmenu="return false" onmousedown="return false">
+                <!-- <div id="image"></div> -->
+            </div>
         </div>
-        <div id="imageSelector" class="menuItem"></div>
-        <button id="playMovie" type="button" class="menuItem">Play Movie</button>
-        <button id="segment" type="button" class="menuItem">Start Segmentation</button>
-        <button id="interpolator" type="button" class="menuItem">Toggle interpolation</button>
-    </div>
+    </root>
 </body>
 
 <!-- include libraries -->
@@ -37,6 +136,7 @@
 <script type="text/javascript" src="imageLoaders/cornerstoneWebImageLoader.js"></script>
 <script type="text/javascript" src="utils/initializeWebWorkers.js"></script>
 <script type="text/javascript" src="dist/cornerstoneMath.js"></script>
+<script type="text/javascript" src="dist/simpleBar/simplebar.min.js"></script>;
 
 <!-- define global variables -->
 <script src="utils/defineVariables.js"></script>

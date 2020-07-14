@@ -11698,12 +11698,10 @@ var addToolForElement = function addToolForElement(element, ApiTool, props) {
   // To a new element).
   var tool = new ApiTool(props);
   var toolAlreadyAddedToElement = Object(_getToolForElement_js__WEBPACK_IMPORTED_MODULE_1__["default"])(element, tool.name);
-
   if (toolAlreadyAddedToElement) {
     logger.warn('%s has already been added to the target element', tool.name);
     return;
   }
-
   tool.element = element;
   _index_js__WEBPACK_IMPORTED_MODULE_0__["default"].state.tools.push(tool);
 };
