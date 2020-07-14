@@ -107,10 +107,10 @@ function createVariables_series2(frame) {
         let i_str = '0'.repeat(max_str_len - i_str_len) + i
 
         stack[stack.length - 1]['imageIds'].push(filePath + '/' + 1 + '-' + i_str + '.' + currentfileFormat + '?raw=true')
-        movieReverse.push(false);
     }
 
     formats.push('dicom');
+    movieReverse.push(false);
 }
 
 function createGrid(rows, cols) {
