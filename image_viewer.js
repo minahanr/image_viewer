@@ -1,7 +1,8 @@
 import parseTiff from './parsers/tiffParser/parseTiff.js';
 import ScrollWheelUpdaterTool from './tools/ScrollWheelUpdater.js';
-import { updateTheImage, updateImageSelector } from './utils/updateImageSelector.js';
+import updateTheImage from './utils/updateImageSelector.js';
 import getFileMetadata from './getFileMetadata.js';
+import CSImage from './utils/CSImage.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
@@ -133,16 +134,19 @@ function createGrid(rows, cols) {
 }
 
 function populateGrid(e) {
+    let element = e.target;
     let frame = e.target.classList.value.slice(-1);
-    if (frame === '1')
-        createVariables_series1(1);
+
+    if (frame === '0')
+        var CSimage = new CSImage(element, 'https://github.com/minahanr/image_viewer/blob/master/test_LungCT', 64, 'dcm', 'dicom')
     else
-        createVariables_series2(1);
-    e.target.style.display = 'none';
+        var CSimage = new CSImage(element, 'https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT', 113, 'dcm', 'dicom');
+
+    element.style.display = 'none';
     let div = document.createElement('div');
     div.classList.add('image');
     div.id = 'image_' + frame;
-    let container = e.target.parentElement;
+    let container = element.parentElement;
     container.appendChild(div);
 
     let topLeft = document.createElement('div');
@@ -215,15 +219,15 @@ function populateGrid(e) {
     cornerstone.enable(div);
     loadTools(div);
     
-    updateTheImage(frame, stack[frame]['currentImageIdIndex']);
+    
 
     
-    stack[frame]['imageIds'].forEach(imageId => cornerstone.loadAndCacheImage(imageId));
-    updateImageSelector(frame);
+    CSimage.stack['imageIds'].forEach(imageId => cornerstone.loadAndCacheImage(imageId));
+    updateTheImage(CSimage, 0);
     movieButton.addEventListener('click', playMovie);
     showMetadata.addEventListener('click', showMetadataFn);
     deleteImage.addEventListener('click', deleteImageFn);
-    e.target.removeEventListener('click', populateGrid);
+    element.removeEventListener('click', populateGrid);
 }
 
 function interpolate(e) {
@@ -235,17 +239,18 @@ function interpolate(e) {
 
 function playMovie(e) {
     let frame = e.target.parentElement.parentElement.id.slice(-1);
-    if (numImages[frame] === 1)
+    let image = CSImage.instances(e.target.parentElement.parentElement);
+    if (image.numImages === 1)
         return;
-    else if (stack[frame]['currentImageIdIndex'] === numImages[frame] - 1)
-        movieReverse[frame] = true;
-    else if (stack[frame]['currentImageIdIndex'] === 0)
-        movieReverse[frame] = false;
+    else if (image.stack['currentImageIdIndex'] === image.numImages - 1)
+        image.movieReverse = true;
+    else if (image.stack['currentImageIdIndex'] === 0)
+        image.movieReverse = false;
 
     var movieButton = e.target;
     var movieTimeout = undefined;
 
-    if (movieReverse[frame])
+    if (image.movieReverse)
         movieHandlerReverse();
     else 
         var movie = setInterval(movieHandlerForward, 1000/24);
@@ -259,23 +264,23 @@ function playMovie(e) {
     }
 
     function movieHandlerForward() {
-        stack[frame]['currentImageIdIndex'] += 1;
+        image.stack['currentImageIdIndex'] += 1;
         updateTheImage(frame, stack[frame]['currentImageIdIndex']);
         
-        if (stack[frame]['currentImageIdIndex'] === numImages[frame] - 1) {
+        if (image.stack['currentImageIdIndex'] === image.numImages - 1) {
             clearInterval(movie);
-            movieReverse[frame] = true;
+            image.movieReverse = true;
             movieTimeout = setTimeout(movieHandlerReverse, 1000);
         }
     }
 
     function movieHandlerReverse() {
         function Reverse() {
-            stack[frame]['currentImageIdIndex'] -= 1;
-            updateTheImage(frame, stack[frame]['currentImageIdIndex']);
+            image.stack['currentImageIdIndex'] -= 1;
+            updateTheImage(frame, image.stack['currentImageIdIndex']);
 
-            if (stack[frame]['currentImageIdIndex'] === 0) {
-                movieReverse[frame] = false;
+            if (image.stack['currentImageIdIndex'] === 0) {
+                image.movieReverse = false;
                 pauseMovie();
             }
         }
@@ -290,7 +295,6 @@ function playMovie(e) {
 function showMetadataFn(e) {
     let element = document.getElementById(e.target.parentElement.parentElement.classList[1]);
     let metadata = element.parentElement.getElementsByClassName('metadata')[0];
-    let frame = element.id.slice(-1);
 
     metadata.style.display = 'inline-block';
     //element.parentElement.getElementsByClassName('border')[0].style.display = 'inline-block';
@@ -309,7 +313,7 @@ function showMetadataFn(e) {
 
     e.target.removeEventListener('click', showMetadataFn);
     e.target.addEventListener('click', hideMetadataFn);
-    getFileMetadata(frame);
+    getFileMetadata(element);
 }
 
 function deleteImageFn(e) {

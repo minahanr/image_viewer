@@ -6,6 +6,7 @@ export default class CSImage {
 
         this.format = format;
         this.movieReverse = false;
+        this.element = element;
         this.stack = {
             currentImageIdIndex: 0,
             imageIds: []
@@ -16,9 +17,6 @@ export default class CSImage {
     
             this.stack['imageIds'].push(filePath + '/' + 1 + '-' + i_str + '.' + extension + '?raw=true')
         }
-
         instances.set(element, this);
     }
-
-    
 }

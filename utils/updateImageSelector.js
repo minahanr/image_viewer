@@ -1,7 +1,13 @@
-export function updateTheImage(frame, imageIndex) {
-    stack[frame]['currentImageIdIndex'] = imageIndex;
-    var element = document.getElementById('image_' + frame);
-    cornerstone.loadImage(fileFormats[formats[frame]] + stack[frame]['imageIds'][stack[frame]['currentImageIdIndex']]).then(function(image) {
+import CSImage from "./CSImage";
+
+function updateImageSelector(CSimage) {
+    CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.stack['currentImageIdIndex'] + 1) + '/' + CSimage.numImages;
+}
+
+export default function updateTheImage(element, imageIndex) {
+    let CSimage = CSImage.instances.get(element);
+    CSimage.stack['currentImageIdIndex'] = imageIndex;
+    cornerstone.loadImage(fileFormats[CSimage.format] + CSimage.stack['imageIds'][image.stack['currentImageIdIndex']]).then(function(image) {
         let prev_viewport = cornerstone.getViewport(element);
         var new_viewport = cornerstone.getDefaultViewportForImage(element, image);
 
@@ -12,9 +18,6 @@ export function updateTheImage(frame, imageIndex) {
 
         cornerstone.displayImage(element, image, new_viewport);
     });
-    updateImageSelector(frame); 
+    updateImageSelector(CSimage); 
 }
 
-export function updateImageSelector(frame) {
-    document.getElementById('image_' + frame).parentElement.getElementsByClassName('text')[0].innerHTML = (stack[frame]['currentImageIdIndex'] + 1) + '/' + numImages[frame];
-}
