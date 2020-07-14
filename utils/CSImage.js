@@ -1,6 +1,4 @@
 export default class CSImage {
-    
-
     constructor(element, filePath, numImages, extension, format) {
         let max_str_len = Math.floor(Math.log10(numImages));
 
