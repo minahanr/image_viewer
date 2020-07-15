@@ -76,6 +76,7 @@ html, body {
     position: absolute;
     color: white;
     overflow-wrap: break-word;
+    z-index: 1;
 }
 
 .topLeft {

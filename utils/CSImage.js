@@ -27,8 +27,6 @@ export default class CSImage {
         let container = element.parentElement;
         let topLeft = document.createElement('div');
         let topRight = document.createElement('div');
-        let botLeftMetadata = document.createElement('div');
-        let botLeftViewer = document.createElement('div');
         let botRight = document.createElement('div');
         let movieButton = document.createElement('img');
         let text = document.createElement('div');
@@ -45,8 +43,6 @@ export default class CSImage {
 
         topLeft.classList = 'overlay topLeft';
         topRight.classList = 'overlay topRight';
-        botLeftViewer.classList = 'overlay botLeft';
-        botLeftMetadata.classList = 'overlay botLeft';
         botRight.classList = 'overlay botRight delete';
         text.classList = 'text item';
         movieButton.classList = 'imageOverlay item button';
@@ -73,9 +69,7 @@ export default class CSImage {
 
         element.appendChild(topLeft);
         element.appendChild(topRight);
-        element.appendChild(botLeftViewer);
         metadata.appendChild(metadataText);
-        metadata.appendChild(botLeftMetadata);
         container.appendChild(botRight);
         topLeft.appendChild(movieButton);
         topLeft.appendChild(text);
@@ -84,7 +78,6 @@ export default class CSImage {
         topRight.appendChild(series);
         topRight.appendChild(modality);
         topRight.appendChild(date);
-        botLeftMetadata.appendChild(switchMetadata);
         botRight.appendChild(showMetadata);
         botRight.appendChild(deleteImage);
         container.appendChild(metadata);

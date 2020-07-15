@@ -27,6 +27,11 @@ export function createContainer(parentElement, rows, cols) {
     container.appendChild(addImage);
     parentElement.appendChild(container);
     
+    let botLeft = document.createElement('div');
+    botLeft.classList = 'overlay botLeft';
+    botLeft.innerHTML = 'test';
+    container.appendChild(botLeft);
+
     addImage.addEventListener('click', populateGrid);
     return container;
 }
