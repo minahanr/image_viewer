@@ -4,7 +4,7 @@ function updateImageSelector(CSimage) {
     CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.stack['currentImageIdIndex'] + 1) + '/' + CSimage.numImages;
 }
 
-export function updateTheImage(element, imageIndex) {
+export default function updateTheImage(element, imageIndex) {
     let CSimage = CSImage.instances.get(element);
     CSimage.stack['currentImageIdIndex'] = imageIndex;
     cornerstone.loadImage(fileFormats[CSimage.format] + CSimage.stack['imageIds'][CSimage.stack['currentImageIdIndex']]).then(function(image) {

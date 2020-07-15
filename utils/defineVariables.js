@@ -52,10 +52,6 @@ const supportedTags = [
 
 
 
-var stack = [];
-var numImages = [];
-var movieReverse = [];
-var formats = [];
 var mouseButtons = {
     1: 'Pan',
     2: 'Zoom'

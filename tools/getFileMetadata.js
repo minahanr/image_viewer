@@ -1,5 +1,5 @@
-import standardDataElements from './utils/dicomDict.js';
-import CSImage from './utils/CSImage.js';
+import standardDataElements from '../utils/dicomDict.js';
+import CSImage from '../utils/CSImage.js';
 
 export default function getFileMetadata(element) {
     let CSimage = CSImage.instances.get(element);
