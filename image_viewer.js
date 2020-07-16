@@ -57,26 +57,5 @@ document.getElementById('toolbar').getElementsByClassName('mouseRight').forEach(
         switchTool(element.parentElement.parentElement.id, 2);
     });
 });
-
-document.getElementById('verticalSplit').addEventListener('click', function() {
-    document.getElementById('grid').getElementsByClassName('image-container').forEach(element => {
-        function handler() {
-            splitImageVertical(element, 2);
-            element.removeEventListener('click', handler);
-        }
-        element.addEventListener('click', handler);
-    })
-})
-
-document.getElementById('horizontalSplit').addEventListener('click', function() {
-    document.getElementById('grid').getElementsByClassName('image-container').forEach(element => {
-        function handler() {
-            splitImageHorizontal(element, 2);
-            element.removeEventListener('click', handler);
-        }
-        element.addEventListener('click', handler);
-    })
-})
-
 createGrid(3, 3);
 
