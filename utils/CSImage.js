@@ -5,23 +5,17 @@ import showMetadataFn from '../tools/showMetadata.js';
 import deleteImageFn from '../tools/deleteImageFn.js';
 
 export default class CSImage {
-    constructor(element, filePath, numImages, extension, format) {
-        let max_str_len = Math.floor(Math.log10(numImages));
+    constructor(element, URLs, format) {
 
-        this.format = format;
         this.movieReverse = false;
+        this.format = format;
         this.element = element;
-        this.numImages = numImages;
+        this.numImages = URLs.length;
         this.stack = {
             currentImageIdIndex: 0,
-            imageIds: []
+            imageIds: URLs
         }
-        for (let i = 1; i <= numImages; i++) {
-            let i_str_len = Math.floor(Math.log10(i));
-            let i_str = '0'.repeat(max_str_len - i_str_len) + i
-    
-            this.stack['imageIds'].push(filePath + '/' + 1 + '-' + i_str + '.' + extension + '?raw=true')
-        }
+
         CSImage.instances.set(element, this);
 
         let container = element.parentElement;

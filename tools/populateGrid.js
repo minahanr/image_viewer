@@ -12,10 +12,7 @@ export default function populateGrid(e) {
     let container = element.parentElement;
     container.appendChild(div);
 
-    if (frame === '0')
-        var CSimage = new CSImage(div, 'https://github.com/minahanr/image_viewer/blob/master/test_LungCT', 64, 'dcm', 'dicom')
-    else
-        var CSimage = new CSImage(div, 'https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT', 113, 'dcm', 'dicom');
+    let CSimage = new CSImage(div, document.getElementById('URLs').innerHTML.split(' '), document.getElementById('format').innerHTML);
 
     CSimage.stack['imageIds'].forEach(imageId => cornerstone.loadAndCacheImage(imageId));
     updateTheImage(div, 0);
