@@ -44,10 +44,12 @@ export function createContainer(parentElement, rows, cols, addChildren) {
         let botLeft = document.createElement('div');
         botLeft.classList = 'overlay botLeft';
         
-        let horizontal = document.createElement('div');
-        horizontal.innerHTML = 'horizontal';
-        let vertical = document.createElement('div');
-        vertical.innerHTML = 'vertical';
+        let horizontal = document.createElement('img');
+        horizontal.src = './images/horizontalSplit.png';
+        horizontal.classList = 'imageOverlay item button';
+        let vertical = document.createElement('img');
+        vertical.src = './images/verticalSplit.png';
+        vertical.classList = 'imageOverlay item button';
         
         container.appendChild(botLeft);
         botLeft.appendChild(horizontal);
