@@ -15,6 +15,7 @@
     
 </head>
 <body>
+    <noscript>You need javascript to run this</noscript>
     <root>
         <div class="container" id="root-container">
             <div id="toolbar">
@@ -121,25 +122,26 @@
             <div id='format' style='display: none'>dicom</div>
             <div id="grid" class="container" oncontextmenu="return false" onmousedown="return false"></div>
         </div>
+        <!-- include libraries -->
+        <script type="text/javascript" src="dist/cornerstone.js"></script>
+        <script type="text/javascript" src="dist/cornerstoneMath.js"></script>
+        <script type="text/javascript" src="dist/hammer.js"></script>
+        <script type="text/javascript" src="dist/cornerstoneTools.js"></script>
+        <script type="text/javascript" src="parsers/dicomParser.js"></script>
+        <script type="text/javascript" src="imageLoaders/cornerstoneWADOImageLoader.js"></script>
+        <script type="text/javascript" src="imageLoaders/cornerstoneWebImageLoader.js"></script>
+        <script type="text/javascript" src="dist/simpleBar/simplebar.min.js"></script>
+
+        <!-- define global variables -->
+        <script src="utils/defineVariables.js"></script>
+
+        <!-- run main script -->
+        <script type="module" src="image_viewer.js"></script>
     </root>
+
+
 </body>
 
-<!-- include libraries -->
-<script type="text/javascript" src="dist/cornerstone.js"></script>
-<script type="text/javascript" src="dist/cornerstoneMath.js"></script>
-<script type="text/javascript" src="dist/hammer.js"></script>
-<script type="text/javascript" src="dist/cornerstoneTools.js"></script>
-<script type="text/javascript" src="parsers/dicomParser.js"></script>
-<script type="text/javascript" src="imageLoaders/cornerstoneWADOImageLoader.js"></script>
-<script type="text/javascript" src="imageLoaders/cornerstoneWebImageLoader.js"></script>
-<script type="text/javascript" src="utils/initializeWebWorkers.js"></script>
-<script type="text/javascript" src="dist/cornerstoneMath.js"></script>
-<script type="text/javascript" src="dist/simpleBar/simplebar.min.js"></script>;
 
-<!-- define global variables -->
-<script src="utils/defineVariables.js"></script>
-
-<!-- run main script -->
-<script type="module" src="image_viewer.js"></script>
 
 </html>

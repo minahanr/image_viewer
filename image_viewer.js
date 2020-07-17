@@ -1,5 +1,3 @@
-import parseTiff from './parsers/tiffParser/parseTiff.js';
-import { createHorizontalBorder, createContainer } from './tools/createContainer.js';
 import { splitImageHorizontal, splitImageVertical } from './tools/modifyImageWindows.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
@@ -13,23 +11,7 @@ cornerstoneTools.init({
     showSVGcursors: false
 });
 
-var test = new XMLHttpRequest();
-test.open('GET', 'https://github.com/minahanr/image_viewer/blob/master/test_tiff/1-01.tiff?raw=true', true);
-test.responseType = 'blob';
-test.onload = function(e) {
-    if(this.status == 200) {
-        let image = this.response.arrayBuffer().then(buffer => { 
-            var Uint8View = new Uint8Array(buffer);
-            var tags = parseTiff(Uint8View);
-            for (let i = 0; i < supportedTags.length; i++) {
-                console.log(supportedTags[i] + ': ' + tags.getMetadata(supportedTags[i]));
-            }
-        });
-        
-    }
-}
-
-test.send();
+console.log('test');
 
 function createGrid(rows, cols) {
     let grid = document.getElementById('grid');

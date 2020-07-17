@@ -1,6 +1,6 @@
 try {
   var config = {
-    config = {
+    config: {
       maxWebWorkers: navigator.hardwareConcurrency || 1,
       startWebWorkersOnDemand : true,
     },
