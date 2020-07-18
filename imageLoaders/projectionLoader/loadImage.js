@@ -58,7 +58,6 @@ export default function loadCoaxialImage(imageId) {
     }).then(images => {
         for(let i = 0; i < newImage.rows; i++) {
             newImage.data.set(new Uint16Array(images[i].getPixelData().buffer, frame * newImage.columns * 2, newImage.columns), i * newImage.columns)
-            //newImage.data.set(images[i].getPixelData().slice(frame * newImage.columns, newImage.columns), i * newImage.columns);
         }
         newImage.getPixelData = () => newImage.data;
         newImage.sizeInBytes = newImage.getPixelData().byteLength;

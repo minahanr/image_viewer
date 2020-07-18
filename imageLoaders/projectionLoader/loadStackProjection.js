@@ -10,7 +10,6 @@ export default function loadStackProjection (e) {
         imageIds: [],
         currentImageIdIndex: 0
     };
-    console.log(fileFormats[CSimage.format] + CSimage.baseStack.imageIds[0]);
     cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + CSimage.baseStack.imageIds[0]).then(image => {
         CSimage.numImages = image.height;
 
