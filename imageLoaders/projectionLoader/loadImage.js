@@ -56,8 +56,8 @@ export default function loadCoaxialImage(imageId) {
         }
         return Promise.all(promises);
     }).then(images => {
-        for(let i = 0; i < images.length; i++) {
-            newImage.data.set(new Uint16Array(images[i].getPixelData().buffer, frame * newImage.columns, newImage.columns), i * newImage.columns)
+        for(let i = 0; i < newImage.rows; i++) {
+            newImage.data.set(new Uint16Array(images[i].getPixelData().buffer, frame * newImage.columns * 2, newImage.columns), i * newImage.columns)
             //newImage.data.set(images[i].getPixelData().slice(frame * newImage.columns, newImage.columns), i * newImage.columns);
         }
         newImage.getPixelData = () => newImage.data;
@@ -66,7 +66,6 @@ export default function loadCoaxialImage(imageId) {
         newImage.minPixelValue = min;
         newImage.maxPixelValue = max;
 
-        console.log(newImage);
         return newImage;
     });
     
