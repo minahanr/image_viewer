@@ -78,7 +78,6 @@ export default class CSImage {
 
         cornerstone.enable(element);
         loadTools(element);
-        
         movieButton.addEventListener('click', playMovie);
         showMetadata.addEventListener('click', showMetadataFn);
         deleteImage.addEventListener('click', deleteImageFn);
