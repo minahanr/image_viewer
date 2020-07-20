@@ -1,18 +1,18 @@
 import { splitImageHorizontal, splitImageVertical } from './tools/modifyImageWindows.js';
-import loadImage from './imageLoaders/projectionLoader/loadImage.js';
+import {loadCoaxialImage_1, loadCoaxialImage_2 } from './imageLoaders/projectionLoader/loadImage.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
-cornerstone.registerImageLoader('mpr', loadImage);
+cornerstone.registerImageLoader('LCI1', loadCoaxialImage_1);
+cornerstone.registerImageLoader('LCI2', loadCoaxialImage_2);
 
 cornerstoneTools.external.cornerstone = cornerstone;
 cornerstoneTools.external.Hammer = Hammer;
 cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
 cornerstoneTools.init({
     mouseEnabled: true,
-    showSVGcursors: false
+    showSVGcursors: true
 });
-
 
 function createGrid(rows, cols) {
     let grid = document.getElementById('grid');
@@ -40,7 +40,7 @@ document.getElementById('toolbar').getElementsByClassName('mouseRight').forEach(
         switchTool(element.parentElement.parentElement.id, 2);
     });
 });
-createGrid(3, 3);
+createGrid(1, 1);
 document.getElementById('URLs').innerHTML = '';
 
 for (let i = 1; i < 114; i++) {
@@ -48,3 +48,4 @@ for (let i = 1; i < 114; i++) {
 }
 
 document.getElementById('URLs').innerHTML = document.getElementById('URLs').innerHTML.slice(0, -1);
+console.log(cornerstoneTools);

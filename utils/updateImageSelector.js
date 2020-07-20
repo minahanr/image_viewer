@@ -5,25 +5,25 @@ function updateImageSelector(CSimage) {
 }
 
 export default function updateTheImage(element, imageIndex) {
-    
+
     let CSimage = CSImage.instances.get(element);
     CSimage.stack.currentImageIdIndex = imageIndex;
 
     let prev_viewport = cornerstone.getViewport(element);
-    cornerstone.loadImage(CSimage.projection + fileFormats[CSimage.format] + CSimage.stack.imageIds[CSimage.stack.currentImageIdIndex]).then(function(image) {
-        cornerstoneTools.addStackStateManager(element, ['stack'])
-        cornerstoneTools.addToolState(element, 'stack', CSimage.stack)
+    cornerstone.loadImage(CSimage.projection + fileFormats[CSimage.format] + CSimage.stack.imageIds[CSimage.stack.currentImageIdIndex]).then(image => {
         
         var new_viewport = cornerstone.getDefaultViewportForImage(element, image);
 
         if (prev_viewport !== undefined) {
-            new_viewport.scale = prev_viewport.scale;
-            new_viewport.translation = prev_viewport.translation;
+            new_viewport = prev_viewport;
         } else {
             new_viewport = cornerstone.getDefaultViewportForImage(element, image);
         }
-        
+
+
         cornerstone.displayImage(element, image, new_viewport);
+        cornerstoneTools.addStackStateManager(element, ['stack'])
+        cornerstoneTools.addToolState(element, 'stack', CSimage.stack)
     });
     
     updateImageSelector(CSimage);
