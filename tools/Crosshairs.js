@@ -4,7 +4,6 @@ import updateTheImage from "../utils/updateImageSelector.js";
 
 export default class ModifiedCrosshairsTool extends cornerstoneTools.CrosshairsTool {
     constructor(props = {}) {
-        console.log('test');
         const defaultProps = {
           name: 'ModifiedCrosshairs',
           supportedInteractionTypes: ['Mouse'],
@@ -27,13 +26,13 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.CrosshairsT
         if (imageY < 0) {
             imageY = 0;
         }
+
         let syncX, syncY, syncZ = 0;
         let baseImage = CSImage.instances.get(evt.target);
         let frame = baseImage.stack.currentImageIdIndex;
         let synchronizer = Synchronizer.instances.get(baseImage);
-
         let projection = baseImage.projection || 'LCI0:';
-        console.log(projection);
+        
         if (projection === 'LCI0:') {
             syncX = imageX;
             syncY = imageY;
@@ -47,7 +46,7 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.CrosshairsT
             syncY = imageX;
             syncZ = imageY;
         }
-        console.log(frame);
+
         synchronizer.images.forEach(CSimage => {
             projection = CSimage.projection || 'LCS10:';
             if (projection === 'LCI0:') {
