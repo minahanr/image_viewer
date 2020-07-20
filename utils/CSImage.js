@@ -3,6 +3,7 @@ import interpolate from '../tools/interpolate.js';
 import playMovie from '../tools/playMovie.js';
 import showMetadataFn from '../tools/showMetadata.js';
 import deleteImageFn from '../tools/deleteImageFn.js';
+import loadStackProjection from '../imageLoaders/projectionLoader/loadStackProjection.js';
 
 export default class CSImage {
     constructor(element, URLs, format) {
@@ -10,6 +11,7 @@ export default class CSImage {
         this.movieReverse = false;
         this.format = format;
         this.element = element;
+        this.projection = '';
         this.numImages = URLs.length;
         this.stack = {
             currentImageIdIndex: 0,
@@ -35,6 +37,8 @@ export default class CSImage {
         let deleteImage = document.createElement('img');
         let switchMetadata = document.createElement('div');
 
+        let projection = document.createElement('div');
+
         topLeft.classList = 'overlay topLeft';
         topRight.classList = 'overlay topRight';
         botRight.classList = 'overlay botRight delete';
@@ -56,6 +60,8 @@ export default class CSImage {
         showMetadata.src = './images/metadata.png';
         interpolation.innerHTML = 'interpolation';
 
+        projection.innerHTML = 'projection';
+
         //experimenting
         switchMetadata.style.display = 'none';
 
@@ -76,14 +82,20 @@ export default class CSImage {
         botRight.appendChild(deleteImage);
         container.appendChild(metadata);
 
+        topLeft.appendChild(projection);
+
         cornerstone.enable(element);
+
         loadTools(element);
-        
         movieButton.addEventListener('click', playMovie);
         showMetadata.addEventListener('click', showMetadataFn);
         deleteImage.addEventListener('click', deleteImageFn);
+        projection.addEventListener('click', loadStackProjection);
         
+        element.id = 'image_' + CSImage.UUID_identifier;
+        CSImage.UUID_identifier += 1;
     }
 
     static instances = new WeakMap();
+    static UUID_identifier = 0;
 }

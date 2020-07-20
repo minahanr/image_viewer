@@ -16,7 +16,7 @@ const fileFormats = {
     svg: '',
     webp: '',
     tiff: '',
-    tif: ''
+    tif: '',
 };
 
 const typeSize = {
@@ -58,4 +58,3 @@ var mouseButtons = {
 };
 
 var numViewports = 0;
-

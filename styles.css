@@ -146,7 +146,7 @@ html, body {
 }
 
 #root-container {
-    height: calc(100% - var(--toolbar-height));
+    height: 100%;
     width: 100%;
     position: relative;
 }
@@ -164,6 +164,7 @@ html, body {
     align-content: flex-start;
     background-color: white;
     padding: 0;
+    height: calc(100% - var(--toolbar-height));
 }
 
 #image {

@@ -1,35 +1,18 @@
-import parseTiff from './parsers/tiffParser/parseTiff.js';
-import { createHorizontalBorder, createContainer } from './tools/createContainer.js';
 import { splitImageHorizontal, splitImageVertical } from './tools/modifyImageWindows.js';
+import {loadCoaxialImage_1, loadCoaxialImage_2 } from './imageLoaders/projectionLoader/loadImage.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
+cornerstone.registerImageLoader('LCI1', loadCoaxialImage_1);
+cornerstone.registerImageLoader('LCI2', loadCoaxialImage_2);
 
 cornerstoneTools.external.cornerstone = cornerstone;
 cornerstoneTools.external.Hammer = Hammer;
 cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
 cornerstoneTools.init({
     mouseEnabled: true,
-    showSVGcursors: false
+    showSVGcursors: true
 });
-
-var test = new XMLHttpRequest();
-test.open('GET', 'https://github.com/minahanr/image_viewer/blob/master/test_tiff/1-01.tiff?raw=true', true);
-test.responseType = 'blob';
-test.onload = function(e) {
-    if(this.status == 200) {
-        let image = this.response.arrayBuffer().then(buffer => { 
-            var Uint8View = new Uint8Array(buffer);
-            var tags = parseTiff(Uint8View);
-            for (let i = 0; i < supportedTags.length; i++) {
-                console.log(supportedTags[i] + ': ' + tags.getMetadata(supportedTags[i]));
-            }
-        });
-        
-    }
-}
-
-test.send();
 
 function createGrid(rows, cols) {
     let grid = document.getElementById('grid');
@@ -57,5 +40,12 @@ document.getElementById('toolbar').getElementsByClassName('mouseRight').forEach(
         switchTool(element.parentElement.parentElement.id, 2);
     });
 });
-createGrid(3, 3);
+createGrid(1, 1);
+document.getElementById('URLs').innerHTML = '';
 
+for (let i = 1; i < 114; i++) {
+    document.getElementById('URLs').innerHTML += 'https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT/1-' + '0'.repeat(2 - Math.floor(Math.log10(i))) + i + '.dcm?raw=true ';
+}
+
+document.getElementById('URLs').innerHTML = document.getElementById('URLs').innerHTML.slice(0, -1);
+console.log(cornerstoneTools);
