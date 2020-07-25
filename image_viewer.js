@@ -11,7 +11,7 @@ cornerstoneTools.external.Hammer = Hammer;
 cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
 cornerstoneTools.init({
     mouseEnabled: true,
-    showSVGcursors: true
+    showSVGCursors: true
 });
 
 function createGrid(rows, cols) {
@@ -43,10 +43,10 @@ document.getElementById('toolbar').getElementsByClassName('mouseRight').forEach(
 createGrid(1, 1);
 document.getElementById('URLs').innerHTML = '';
 
-let num_images = 65;
+let num_images = 71;
 for (let i = 1; i < num_images; i++) {
-    document.getElementById('URLs').innerHTML += 'https://github.com/minahanr/image_viewer/blob/master/test_LungCT/1-' + '0'.repeat(Math.floor(Math.log10(num_images)) - Math.floor(Math.log10(i))) + i + '.dcm?raw=true ';
+    document.getElementById('URLs').innerHTML += 'https://github.com/minahanr/image_viewer/blob/master/test_TCGA-LUAD/TCGA-17-Z011/09-05-1982-03157/2.000000-Chest%20Routine%201-41262/1-' + '0'.repeat(Math.floor(Math.log10(num_images)) - Math.floor(Math.log10(i))) + i + '.dcm?raw=true ';
 }
 
-document.getElementById('URLs').innerHTML = document.getElementById('URLs').innerHTML.slice(0, -1);
 console.log(cornerstoneTools);
+document.getElementById('URLs').innerHTML = document.getElementById('URLs').innerHTML.slice(0, -1);

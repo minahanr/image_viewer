@@ -5,6 +5,16 @@ import generateColorLut from '../../internal/generateColorLut.js';
 import getModalityLut from '../../internal/getModalityLut.js';
 import getVOILut from '../../internal/getVOILut.js' 
 
+function requestSliceThickness(URL) {
+    let promise =  fetch(URL).then(response => response.arrayBuffer()).then((buffer) => {
+        let Uint8View = new Uint8Array(buffer);
+        let dataset = dicomParser.parseDicom(Uint8View);
+        return dataset.string('x00180050')
+    });
+
+    return promise;
+}
+
 export function loadCoaxialImage_1(imageId) {
     imageId = imageId.substring(imageId.indexOf(':') + 1);
 
@@ -39,7 +49,7 @@ export function loadCoaxialImage_1(imageId) {
             lut: baseImage.lut, 
             rgba: baseImage.rgba,
             columnPixelSpacing: baseImage.columnPixelSpacing,
-            rowPixelSpacing: undefined,
+            rowPixelSpacing: CSimage.dataset.string('x00180050'),
             invert: baseImage.invert,
             sizeInBytes: undefined,
             falseColor: baseImage.falseColor,
@@ -63,9 +73,12 @@ export function loadCoaxialImage_1(imageId) {
         let { min, max } = getMinMax(newImage.getPixelData());
         newImage.minPixelValue = min;
         newImage.maxPixelValue = max;
-
         return newImage;
     });
+    // }).then(() => requestSliceThickness(CSimage.baseStack.imageIds[0])).then(sliceThickness => {
+    //     newImage.rowPixelSpacing = sliceThickness;
+    //     return newImage;
+    // })
     
 
     return {
@@ -108,7 +121,7 @@ export function loadCoaxialImage_2(imageId) {
             lut: baseImage.lut, 
             rgba: baseImage.rgba,
             columnPixelSpacing: baseImage.columnPixelSpacing,
-            rowPixelSpacing: undefined,
+            rowPixelSpacing: CSimage.dataset.string('x00180050'),
             invert: baseImage.invert,
             sizeInBytes: undefined,
             falseColor: baseImage.falseColor,
@@ -134,9 +147,12 @@ export function loadCoaxialImage_2(imageId) {
         let { min, max } = getMinMax(newImage.getPixelData());
         newImage.minPixelValue = min;
         newImage.maxPixelValue = max;
-
         return newImage;
     });
+    // }).then(() => requestSliceThickness(CSimage.baseStack.imageIds[0])).then(sliceThickness => {
+    //     newImage.rowPixelSpacing = sliceThickness;
+    //     return newImage;
+    // })
     
 
     return {

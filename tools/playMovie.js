@@ -27,8 +27,7 @@ export default function playMovie(e) {
     }
 
     function movieHandlerForward() {
-        CSimage.stack['currentImageIdIndex'] += 1;
-        updateTheImage(CSimage.element, CSimage.stack['currentImageIdIndex']);
+        updateTheImage(CSimage.element, CSimage.stack['currentImageIdIndex'] + 1);
         
         if (CSimage.stack['currentImageIdIndex'] === CSimage.numImages - 1) {
             clearInterval(movie);
@@ -39,8 +38,7 @@ export default function playMovie(e) {
 
     function movieHandlerReverse() {
         function Reverse() {
-            CSimage.stack['currentImageIdIndex'] -= 1;
-            updateTheImage(CSimage.element, CSimage.stack['currentImageIdIndex']);
+            updateTheImage(CSimage.element, CSimage.stack['currentImageIdIndex'] - 1);
 
             if (CSimage.stack['currentImageIdIndex'] === 0) {
                 CSimage.movieReverse = false;

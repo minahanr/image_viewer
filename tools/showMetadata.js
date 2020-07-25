@@ -1,5 +1,3 @@
-import getFileMetadata from './getFileMetadata.js';
-
 export default function showMetadataFn(e) {
     let element = e.target.parentElement.parentElement.getElementsByClassName('image')[0];
     let metadata = element.parentElement.getElementsByClassName('metadata')[0];
@@ -21,5 +19,4 @@ export default function showMetadataFn(e) {
 
     e.target.removeEventListener('click', showMetadataFn);
     e.target.addEventListener('click', hideMetadataFn);
-    getFileMetadata(element);
 }

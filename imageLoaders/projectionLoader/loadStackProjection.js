@@ -1,7 +1,6 @@
 import CSImage from "../../utils/CSImage.js";
 import updateTheImage from "../../utils/updateImageSelector.js";
 import { splitImageVertical } from "../../tools/modifyImageWindows.js";
-import populateGrid from "../../tools/populateGrid.js";
 import Synchronizer from "../../tools/Synchronizer.js";
 
 export default function loadStackProjection (e) {
@@ -16,6 +15,7 @@ export default function loadStackProjection (e) {
         containers[i].getElementsByClassName('addImage')[0].style.display = 'none';
         let element = containers[i].getElementsByClassName('image')[0];
         let CSimage = new CSImage(image, baseImage.stack.imageIds, baseImage.format);
+        CSimage.dataset = baseImage.dataset;
         CSimage.projection = 'LCI' + i + ':';
         CSimage.baseStack = Object.assign({}, CSimage.stack);
         CSimage.stack = {

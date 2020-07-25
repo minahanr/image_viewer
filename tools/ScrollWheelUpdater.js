@@ -20,13 +20,11 @@ export default class ScrollWheelUpdaterTool extends cornerstoneTools.StackScroll
         let CSimage = CSImage.instances.get(evt.target);
         if (evt.detail.direction > 0) {
             if (CSimage.stack.currentImageIdIndex < CSimage.numImages - 1) {
-                CSimage.stack.currentImageIdIndex += 1;
-                updateTheImage(evt.target, CSimage.stack.currentImageIdIndex);
+                updateTheImage(evt.target, CSimage.stack.currentImageIdIndex + 1);
             }
         } else {
             if (CSimage.stack.currentImageIdIndex > 0) {
-                CSimage.stack.currentImageIdIndex -= 1;
-                updateTheImage(evt.target, CSimage.stack.currentImageIdIndex);
+                updateTheImage(evt.target, CSimage.stack.currentImageIdIndex - 1);
             }
         }
     }

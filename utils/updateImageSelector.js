@@ -4,28 +4,24 @@ function updateImageSelector(CSimage) {
     CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.stack.currentImageIdIndex + 1) + '/' + CSimage.numImages;
 }
 
-export default function updateTheImage(element, imageIndex) {
+export default function updateTheImage(element, imageIndex, sync) {
 
     let CSimage = CSImage.instances.get(element);
     CSimage.stack.currentImageIdIndex = imageIndex;
+    updateImageSelector(CSimage);
 
-    let prev_viewport = cornerstone.getViewport(element);
-    cornerstone.loadImage(CSimage.projection + fileFormats[CSimage.format] + CSimage.stack.imageIds[CSimage.stack.currentImageIdIndex]).then(image => {
-        
-        var new_viewport = cornerstone.getDefaultViewportForImage(element, image);
-
-        if (prev_viewport !== undefined) {
-            new_viewport = prev_viewport;
+    
+    return cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[CSimage.format] + CSimage.stack.imageIds[CSimage.stack.currentImageIdIndex]).then(image => {
+        if (sync) {
+            cornerstone.renderToCanvas(element.getElementsByClassName('cornerstone-canvas')[0], image, cornerstone.getViewport(element));
         } else {
-            new_viewport = cornerstone.getDefaultViewportForImage(element, image);
+            cornerstone.displayImage(element, image, cornerstone.getViewport(element));
         }
 
-
-        cornerstone.displayImage(element, image, new_viewport);
         cornerstoneTools.addStackStateManager(element, ['stack'])
-        cornerstoneTools.addToolState(element, 'stack', CSimage.stack)
+        cornerstoneTools.addToolState(element, 'stack', CSimage.stack);
+
+        return image;
     });
-    
-    updateImageSelector(CSimage);
 }
 

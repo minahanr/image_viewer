@@ -4,10 +4,12 @@ import playMovie from '../tools/playMovie.js';
 import showMetadataFn from '../tools/showMetadata.js';
 import deleteImageFn from '../tools/deleteImageFn.js';
 import loadStackProjection from '../imageLoaders/projectionLoader/loadStackProjection.js';
+import getFileMetadata from '../tools/getFileMetadata.js';
 
 export default class CSImage {
     constructor(element, URLs, format) {
 
+        this.dataset = {};
         this.movieReverse = false;
         this.format = format;
         this.element = element;
@@ -17,7 +19,7 @@ export default class CSImage {
             currentImageIdIndex: 0,
             imageIds: URLs
         }
-
+        
         CSImage.instances.set(element, this);
 
         let container = element.parentElement;
@@ -35,7 +37,6 @@ export default class CSImage {
         let modality = document.createElement('div');
         let date = document.createElement('div');
         let deleteImage = document.createElement('img');
-        let switchMetadata = document.createElement('div');
 
         let projection = document.createElement('div');
 
@@ -54,19 +55,12 @@ export default class CSImage {
         modality.innerHTML = 'modality: ';
         date.innerHTML = 'date: ';
         deleteImage.src = './images/delete.png';
-        switchMetadata.innerHTML = 'change metadata';
         element.style.borderRadius = '0';
         movieButton.src =  './images/playButton.png';
         showMetadata.src = './images/metadata.png';
         interpolation.innerHTML = 'interpolation';
-
         projection.innerHTML = 'projection';
-
-        //experimenting
-        switchMetadata.style.display = 'none';
-
-        interpolation.addEventListener('click', interpolate);
-
+    
         element.appendChild(topLeft);
         element.appendChild(topRight);
         metadata.appendChild(metadataText);
@@ -81,12 +75,13 @@ export default class CSImage {
         botRight.appendChild(showMetadata);
         botRight.appendChild(deleteImage);
         container.appendChild(metadata);
-
         topLeft.appendChild(projection);
 
+        getFileMetadata(element);
         cornerstone.enable(element);
-
         loadTools(element);
+        
+        interpolation.addEventListener('click', interpolate);
         movieButton.addEventListener('click', playMovie);
         showMetadata.addEventListener('click', showMetadataFn);
         deleteImage.addEventListener('click', deleteImageFn);

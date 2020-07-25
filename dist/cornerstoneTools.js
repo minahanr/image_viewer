@@ -14877,7 +14877,6 @@ function setToolCursor(element, svgCursor) {
   // TODO: Exit if invalid options to create cursor
   // Note: Max size of an SVG cursor is 128x128, default is 32x32.
 
-
   var cursorBlob = svgCursor.getIconWithPointerSVG();
   var mousePoint = svgCursor.mousePoint;
   var svgCursorUrl = window.URL.createObjectURL(cursorBlob);
@@ -29945,7 +29944,7 @@ function () {
     key: "setActiveStrategy",
     value: function setActiveStrategy(strategy) {
       this.activeStrategy = strategy;
-
+      console.log(globalConfigurationModule.configuration);
       if (globalConfigurationModule.configuration.showSVGCursors) {
         this.changeCursor(this.element, strategy);
       }
