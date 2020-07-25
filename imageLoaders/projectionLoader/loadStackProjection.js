@@ -14,7 +14,7 @@ export default function loadStackProjection (e) {
         containers[i].appendChild(image);
         containers[i].getElementsByClassName('addImage')[0].style.display = 'none';
         let element = containers[i].getElementsByClassName('image')[0];
-        let CSimage = new CSImage(image, baseImage.stack.imageIds, baseImage.format);
+        let CSimage = new CSImage(image, baseImage.stack, baseImage.format);
         CSimage.dataset = baseImage.dataset;
         CSimage.projection = 'LCI' + i + ':';
         CSimage.baseStack = Object.assign({}, CSimage.stack);

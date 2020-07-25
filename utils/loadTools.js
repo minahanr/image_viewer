@@ -4,6 +4,8 @@ import ModifiedCrosshairsTool from '../tools/Crosshairs.js';
 const cursors = cornerstoneTools.importInternal('tools/cursors');
 console.log(cursors);
 export default function loadTools(element) {
+    let CSimage = CSImage.instances.get(element);
+
     //load tools that are initially active
     cornerstoneTools.addToolForElement(element, cornerstoneTools.PanTool); 
     cornerstoneTools.setToolActiveForElement(element, 'Pan', { mouseButtonMask: 1 });  
@@ -15,7 +17,7 @@ export default function loadTools(element) {
     });
     cornerstoneTools.setToolActiveForElement(element, 'Zoom', { mouseButtonMask: 2});
     cornerstoneTools.addStackStateManager(element, ['stack']);
-    cornerstoneTools.addToolState(element, 'stack', CSImage.instances.get(element).stack);
+    cornerstoneTools.addToolState(element, 'stack', CSimage.stack[CSimage.currentTimeIndex]);
     cornerstoneTools.addToolForElement(element, ScrollWheelUpdaterTool);
     cornerstoneTools.setToolActiveForElement(element, 'ScrollWheelUpdater', {});
 

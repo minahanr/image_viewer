@@ -11,8 +11,8 @@ export default function populateGrid(e) {
     let container = element.parentElement;
     container.appendChild(div);
 
-    let CSimage = new CSImage(div, document.getElementById('URLs').innerHTML.split(' '), document.getElementById('format').innerHTML);
-    CSimage.stack.imageIds.forEach(imageId => cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + imageId));
+    let CSimage = new CSImage(div, [document.getElementById('URLs').innerHTML.split(' '),], document.getElementById('format').innerHTML);
+    CSimage.stack[CSimage.currentTimeIndex].imageIds.forEach(imageId => cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + imageId));
     updateTheImage(div, 0);
 
     element.removeEventListener('click', populateGrid);

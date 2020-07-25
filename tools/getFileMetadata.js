@@ -36,8 +36,8 @@ export default function getFileMetadata(element) {
                 simpleBar = new SimpleBar(metatext);
             })
         }
-
-        request.open('GET', CSimage.stack.imageIds[CSimage.stack.currentImageIdIndex], true);
+        console.log(CSimage.stack);
+        request.open('GET', CSimage.stack[CSimage.currentTimeIndex].imageIds[CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex], true);
         request.send();
     }
 }

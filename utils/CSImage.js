@@ -7,7 +7,7 @@ import loadStackProjection from '../imageLoaders/projectionLoader/loadStackProje
 import getFileMetadata from '../tools/getFileMetadata.js';
 
 export default class CSImage {
-    constructor(element, URLs, format) {
+    constructor(element, urlsOverTime, format) {
 
         this.dataset = {};
         this.movieReverse = false;
@@ -15,10 +15,15 @@ export default class CSImage {
         this.element = element;
         this.projection = '';
         this.numImages = URLs.length;
-        this.stack = {
-            currentImageIdIndex: 0,
-            imageIds: URLs
+        this.currentTimeIndex = 0;
+
+        if (urlsOverTime[0].currentImageIdIndex !== undefined){
+            this.stack = urlsOverTime;
+        } else {
+            this.stack = [];
+            urlsOverTime.forEach(urls => this.stack.push({imageIds: urls, currentImageIdIndex: 0}));
         }
+        
         
         CSImage.instances.set(element, this);
 

@@ -1,17 +1,17 @@
 import CSImage from './CSImage.js';
 
 function updateImageSelector(CSimage) {
-    CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.stack.currentImageIdIndex + 1) + '/' + CSimage.numImages;
+    CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex + 1) + '/' + CSimage.stack[CSimage.currentTimeIndex].imageIds.length;
 }
 
 export default function updateTheImage(element, imageIndex, sync) {
 
     let CSimage = CSImage.instances.get(element);
-    CSimage.stack.currentImageIdIndex = imageIndex;
+    CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;
     updateImageSelector(CSimage);
 
     
-    return cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[CSimage.format] + CSimage.stack.imageIds[CSimage.stack.currentImageIdIndex]).then(image => {
+    return cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[CSimage.format] + CSimage.stack[CSimage.currentTimeIndex].imageIds[CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex]).then(image => {
         if (sync) {
             cornerstone.renderToCanvas(element.getElementsByClassName('cornerstone-canvas')[0], image, cornerstone.getViewport(element));
         } else {
@@ -19,7 +19,7 @@ export default function updateTheImage(element, imageIndex, sync) {
         }
 
         cornerstoneTools.addStackStateManager(element, ['stack'])
-        cornerstoneTools.addToolState(element, 'stack', CSimage.stack);
+        cornerstoneTools.addToolState(element, 'stack', CSimage.stack[CSimage.currentTimeIndex]);
 
         return image;
     });
