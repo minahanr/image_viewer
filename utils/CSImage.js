@@ -76,9 +76,9 @@ export default class CSImage {
         timeSlider.step = 1;
         timeSlider.value = 0;
 
-        // if (urlsOverTime.length === 1) {
-        //     timeSlider.style.display = 'none';
-        // }
+        if (urlsOverTime.length === 1) {
+            timeSlider.style.display = 'none';
+        }
     
         element.appendChild(topLeft);
         element.appendChild(topRight);
