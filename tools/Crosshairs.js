@@ -35,6 +35,7 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
         let imageX = Math.round(eventData.currentPoints.image.x);
         let imageY = Math.round(eventData.currentPoints.image.y);
         let curImg = cornerstone.getImage(evt.target);
+        evt.target.classList.add('hideCursor');
 
         if (imageX < 0) {
             imageX = 0;
@@ -96,6 +97,8 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
         synchronizer.images.forEach(CSimage => {
             updateTheImage(CSimage.element, CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex);
         })
+
+        evt.target.classList.remove('hideCursor');
     }
 
 }

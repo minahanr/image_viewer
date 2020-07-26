@@ -20,7 +20,6 @@ export default function loadStackProjection (e) {
         CSimage.baseStack = Object.assign({}, CSimage.stack);
         CSimage.stack = [];
 
-        console.log(CSimage);
         let promises = [];
 
 
@@ -54,7 +53,6 @@ export default function loadStackProjection (e) {
         });
 
         CSimages.push(CSimage);
-        console.log(CSimage);        
     }
     
     new Synchronizer(CSimages);

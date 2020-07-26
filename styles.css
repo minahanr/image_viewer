@@ -71,6 +71,10 @@ html, body {
     display: inline-block;
 }
 
+.hideCursor {
+    cursor: none !important;
+}
+
 .tool:hover ul{
     display: block;
 }
