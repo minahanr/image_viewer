@@ -18,26 +18,43 @@ export default function loadStackProjection (e) {
         CSimage.dataset = baseImage.dataset;
         CSimage.projection = 'LCI' + i + ':';
         CSimage.baseStack = Object.assign({}, CSimage.stack);
-        CSimage.stack = {
-            imageIds: [],
-            currentImageIdIndex: 0
-        };
+        CSimage.stack = [];
 
-        cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + CSimage.baseStack.imageIds[0]).then(tempImage => {
-            if (i === 1) {
-                CSimage.numImages = tempImage.rows;
-            } else {
-                CSimage.numImages = tempImage.columns;
+        console.log(CSimage);
+        let promises = [];
+
+
+        for(let timeIndex = 0; timeIndex < Object.keys(CSimage.baseStack).length; timeIndex++) {
+            promises.push(cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + CSimage.baseStack[timeIndex].imageIds[0]));
+        }
+        
+        Promise.all(promises).then(images => {
+            for (let timeIndex = 0; timeIndex < images.length; timeIndex++) {
+                let image = images[timeIndex];
+
+                if (i === 1) {
+                    var numImages = image.rows;
+                } else {
+                    var numImages = image.columns;
+                }
+        
+                CSimage.stack.push(
+                    {
+                        imageIds: [],
+                        currentImageIdIndex: 0
+                    }
+                );
+
+                for(let j = 0; j < numImages; j++) {
+                    CSimage.stack[timeIndex].imageIds.push(timeIndex + ':' + j + ':' + element.id);
+                }
+
+                updateTheImage(element, 0);
             }
+        });
 
-            for(let i = 0; i < CSimage.numImages; i++) {
-                CSimage.stack.imageIds.push(i + ':' + element.id);
-            }
-
-            updateTheImage(element, 0);
-        }).catch(e => console.log(e));
-
-        CSimages.push(CSimage);        
+        CSimages.push(CSimage);
+        console.log(CSimage);        
     }
     
     new Synchronizer(CSimages);

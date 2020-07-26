@@ -12,8 +12,7 @@ export default function populateGrid(e) {
     container.appendChild(div);
 
     let CSimage = new CSImage(div, [document.getElementById('URLs').innerHTML.split(' '),], document.getElementById('format').innerHTML);
-    CSimage.stack[CSimage.currentTimeIndex].imageIds.forEach(imageId => cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + imageId));
+    //CSimage.stack[CSimage.currentTimeIndex].imageIds.forEach(imageId => cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + imageId));
     updateTheImage(div, 0);
-
     element.removeEventListener('click', populateGrid);
 }

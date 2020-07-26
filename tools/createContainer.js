@@ -32,6 +32,10 @@ export function createContainer(parentElement, rows, cols, addChildren) {
         container.children.forEach(child => {
             if (child.classList.contains('image')) {
                 cornerstone.resize(child);
+                let simpleBar = SimpleBar.instances.get(parentElement.getElementsByClassName('metadata-text')[0]);
+                console.log(simpleBar);
+                simpleBar.recalculate();
+                console.log(simpleBar);
             }
         });
     } else {

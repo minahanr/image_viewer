@@ -67,7 +67,6 @@ html, body {
     margin: 0;
     border-width: 0;
     position: relative;
-    overflow: hidden;
     background-color: black;
     display: inline-block;
 }

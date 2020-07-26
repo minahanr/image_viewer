@@ -50,9 +50,9 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
         }
         let syncX, syncY, syncZ = 0;
         let baseImage = CSImage.instances.get(evt.target);
-        let frame = baseImage.stack.currentImageIdIndex;
+        let frame = baseImage.stack[baseImage.currentTimeIndex].currentImageIdIndex;
         let synchronizer = Synchronizer.instances.get(baseImage);
-        let projection = baseImage.projection;;
+        let projection = baseImage.projection;
 
         if (projection === '') {
             syncX = imageX;
@@ -76,7 +76,7 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
             if (projection === '') {
                 updateTheImage(CSimage.element, syncZ, true).then(() => {
                     drawCrosshair(context, CSimage, {x: syncX, y: syncY});
-                });
+                }).catch(e => console.log(e));
             } else if (projection === 'LCI1:') {
                 updateTheImage(CSimage.element, syncY, true).then(() => {
                     drawCrosshair(context, CSimage, {x: syncX, y: syncZ});
@@ -84,7 +84,7 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
             } else if (projection === 'LCI2:') {
                 updateTheImage(CSimage.element, syncX, true).then(() => {
                     drawCrosshair(context, CSimage, {x: syncY, y: syncZ});
-                });
+                }).catch(e => console.log(e));
             }
         });
     }
@@ -94,7 +94,7 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
         let synchronizer = Synchronizer.instances.get(baseImage);
 
         synchronizer.images.forEach(CSimage => {
-            updateTheImage(CSimage.element, CSimage.stack.currentImageIdIndex);
+            updateTheImage(CSimage.element, CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex);
         })
     }
 
