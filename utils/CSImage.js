@@ -31,6 +31,7 @@ export default class CSImage {
         let topLeft = document.createElement('div');
         let topRight = document.createElement('div');
         let botRight = document.createElement('div');
+        let bot = document.createElement('div');
         let movieButton = document.createElement('img');
         let text = document.createElement('div');
         let metadataText = document.createElement('div');
@@ -42,11 +43,13 @@ export default class CSImage {
         let modality = document.createElement('div');
         let date = document.createElement('div');
         let deleteImage = document.createElement('img');
-
         let projection = document.createElement('div');
+        let timeSlider = document.createElement('input');
+        
 
         topLeft.classList = 'overlay topLeft';
         topRight.classList = 'overlay topRight';
+        bot.classList = 'overlay bot';
         botRight.classList = 'overlay botRight delete';
         text.classList = 'text item';
         movieButton.classList = 'imageOverlay item button';
@@ -54,6 +57,7 @@ export default class CSImage {
         showMetadata.classList = 'imageOverlay item button';
         metadataText.classList = 'metadata-text';
         metadata.classList = 'metadata delete';
+        timeSlider.classList = 'slider';
 
         patientName.innerHTML = 'patientName: ';
         series.innerHTML = 'series: ';
@@ -65,23 +69,35 @@ export default class CSImage {
         showMetadata.src = './images/metadata.png';
         interpolation.innerHTML = 'interpolation';
         projection.innerHTML = 'projection';
+        
+        timeSlider.type = 'range';
+        timeSlider.min = 1;
+        timeSlider.max = urlsOverTime.length;
+        timeSlider.step = 1;
+        timeSlider.value = 0;
+
+        // if (urlsOverTime.length === 1) {
+        //     timeSlider.style.display = 'none';
+        // }
     
         element.appendChild(topLeft);
         element.appendChild(topRight);
+        element.appendChild(bot);
         metadata.appendChild(metadataText);
         container.appendChild(botRight);
         topLeft.appendChild(movieButton);
         topLeft.appendChild(text);
         topLeft.appendChild(interpolation);
+        topLeft.appendChild(projection);
         topRight.appendChild(patientName);
         topRight.appendChild(series);
         topRight.appendChild(modality);
         topRight.appendChild(date);
+        bot.appendChild(timeSlider);
         botRight.appendChild(showMetadata);
         botRight.appendChild(deleteImage);
         container.appendChild(metadata);
-        topLeft.appendChild(projection);
-
+        
         getFileMetadata(element);
         cornerstone.enable(element);
         loadTools(element);
@@ -91,6 +107,12 @@ export default class CSImage {
         showMetadata.addEventListener('click', showMetadataFn);
         deleteImage.addEventListener('click', deleteImageFn);
         projection.addEventListener('click', loadStackProjection);
+        
+        let arr = 
+        ([topLeft, topRight, bot, botRight]).forEach(element => {
+            element.addEventListener('mousedown', evt => evt.stopPropagation());
+        });
+
         
         element.id = 'image_' + CSImage.UUID_identifier;
         CSImage.UUID_identifier += 1;
