@@ -222,6 +222,8 @@ html, body {
     width: 300px;
     height: 100%;
     float: left;
+    display: flex;
+    flex-direction: column;
 }
 
 #navigation-panel div {
@@ -240,7 +242,7 @@ html, body {
 .sub-title {
     border-bottom: 3px solid #2e2d29;
     font-size: 14px;
-    padding: 3px 0 3px 20px;
+    padding: 3px 0 3px 30px;
 }
 
 .sub-title:hover {
@@ -286,16 +288,11 @@ html, body {
     -webkit-transform: rotate(-135deg);
 }
 
-#tools-viewer {
-    height: 30%;
-}
-
-#layers-viewer {
-    height: 30%;
-}
-
 #metadata-viewer {
-    height: 40%;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+    padding: 5px 0 0 10px;
 }
 
 #grid-container {
@@ -325,10 +322,6 @@ html, body {
     background-color: black;
 }
 
-#image {
-    width: 100%;
-    height: calc(100% - var(--toolbar-height));
-}
 #imageSelector {
     width: 120px;
 }

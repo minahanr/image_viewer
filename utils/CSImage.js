@@ -107,6 +107,9 @@ export default class CSImage {
         deleteImage.addEventListener('click', deleteImageFn);
         projection.addEventListener('click', loadStackProjection);
         timeSlider.addEventListener('input', changeTimeFrame);
+        element.addEventListener('mousedown', evt => {
+            document.getElementById('metadata-viewer').innerHTML = evt.target.parentElement.parentElement.getElementsByClassName('metadata-text')[0].innerHTML;
+        });
 
         ([topLeft, topRight, bot, botRight]).forEach(element => {
             element.addEventListener('mousedown', evt => evt.stopPropagation());
