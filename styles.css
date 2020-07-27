@@ -89,6 +89,7 @@ html, body {
 .topLeft {
     top: 0.25em;
     left: 0.5em;
+    cursor: pointer;
 }
 
 .topRight {

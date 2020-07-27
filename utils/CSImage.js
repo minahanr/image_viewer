@@ -56,7 +56,7 @@ export default class CSImage {
         showMetadata.classList = 'imageOverlay item button';
         metadataText.classList = 'metadata-text';
         metadata.classList = 'metadata delete';
-        timeSlider.classList = 'slider';
+        timeSlider.classList = 'slider timeSlider';
 
         patientName.innerHTML = 'patientName: ';
         series.innerHTML = 'series: ';

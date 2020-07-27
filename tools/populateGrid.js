@@ -15,7 +15,6 @@ export default function populateGrid(e) {
     const numFrames = parseInt(document.getElementById('numFrames').innerHTML, 10);
     const imgsPerFrame = parseInt(document.getElementById('imgsPerFrame').innerHTML, 10);
     const startingIndex = parseInt(document.getElementById('startingIndex').innerHTML, 10);
-    console.log(startingIndex);
     let urlsOverTime = [];
     for (let i = 0; i < numFrames; i++) {
         urlsOverTime.push([]);
@@ -23,7 +22,6 @@ export default function populateGrid(e) {
             urlsOverTime[i].push(baseURL + '/' + '0'.repeat(1 - Math.floor(Math.log10(i + startingIndex))) + (i + startingIndex) + '/' + 'IM-' + '0'.repeat(3 - Math.floor(Math.log10(i + startingIndex))) + (i + startingIndex) + '-' + '0'.repeat(3 - Math.floor(Math.log10(i * imgsPerFrame + j + 1))) + (i * imgsPerFrame + j + 1) + '.' + format + '?raw=true');
         }
     }
-    console.log(urlsOverTime);
 
     let CSimage = new CSImage(div, urlsOverTime, document.getElementById('format').innerHTML);
     //CSimage.stack[CSimage.currentTimeIndex].imageIds.forEach(imageId => cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + imageId));

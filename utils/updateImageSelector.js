@@ -10,7 +10,6 @@ export default function updateTheImage(element, imageIndex, sync) {
     CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;
     updateImageSelector(CSimage);
 
-    console.log(CSimage.projection + fileFormats[CSimage.format] + CSimage.stack[CSimage.currentTimeIndex].imageIds[CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex]);
     return cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[CSimage.format] + CSimage.stack[CSimage.currentTimeIndex].imageIds[CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex]).then(image => {
         if (sync) {
             cornerstone.renderToCanvas(element.getElementsByClassName('cornerstone-canvas')[0], image, cornerstone.getViewport(element));
