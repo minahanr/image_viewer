@@ -247,12 +247,33 @@ html, body {
     cursor: pointer;
 }
 
+.dropdown {
+    transition: height 0.3s ease-in;
+    height: 0;
+    overflow: hidden;
+}
+
+.visible {
+    height: 100px;
+    
+}
+
+.dropdown img {
+    width: 1.25em;
+    height: 1.25em;
+}
+
+.description {
+    overflow: auto;
+}
+
 .arrow {
     border: solid #ffffff;
     border-width: 0 3px 3px 0;
     float: right;
     margin: 3px 6px 0 0;
     padding: 3px;
+    transition: all 0.3s ease-in;
 }
 
 .down {
@@ -260,11 +281,21 @@ html, body {
     -webkit-transform: rotate(45deg);
 }
 
-#tools-viewer, #layers-viewer {
-    height: 25%;
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
 }
+
+#tools-viewer {
+    height: 30%;
+}
+
+#layers-viewer {
+    height: 30%;
+}
+
 #metadata-viewer {
-    height: 50%;
+    height: 40%;
 }
 
 #grid-container {

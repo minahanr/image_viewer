@@ -1,5 +1,6 @@
 import { splitImageHorizontal, splitImageVertical } from './tools/modifyImageWindows.js';
 import {loadCoaxialImage_1, loadCoaxialImage_2 } from './imageLoaders/projectionLoader/loadImage.js';
+import updateDescription from './tools/updateDescription.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
@@ -29,15 +30,43 @@ function switchTool(newTool, mouseButton) {
     mouseButtons[mouseButton] = newTool;
 }
 
-document.getElementById('toolbar').getElementsByClassName('mouseLeft').forEach(element => {
-    element.addEventListener('click', function() {
-        switchTool(element.parentElement.parentElement.id, 1);
+let subtitleNames = document.getElementsByClassName('sub-title-name');
+subtitleNames.forEach(element => {
+    element.addEventListener('click', e => {
+        document.getElementsByClassName('sub-title-name').forEach(e2 => {
+            let classList = e2.getElementsByTagName('i')[0].classList;
+            if (e2 === e.target) {
+                e2.parentElement.getElementsByClassName('dropdown')[0].classList.toggle('visible');
+                if (classList.contains('up')) {
+                    classList.remove('up');
+                    classList.add('down');
+                } else {
+                    classList.add('up');
+                    classList.remove('down');
+                }
+
+            } else {
+                e2.parentElement.getElementsByClassName('dropdown')[0].classList.remove('visible');
+                classList.remove('up');
+                classList.add('down');
+            }
+        });
     });
 });
 
-document.getElementById('toolbar').getElementsByClassName('mouseRight').forEach(element => {
-    element.addEventListener('click', function() {
-        switchTool(element.parentElement.parentElement.id, 2);
-    });
+document.getElementsByClassName('tool').forEach(tool => {
+    tool.addEventListener('click', evt => updateDescription(evt.target));
 });
+
+// document.getElementById('toolbar').getElementsByClassName('mouseLeft').forEach(element => {
+//     element.addEventListener('click', function() {
+//         switchTool(element.parentElement.parentElement.id, 1);
+//     });
+// });
+
+// document.getElementById('toolbar').getElementsByClassName('mouseRight').forEach(element => {
+//     element.addEventListener('click', function() {
+//         switchTool(element.parentElement.parentElement.id, 2);
+//     });
+// });
 createGrid(1, 1);

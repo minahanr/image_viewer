@@ -20,111 +20,6 @@
     <root>
         <div class="container" id="root-container">
             <div id="titlebar"><img src='images/canary_logo.png' width="60px" height="50.19px" style='margin-right: 30px; margin-top: -10px'>Canary Center Image Viewer</div>
-            <div id="toolbar">
-                <div id="Zoom" class="tool">Zoom
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                    
-                <div id="Pan" class="tool">Pan
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Magnify" class="tool">Magnify
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Rotate" class="tool">Rotate
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Brush" class="tool">Brush
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Wwwc" class="tool">Wwwc
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="WwwcRegion" class="tool">WwwcRegion
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Angle" class="tool">Angle
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="CobbAngle" class="tool">CobbAngle
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="EllipticalRoi" class="tool">Elliptical
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="RectangleRoi" class="tool">Rectangle
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="FreehandRoi" class="tool">FreehandRoi
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Length" class="tool">Length
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Probe" class="tool">Probe
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="ArrowAnnotate" class="tool">ArrowAnnotate
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="ModifiedCrosshairs" class="tool">Crosshairs
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Bidirectional" class="tool">Bidirectional
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-            </div>
 
             <div id='baseURL' style='display: none'>https://github.com/minahanr/image_viewer/blob/master/test_RATIB2/RATIB2/CorCTALow%20%200.75%20%20B25f%20%20Multiphase</div>
             <div id='startingIndex' style='display: none'>9</div>
@@ -136,17 +31,54 @@
                 <div id='navigation-panel'>
                     <div id='tools-viewer'>
                         <div class='panel-title'>Tools</div>
-                        <div class='sub-title'>Navigation <i class="arrow down"></i>
-                            <div class='dropdown'></div>
+                        <div class='sub-title'>
+                            <div class='sub-title-name'>
+                                Navigation <i class="arrow down"></i>
+                            </div>
+                            <div class='dropdown'>
+                                <img id="Zoom" class='tool button' src='images/metadata.png'></button>
+                                <img id="Pan" class='tool button' src='images/metadata.png'></button>
+                                <img id="Magnify" class='tool button' src='images/metadata.png'></button>
+                                <img id="ModifiedCrosshairs" class='tool button' src='images/metadata.png'></button>
+                                <div class='description'></div>
+                            </div>
                         </div>
-                        <div class='sub-title'>Annotation <i class="arrow down"></i>
-                            <div class='dropdown'></div>
+                        <div class='sub-title'>
+                            <div class='sub-title-name'>
+                                Annotation <i class="arrow down"></i>
+                            </div>
+                            <div class='dropdown'>
+                                <img id="Angle" class='tool button' src='images/metadata.png'></button>
+                                <img id="CobbAngle" class='tool button' src='images/metadata.png'></button>
+                                <img id="Length" class='tool button' src='images/metadata.png'></button>
+                                <img id="Probe" class='tool button' src='images/metadata.png'></button>
+                                <img id="ArrowAnnotate" class='tool button' src='images/metadata.png'></button>
+                                <img id="Bidirectional" class='tool button' src='images/metadata.png'></button>
+                                <div class='description'></div>
+                            </div>
                         </div>
-                        <div class='sub-title'>Transformation <i class='arrow down'></i>
-                            <div class='dropdown'></div>
+                        <div class='sub-title'>
+                            <div class='sub-title-name'>
+                                Transformation <i class="arrow down"></i>
+                            </div>
+                            <div class='dropdown'>
+                                <img id="Rotate" class='tool button' src='images/metadata.png'></button>
+                                <img id="Wwwc" class='tool button' src='images/metadata.png'></button>
+                                <img id="WwwcRegion" class='tool button' src='images/metadata.png'></button>
+                                <div class='description'></div>
+                            </div>
                         </div>
-                        <div class='sub-title'>Segmentation <i class="arrow down"></i>
-                            <div class='dropdown'></div>
+                        <div class='sub-title'>
+                            <div class='sub-title-name'>
+                                Segmentation <i class="arrow down"></i>
+                            </div>
+                            <div class='dropdown'>
+                                <img id="Brush" class='tool button' src='images/metadata.png'></button>
+                                <img id="EllipticalRoi" class='tool button' src='images/metadata.png'></button>
+                                <img id="RectangleRoi" class='tool button' src='images/metadata.png'></button>
+                                <img id="FreehandRoi" class='tool button' src='images/metadata.png'></button>
+                                <div class='description'></div>
+                            </div>
                         </div>
                     </div>
                     <div id='layers-viewer'>
