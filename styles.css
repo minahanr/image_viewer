@@ -1,5 +1,6 @@
 html, body {
     height: 100%;
+    line-height: 1.42857143;
 }
 
 :root {
@@ -10,6 +11,12 @@ html, body {
 .container {
     height: 100%;
     margin: 0;
+}
+
+#viewer-container {
+    height: calc(100% - 83px);
+    width: 100%;
+    background-color: #4d4f53;
 }
 
 .tool {
@@ -38,16 +45,16 @@ html, body {
 
 .horizontal-border {
     width: 100%;
-    height: 0.25em;
-    background-color: white;
+    height: 5px;
+    background-color: #4d4f53;
     float: left;
     position: relative;
 }
 
 .vertical-border {
     height: 100%;
-    width: 0.25em;
-    background-color: white;
+    width: 5px;
+    background-color: #4d4f53;
     float: left;
     position: relative;
 }
@@ -127,7 +134,7 @@ html, body {
     background: none;
     border-radius: 5px;
     outline: none;
-    opacity: 0;
+    opacity: 0.5;
     -webkit-transition: .2s;
     transition: opacity .2s;
     cursor: pointer;
@@ -143,7 +150,7 @@ html, body {
     height: 10px;
     width: 40px;
     border-radius: 5px;
-    background: #747574;
+    background: #8c1515;
 }
   
 .slider::-moz-range-thumb {
@@ -193,11 +200,86 @@ html, body {
     height: 100%;
     width: 100%;
     position: relative;
+    padding: 0;
 }
+
+#titlebar {
+    padding: 6px 0 6px 10px;
+    background-color: #8c1515;
+    font-size: 50px;
+    font-family: 'Source Serif Pro';
+    color: white;
+}
+
 #toolbar {
+    display: none;
     overflow: visible;
     position: relative;
     height: var(--toolbar-height);
+}
+
+#navigation-panel {
+    width: 300px;
+    height: 100%;
+    float: left;
+}
+
+#navigation-panel div {
+    width: 100%;
+    font-family: 'Open Sans', 'sans serif';
+    color: #ffffff;
+    background-color: #4d4f53;
+}
+
+.panel-title {
+    font-size: 16px;
+    border-bottom: 5px solid #2e2d29;
+    padding: 3px 0 3px 10px;
+}
+
+.sub-title {
+    border-bottom: 3px solid #2e2d29;
+    font-size: 14px;
+    padding: 3px 0 3px 20px;
+}
+
+.sub-title:hover {
+    cursor: pointer;
+}
+
+.arrow {
+    border: solid #ffffff;
+    border-width: 0 3px 3px 0;
+    float: right;
+    margin: 3px 6px 0 0;
+    padding: 3px;
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+#tools-viewer, #layers-viewer {
+    height: 25%;
+}
+#metadata-viewer {
+    height: 50%;
+}
+
+#grid-container {
+    width: calc(100% - 300px);
+    float: left;
+    height: 100%;
+    padding-bottom: 10px;
+}
+
+#image-info {
+    border-bottom: 5px solid #2e2d29;
+    font-family: 'Open Sans', 'sans serif';
+    font-size: 16px;
+    color: #ffffff;
+    padding: 3px 0 3px 10px;
 }
 
 #grid {
@@ -206,9 +288,10 @@ html, body {
     flex-direction: row;
     flex-wrap: wrap;
     align-content: flex-start;
-    background-color: white;
     padding: 0;
-    height: calc(100% - var(--toolbar-height));
+    height: calc(100% - 16 * 1.42857143px - 11px);
+    width: 100%;
+    background-color: black;
 }
 
 #image {

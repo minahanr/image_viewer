@@ -5,6 +5,8 @@
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
     <link href="dist/simpleBar/simplebar.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Serif+Pro' rel='stylesheet' type='text/css'>
     <noscript>
         <style>
           [data-simplebar] {
@@ -12,12 +14,12 @@
           }
         </style>
       </noscript>
-    
 </head>
 <body>
     <noscript>You need javascript to run this</noscript>
     <root>
         <div class="container" id="root-container">
+            <div id="titlebar"><img src='images/canary_logo.png' width="60px" height="50.19px" style='margin-right: 30px; margin-top: -10px'>Canary Center Image Viewer</div>
             <div id="toolbar">
                 <div id="Zoom" class="tool">Zoom
                     <ul>
@@ -130,7 +132,36 @@
             <div id='numFrames' style='display: none'>20</div>
             <div id='format' style='display: none'>dcm</div>
 
-            <div id="grid" class="container" oncontextmenu="return false" onmousedown="return false"></div>
+            <div id='viewer-container'>
+                <div id='navigation-panel'>
+                    <div id='tools-viewer'>
+                        <div class='panel-title'>Tools</div>
+                        <div class='sub-title'>Navigation <i class="arrow down"></i>
+                            <div class='dropdown'></div>
+                        </div>
+                        <div class='sub-title'>Annotation <i class="arrow down"></i>
+                            <div class='dropdown'></div>
+                        </div>
+                        <div class='sub-title'>Transformation <i class='arrow down'></i>
+                            <div class='dropdown'></div>
+                        </div>
+                        <div class='sub-title'>Segmentation <i class="arrow down"></i>
+                            <div class='dropdown'></div>
+                        </div>
+                    </div>
+                    <div id='layers-viewer'>
+                        <div class='panel-title'>Layers</div>
+                    </div>
+                    <div id='metadata-viewer'>
+                        <div class='panel-title'>Metadata</div>
+                    </div>
+                </div>
+                <div id='grid-container'>
+                    <div id='image-info'>Image: </div>
+                    <div id="grid" class="container" oncontextmenu="return false" onmousedown="return false"></div>
+                </div>
+                
+            </div>
         </div>
         <!-- include libraries -->
         <script type="text/javascript" src="dist/cornerstone.js"></script>
