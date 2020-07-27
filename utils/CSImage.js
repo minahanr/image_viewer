@@ -5,6 +5,7 @@ import showMetadataFn from '../tools/showMetadata.js';
 import deleteImageFn from '../tools/deleteImageFn.js';
 import loadStackProjection from '../imageLoaders/projectionLoader/loadStackProjection.js';
 import getFileMetadata from '../tools/getFileMetadata.js';
+import changeTimeFrame from '../tools/changeTimeFrame.js';
 
 export default class CSImage {
     constructor(element, urlsOverTime, format) {
@@ -14,7 +15,6 @@ export default class CSImage {
         this.format = format;
         this.element = element;
         this.projection = '';
-        this.numImages = URLs.length;
         this.currentTimeIndex = 0;
 
         if (urlsOverTime[0].currentImageIdIndex !== undefined){
@@ -45,7 +45,6 @@ export default class CSImage {
         let deleteImage = document.createElement('img');
         let projection = document.createElement('div');
         let timeSlider = document.createElement('input');
-        
 
         topLeft.classList = 'overlay topLeft';
         topRight.classList = 'overlay topRight';
@@ -71,8 +70,8 @@ export default class CSImage {
         projection.innerHTML = 'projection';
         
         timeSlider.type = 'range';
-        timeSlider.min = 1;
-        timeSlider.max = urlsOverTime.length;
+        timeSlider.min = 0;
+        timeSlider.max = urlsOverTime.length - 1;
         timeSlider.step = 1;
         timeSlider.value = 0;
 
@@ -107,8 +106,8 @@ export default class CSImage {
         showMetadata.addEventListener('click', showMetadataFn);
         deleteImage.addEventListener('click', deleteImageFn);
         projection.addEventListener('click', loadStackProjection);
-        
-        let arr = 
+        timeSlider.addEventListener('input', changeTimeFrame);
+
         ([topLeft, topRight, bot, botRight]).forEach(element => {
             element.addEventListener('mousedown', evt => evt.stopPropagation());
         });

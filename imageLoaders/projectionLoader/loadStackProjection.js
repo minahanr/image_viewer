@@ -50,7 +50,7 @@ export default function loadStackProjection (e) {
 
                 updateTheImage(element, 0);
             }
-        });
+        }).catch(e => console.log(e));
 
         CSimages.push(CSimage);
     }

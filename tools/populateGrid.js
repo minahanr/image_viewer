@@ -3,7 +3,6 @@ import updateTheImage from '../utils/updateImageSelector.js';
 
 export default function populateGrid(e) {
     let element = e.target;
-    let frame = e.target.classList.value.slice(-1);
 
     element.style.display = 'none';
     let div = document.createElement('div');
@@ -11,7 +10,22 @@ export default function populateGrid(e) {
     let container = element.parentElement;
     container.appendChild(div);
 
-    let CSimage = new CSImage(div, [document.getElementById('URLs').innerHTML.split(' '),], document.getElementById('format').innerHTML);
+    const baseURL = document.getElementById('baseURL').innerHTML;
+    const format = document.getElementById('format').innerHTML;
+    const numFrames = parseInt(document.getElementById('numFrames').innerHTML, 10);
+    const imgsPerFrame = parseInt(document.getElementById('imgsPerFrame').innerHTML, 10);
+    const startingIndex = parseInt(document.getElementById('startingIndex').innerHTML, 10);
+    console.log(startingIndex);
+    let urlsOverTime = [];
+    for (let i = 0; i < numFrames; i++) {
+        urlsOverTime.push([]);
+        for (let j = 0; j < imgsPerFrame; j++) {
+            urlsOverTime[i].push(baseURL + '/' + '0'.repeat(1 - Math.floor(Math.log10(i + startingIndex))) + (i + startingIndex) + '/' + 'IM-' + '0'.repeat(3 - Math.floor(Math.log10(i + startingIndex))) + (i + startingIndex) + '-' + '0'.repeat(3 - Math.floor(Math.log10(i * imgsPerFrame + j + 1))) + (i * imgsPerFrame + j + 1) + '.' + format + '?raw=true');
+        }
+    }
+    console.log(urlsOverTime);
+
+    let CSimage = new CSImage(div, urlsOverTime, document.getElementById('format').innerHTML);
     //CSimage.stack[CSimage.currentTimeIndex].imageIds.forEach(imageId => cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + imageId));
     updateTheImage(div, 0);
     element.removeEventListener('click', populateGrid);
