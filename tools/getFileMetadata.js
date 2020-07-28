@@ -38,7 +38,7 @@ export default function getFileMetadata(element) {
                 // }
             })
         }
-        request.open('GET', CSimage.stack[CSimage.currentTimeIndex].imageIds[CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex], true);
+        request.open('GET', CSimage.layers[0].stack[CSimage.currentTimeIndex].imageIds[CSimage.layers[0].stack[CSimage.currentTimeIndex].currentImageIdIndex], true);
         request.send();
     }
 }

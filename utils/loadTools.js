@@ -16,8 +16,6 @@ export default function loadTools(element) {
         }
     });
     cornerstoneTools.setToolActiveForElement(element, 'Zoom', { mouseButtonMask: 2});
-    cornerstoneTools.addStackStateManager(element, ['stack']);
-    cornerstoneTools.addToolState(element, 'stack', CSimage.stack[CSimage.currentTimeIndex]);
     cornerstoneTools.addToolForElement(element, ScrollWheelUpdaterTool);
     cornerstoneTools.setToolActiveForElement(element, 'ScrollWheelUpdater', {});
 

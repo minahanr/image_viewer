@@ -1,29 +1,26 @@
 import CSImage from './CSImage.js';
 
 function updateImageSelector(CSimage) {
-    CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex + 1) + '/' + CSimage.stack[CSimage.currentTimeIndex].imageIds.length;
+    CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.currentImageIdIndex + CSimage.layers[0].startingIndex + 1) + '/' + (CSimage.lastIndex + 1);
 }
 
 export default function updateTheImage(element, imageIndex, sync) {
-
     let CSimage = CSImage.instances.get(element);
-    CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;
+    CSimage.currentImageIdIndex = imageIndex;
     updateImageSelector(CSimage);
 
     let promise = new Promise(() => {
         let promises = [];
-        promises.push(cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[CSimage.format] + CSimage.stack[CSimage.currentTimeIndex].imageIds[CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex]));
+        CSimage.layers.forEach(layer => {
+            layer.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;
+            promises.push(cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingIndex]));
+        });
+
         Promise.all(promises).then(images => {
             cornerstone.getEnabledElement(element).layers = [];
             images.forEach((image, index) => {
-                console.log(cornerstone.getEnabledElement(element).layers);
                 cornerstone.addLayer(element, image, {});
-                
                 cornerstone.updateImage(element);
-
-                cornerstoneTools.addStackStateManager(element, ['stack'])
-                cornerstoneTools.addToolState(element, 'stack', CSimage.stack[CSimage.currentTimeIndex]);
-
                 
             });
 

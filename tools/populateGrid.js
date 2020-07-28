@@ -24,7 +24,6 @@ export default function populateGrid(e) {
     }
 
     let CSimage = new CSImage(div, urlsOverTime, document.getElementById('format').innerHTML);
-    //CSimage.stack[CSimage.currentTimeIndex].imageIds.forEach(imageId => cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + imageId));
     updateTheImage(div, 0, true).then(() => document.getElementById('metadata-viewer').innerHTML = element.parentElement.getElementsByClassName('metadata-text')[0].innerHTML);
     element.removeEventListener('click', populateGrid);
 }

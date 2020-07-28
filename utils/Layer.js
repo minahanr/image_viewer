@@ -2,6 +2,7 @@ export default class Layer {
     constructor(format, urlsOverTime, startingIndex) {
         this.format = format;
         this.startingIndex = startingIndex;
+        
         if (urlsOverTime[0].currentImageIdIndex !== undefined){
             this.stack = urlsOverTime;
         } else {

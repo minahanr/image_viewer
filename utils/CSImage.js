@@ -10,6 +10,7 @@ import Layer from './Layer.js';
 
 export default class CSImage {
     constructor(element, urlsOverTime, format) {
+        cornerstone.enable(element);
 
         this.dataset = {};
         this.movieReverse = false;
@@ -19,14 +20,8 @@ export default class CSImage {
         this.currentTimeIndex = 0;
         this.currentImageIdIndex = 0;
         this.layers = [];
-        this.layers.push(new Layer(format, urlsOverTime, 0));
-        if (urlsOverTime[0].currentImageIdIndex !== undefined){
-            this.stack = urlsOverTime;
-        } else {
-            this.stack = [];
-            urlsOverTime.forEach(urls => this.stack.push({imageIds: urls, currentImageIdIndex: 0}));
-        }
-        
+        this.lastIndex = 0;
+        this.addLayer(format, urlsOverTime, 0);
         
         CSImage.instances.set(element, this);
 
@@ -101,7 +96,7 @@ export default class CSImage {
         container.appendChild(metadata);
         
         getFileMetadata(element);
-        cornerstone.enable(element);
+        
         loadTools(element);
         
         interpolation.addEventListener('click', interpolate);
@@ -125,4 +120,16 @@ export default class CSImage {
 
     static instances = new WeakMap();
     static UUID_identifier = 0;
+
+    addLayer(format, urlsOverTime, startingIndex) {
+        let layer = new Layer(format, urlsOverTime, startingIndex)
+        this.layers.push(layer);
+        
+        if (layer.stack[0].imageIds.length + layer.startingIndex > this.lastIndex) {
+            this.lastIndex = layer.stack[0].imageIds.length + layer.startingIndex - 1;
+        }
+
+        cornerstoneTools.addStackStateManager(this.element, ['stack']);
+        cornerstoneTools.addToolState(this.element, 'stack', this.layers[this.layers.length - 1].stack[this.currentTimeIndex]);
+    }
 }

@@ -3,11 +3,11 @@ import updateTheImage from '../utils/updateImageSelector.js';
 
 export default function playMovie(e) {
     let CSimage = CSImage.instances.get(e.target.parentElement.parentElement);
-    if (CSimage.stack[CSimage.currentTimeIndex].imageIds.length === 1)
+    if (CSimage.lastIndex === 0)
         return;
-    else if (CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex === CSimage.stack[CSimage.currentTimeIndex].imageIds.length - 1)
+    else if (CSimage.currentImageIdIndex === CSimage.lastIndex)
         CSimage.movieReverse = true;
-    else if (CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex === 0)
+    else if (CSimage.currentImageIdIndex === 0)
         CSimage.movieReverse = false;
 
     var movieButton = e.target;
@@ -27,9 +27,9 @@ export default function playMovie(e) {
     }
 
     function movieHandlerForward() {
-        updateTheImage(CSimage.element, CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex + 1);
+        updateTheImage(CSimage.element, CSimage.currentImageIdIndex + 1);
         
-        if (CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex === CSimage.stack[CSimage.currentTimeIndex].imageIds.length - 1) {
+        if (CSimage.currentImageIdIndex === CSimage.lastIndex) {
             clearInterval(movie);
             CSimage.movieReverse = true;
             movieTimeout = setTimeout(movieHandlerReverse, 1000);
@@ -38,9 +38,9 @@ export default function playMovie(e) {
 
     function movieHandlerReverse() {
         function Reverse() {
-            updateTheImage(CSimage.element, CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex - 1);
+            updateTheImage(CSimage.element, CSimage.currentImageIdIndex - 1);
 
-            if (CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex === 0) {
+            if (CSimage.currentImageIdIndex === 0) {
                 CSimage.movieReverse = false;
                 pauseMovie();
             }
