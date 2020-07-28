@@ -55,7 +55,10 @@ subtitleNames.forEach(element => {
 });
 
 document.getElementsByClassName('tool').forEach(tool => {
-    tool.addEventListener('click', evt => updateDescription(evt.target));
+    tool.addEventListener('click', evt => {
+        updateDescription(evt.target);
+        switchTool(evt.target.id, 1);
+    });
 });
 
 // document.getElementById('toolbar').getElementsByClassName('mouseLeft').forEach(element => {

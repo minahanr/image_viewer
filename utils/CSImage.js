@@ -6,6 +6,7 @@ import deleteImageFn from '../tools/deleteImageFn.js';
 import loadStackProjection from '../imageLoaders/projectionLoader/loadStackProjection.js';
 import getFileMetadata from '../tools/getFileMetadata.js';
 import changeTimeFrame from '../tools/changeTimeFrame.js';
+import Layer from './Layer.js';
 
 export default class CSImage {
     constructor(element, urlsOverTime, format) {
@@ -16,7 +17,9 @@ export default class CSImage {
         this.element = element;
         this.projection = '';
         this.currentTimeIndex = 0;
-
+        this.currentImageIdIndex = 0;
+        this.layers = [];
+        this.layers.push(new Layer(format, urlsOverTime, 0));
         if (urlsOverTime[0].currentImageIdIndex !== undefined){
             this.stack = urlsOverTime;
         } else {

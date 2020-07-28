@@ -8,15 +8,13 @@ export default function changeTimeFrame(evt) {
     let currentTimeIndex = parseInt(evt.target.value, 10);
 
     if (synchronizer === undefined) {
-        let oldImageIdIndex = CSimage.stack[CSimage.currentTimeIndex].currentImageIdIndex;
         CSimage.currentTimeIndex = currentTimeIndex;
-        updateTheImage(CSimage.element, oldImageIdIndex, true);
+        updateTheImage(CSimage.element, CSimage.currentImageIdIndex);
     } else {
         synchronizer.images.forEach(newCSimage => {
-            let oldImageIdIndex = newCSimage.stack[newCSimage.currentTimeIndex].currentImageIdIndex;
             newCSimage.currentTimeIndex = currentTimeIndex;
             newCSimage.element.getElementsByClassName('timeSlider')[0].value = evt.target.value;
-            updateTheImage(newCSimage.element, oldImageIdIndex, true);
+            updateTheImage(newCSimage.element, oldImageIdIndex);
         });
     }
     
