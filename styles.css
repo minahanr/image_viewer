@@ -226,7 +226,7 @@ html, body {
     flex-direction: column;
 }
 
-#navigation-panel div {
+.sub-panel {
     width: 100%;
     font-family: 'Open Sans', 'sans serif';
     color: #ffffff;
@@ -235,7 +235,7 @@ html, body {
 
 .panel-title {
     font-size: 16px;
-    border-bottom: 5px solid #2e2d29;
+    background-color: #2e2d29;
     padding: 3px 0 3px 10px;
 }
 
@@ -288,6 +288,38 @@ html, body {
     -webkit-transform: rotate(-135deg);
 }
 
+.layer-div {
+    height: 50px;
+    border-bottom: 3px solid #2e2d29;
+    padding: 5px 5px 5px 5px;
+}
+
+.thumbnail-div {
+    height: 100%;
+    width: 50px;
+    background-color: black;
+    float: left;
+    margin-right: 5px;
+}
+
+.layer-name-div {
+    float: left;
+    font-size: 16px;
+    height: 37px;
+    line-height: 37px;
+}
+
+.layer-name-div span {
+    vertical-align: middle;
+}
+
+.visible-layer {
+    height: 100%;
+    width: 50px;
+    background-color: black;
+    float: right;
+}
+
 #metadata-viewer {
     flex-grow: 1;
     overflow-y: auto;
@@ -303,10 +335,10 @@ html, body {
 }
 
 #image-info {
-    border-bottom: 5px solid #2e2d29;
     font-family: 'Open Sans', 'sans serif';
     font-size: 16px;
     color: #ffffff;
+    background-color: #2e2d29;
     padding: 3px 0 3px 10px;
 }
 

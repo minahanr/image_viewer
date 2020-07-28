@@ -6,6 +6,7 @@ import deleteImageFn from '../tools/deleteImageFn.js';
 import loadStackProjection from '../imageLoaders/projectionLoader/loadStackProjection.js';
 import getFileMetadata from '../tools/getFileMetadata.js';
 import changeTimeFrame from '../tools/changeTimeFrame.js';
+import highlightContainer from '../tools/highlightContainer.js';
 import Layer from './Layer.js';
 
 export default class CSImage {
@@ -105,9 +106,7 @@ export default class CSImage {
         deleteImage.addEventListener('click', deleteImageFn);
         projection.addEventListener('click', loadStackProjection);
         timeSlider.addEventListener('input', changeTimeFrame);
-        element.addEventListener('mousedown', evt => {
-            document.getElementById('metadata-viewer').innerHTML = evt.target.parentElement.parentElement.getElementsByClassName('metadata-text')[0].innerHTML;
-        });
+        element.addEventListener('mousedown', highlightContainer);
 
         ([topLeft, topRight, bot, botRight]).forEach(element => {
             element.addEventListener('mousedown', evt => evt.stopPropagation());
@@ -120,9 +119,11 @@ export default class CSImage {
 
     static instances = new WeakMap();
     static UUID_identifier = 0;
+    static layer_number = 1;
 
     addLayer(format, urlsOverTime, startingIndex) {
-        let layer = new Layer(format, urlsOverTime, startingIndex)
+        let layer = new Layer('Layer #' + CSImage.layer_number, format, urlsOverTime, startingIndex)
+        CSImage.layer_number += 1;
         this.layers.push(layer);
         
         if (layer.stack[0].imageIds.length + layer.startingIndex > this.lastIndex) {
