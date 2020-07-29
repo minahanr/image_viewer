@@ -12,6 +12,8 @@ export function loadCoaxialImage_1(imageId) {
     let format = imageId.substring(0, colonIndex + 1);
     imageId = imageId.substring(colonIndex + 1);
     colonIndex = imageId.indexOf(':');
+    let layerIndex = parseInt(imageId.substr(0, colonIndex), 10);
+    imageId = imageId.substring(colonIndex + 1);
     let timeIndex = parseInt(imageId.substr(0, colonIndex), 10);
     imageId = imageId.substring(colonIndex + 1);
     colonIndex = imageId.indexOf(':');
@@ -23,7 +25,7 @@ export function loadCoaxialImage_1(imageId) {
     let promises = [];
     let newImage = {};
 
-    let promiseImage = cornerstone.loadImage(format + CSimage.baseStack[timeIndex].imageIds[0]).then(baseImage => {
+    let promiseImage = cornerstone.loadImage(format + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]).then(baseImage => {
         newImage = {
             imageId: frame,
             minPixelValue: undefined,
@@ -34,9 +36,9 @@ export function loadCoaxialImage_1(imageId) {
             windowWidth: baseImage.windowWidth,
             getPixelData: undefined,
             getCanvas: baseImage.getCanvas,
-            rows: CSimage.baseStack[timeIndex].imageIds.length,
+            rows: CSimage.layers[layerIndex].baseStack[timeIndex].imageIds.length,
             columns: baseImage.columns,
-            height: CSimage.baseStack[timeIndex].imageIds.length,
+            height: CSimage.layers[layerIndex].baseStack[timeIndex].imageIds.length,
             width: baseImage.columns,
             color: baseImage.color,
             lut: baseImage.lut, 
@@ -54,8 +56,9 @@ export function loadCoaxialImage_1(imageId) {
         newImage.data = new Uint16Array(newImage.rows * newImage.columns);
         
         for (let i = 0; i < newImage.rows; i++) {
-            promises.push(cornerstone.loadImage(fileFormats[CSimage.format] + CSimage.baseStack[timeIndex].imageIds[i]));
+            promises.push(cornerstone.loadImage(fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
         }
+
         return Promise.all(promises);
     }).then(images => {
         for(let i = 0; i < newImage.rows; i++) {
@@ -77,11 +80,12 @@ export function loadCoaxialImage_1(imageId) {
 
 export function loadCoaxialImage_2(imageId) {
     imageId = imageId.substring(imageId.indexOf(':') + 1);
-
     let colonIndex = imageId.indexOf(':');
     let format = imageId.substring(0, colonIndex + 1);
     imageId = imageId.substring(colonIndex + 1);
     colonIndex = imageId.indexOf(':');
+    let layerIndex = parseInt(imageId.substr(0, colonIndex), 10);
+    imageId = imageId.substring(colonIndex + 1);
     let timeIndex = parseInt(imageId.substr(0, colonIndex), 10);
     imageId = imageId.substring(colonIndex + 1);
     colonIndex = imageId.indexOf(':');
@@ -93,7 +97,7 @@ export function loadCoaxialImage_2(imageId) {
     let promises = [];
     let newImage = {};
 
-    let promiseImage = cornerstone.loadImage(format + CSimage.baseStack[timeIndex].imageIds[0]).then(baseImage => {
+    let promiseImage = cornerstone.loadImage(format + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]).then(baseImage => {
         newImage = {
             imageId: frame,
             minPixelValue: undefined,
@@ -104,9 +108,9 @@ export function loadCoaxialImage_2(imageId) {
             windowWidth: baseImage.windowWidth,
             getPixelData: undefined,
             getCanvas: baseImage.getCanvas,
-            rows: CSimage.baseStack[timeIndex].imageIds.length,
+            rows: CSimage.layers[layerIndex].baseStack[timeIndex].imageIds.length,
             columns: baseImage.rows,
-            height: CSimage.baseStack[timeIndex].imageIds.length,
+            height: CSimage.layers[layerIndex].baseStack[timeIndex].imageIds.length,
             width: baseImage.rows,
             color: baseImage.color,
             lut: baseImage.lut, 
@@ -124,7 +128,7 @@ export function loadCoaxialImage_2(imageId) {
         newImage.data = new Uint16Array(newImage.rows * newImage.columns);
         
         for (let i = 0; i < newImage.rows; i++) {
-            promises.push(cornerstone.loadImage(fileFormats[CSimage.format] + CSimage.baseStack[timeIndex].imageIds[i]));
+            promises.push(cornerstone.loadImage(fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
         }
         return Promise.all(promises);
     }).then(images => {

@@ -14,43 +14,54 @@ export default function loadStackProjection (e) {
         containers[i].appendChild(image);
         containers[i].getElementsByClassName('addImage')[0].style.display = 'none';
         let element = containers[i].getElementsByClassName('image')[0];
-        let CSimage = new CSImage(image, baseImage.stack, baseImage.format);
+        let CSimage = new CSImage(image, baseImage.layers[0].stack, baseImage.format);
         CSimage.dataset = baseImage.dataset;
         CSimage.projection = 'LCI' + i + ':';
-        CSimage.baseStack = Object.assign({}, CSimage.stack);
-        CSimage.stack = [];
-
-        let promises = [];
-
-
-        for(let timeIndex = 0; timeIndex < Object.keys(CSimage.baseStack).length; timeIndex++) {
-            promises.push(cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + CSimage.baseStack[timeIndex].imageIds[0]));
-        }
         
-        Promise.all(promises).then(images => {
-            for (let timeIndex = 0; timeIndex < images.length; timeIndex++) {
-                let image = images[timeIndex];
+        CSimage.layers.forEach((layer, layerIndex) => {
+            layer.baseStack = Object.assign({}, layer.stack);
+            layer.stack = [];
 
-                if (i === 1) {
-                    var numImages = image.rows;
-                } else {
-                    var numImages = image.columns;
-                }
-        
-                CSimage.stack.push(
-                    {
-                        imageIds: [],
-                        currentImageIdIndex: 0
-                    }
-                );
-
-                for(let j = 0; j < numImages; j++) {
-                    CSimage.stack[timeIndex].imageIds.push(timeIndex + ':' + j + ':' + element.id);
-                }
-
-                updateTheImage(element, 0);
+            let promises = [];
+            for(let timeIndex = 0; timeIndex < Object.keys(layer.baseStack).length; timeIndex++) {
+                promises.push(cornerstone.loadAndCacheImage(fileFormats[layer.format] + layer.baseStack[timeIndex].imageIds[0]));
             }
-        }).catch(e => console.log(e));
+
+            Promise.all(promises).then(images => {
+                CSimage.lastIndex = 0;
+                for (let timeIndex = 0; timeIndex < images.length; timeIndex++) {
+                    let image = images[timeIndex];
+    
+                    if (i === 1) {
+                        var numImages = image.rows;
+                    } else {
+                        var numImages = image.columns;
+                    }
+                    
+                    if (numImages > CSimage.lastIndex) {
+                        CSimage.lastIndex = numImages - 1;
+                    }
+                    layer.stack.push(
+                        {
+                            imageIds: [],
+                            currentImageIdIndex: 0
+                        }
+                    );
+    
+                    for(let j = 0; j < numImages; j++) {
+                        layer.stack[timeIndex].imageIds.push(layerIndex + ':' + timeIndex + ':' + j + ':' + element.id);
+                    }
+    
+                    updateTheImage(element, 0);
+                }
+            });
+        });
+
+
+
+        
+        
+        
 
         CSimages.push(CSimage);
     }

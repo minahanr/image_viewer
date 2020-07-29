@@ -5,7 +5,9 @@ export default class Layer {
         this.startingIndex = startingIndex;
         this.options = {};
         
-        if (urlsOverTime[0].currentImageIdIndex !== undefined){
+        if (urlsOverTime === undefined) {
+            this.stack = [];
+        } else if (urlsOverTime[0].currentImageIdIndex !== undefined){
             this.stack = urlsOverTime;
         } else {
             this.stack = [];

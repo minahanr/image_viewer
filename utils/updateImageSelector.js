@@ -8,7 +8,7 @@ export default function updateTheImage(element, imageIndex, sync) {
     let CSimage = CSImage.instances.get(element);
     CSimage.currentImageIdIndex = imageIndex;
     updateImageSelector(CSimage);
-
+    const prevViewport = cornerstone.getViewport(element);
     let promise = new Promise(() => {
         let promises = [];
         CSimage.layers.forEach(layer => {
@@ -23,6 +23,9 @@ export default function updateTheImage(element, imageIndex, sync) {
                 cornerstone.updateImage(element);
                 
             });
+            if (prevViewport !== undefined) {
+                cornerstone.setViewport(element, prevViewport);
+            }
 
             return true;
         });
