@@ -51,7 +51,7 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
         }
         let syncX, syncY, syncZ = 0;
         let baseImage = CSImage.instances.get(evt.target);
-        let frame = baseImage.stack[baseImage.currentTimeIndex].currentImageIdIndex;
+        let frame = baseImage.currentImageIdIndex;
         let synchronizer = Synchronizer.instances.get(baseImage);
         let projection = baseImage.projection;
 
