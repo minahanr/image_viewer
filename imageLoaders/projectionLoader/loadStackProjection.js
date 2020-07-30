@@ -37,10 +37,10 @@ export default function loadStackProjection (e) {
         let element = containers[i].getElementsByClassName('image')[0];
         let CSimage = new CSImage(image, baseImage.layers[0].stack, baseImage.format);
         CSimage.layers = deepCopy(baseImage.layers);
-        CSimage.dataset = baseImage.dataset;
         CSimage.projection = 'LCI' + i + ':';
 
         CSimage.layers.forEach((layer, layerIndex) => {
+            
             layer.baseStack = Object.assign({}, layer.stack);
             layer.stack = [];
 

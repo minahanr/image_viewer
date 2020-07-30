@@ -1,7 +1,8 @@
 import CSImage from "../utils/CSImage.js";
 
 export default function highlightContainer(evt) {
-    document.getElementById('metadata-viewer').innerHTML = evt.target.parentElement.parentElement.getElementsByClassName('metadata-text')[0].innerHTML;
+    const metadata = document.getElementById('metadata-viewer');
+    metadata.innerHTML = '';
 
     const layersContainer = document.getElementById('layers-container');
     const CSimage = CSImage.instances.get(evt.target.parentElement);
@@ -9,7 +10,14 @@ export default function highlightContainer(evt) {
     layersContainer.innerHTML = '';
 
     CSimage.layers.forEach(layer => {
+        console.log(layer);
+        metadata.innerHTML += '=================<br>';
+        metadata.innerHTML += layer.name + '<br>';
+        metadata.innerHTML += '=================<br>';
+        metadata.innerHTML += layer.metadata;
+
         const layerDiv = document.createElement('div');
+        layerDiv.id = 'layerDiv_' + layer.id;
         const thumbnail = document.createElement('div');
         const layerName = document.createElement('div');
         const visible = document.createElement('div');

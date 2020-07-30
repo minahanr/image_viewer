@@ -30,12 +30,6 @@ export default function getFileMetadata(element) {
                     metatext.innerHTML += warning + '<br>';
                 })
 
-                // let simpleBar = SimpleBar.instances.get(metatext);
-                // if (simpleBar !== undefined) {
-                //     simpleBar.recalculate();
-                // } else {
-                //     new SimpleBar(metatext);
-                // }
             })
         }
         request.open('GET', CSimage.layers[0].stack[CSimage.currentTimeIndex].imageIds[CSimage.layers[0].stack[CSimage.currentTimeIndex].currentImageIdIndex], true);

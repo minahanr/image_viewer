@@ -4,7 +4,6 @@ import playMovie from '../tools/playMovie.js';
 import showMetadataFn from '../tools/showMetadata.js';
 import deleteImageFn from '../tools/deleteImageFn.js';
 import loadStackProjection from '../imageLoaders/projectionLoader/loadStackProjection.js';
-import getFileMetadata from '../tools/getFileMetadata.js';
 import changeTimeFrame from '../tools/changeTimeFrame.js';
 import highlightContainer from '../tools/highlightContainer.js';
 import Layer from './Layer.js';
@@ -13,7 +12,6 @@ export default class CSImage {
     constructor(element, urlsOverTime, format) {
         cornerstone.enable(element);
 
-        this.dataset = {};
         this.movieReverse = false;
         this.element = element;
         this.projection = '';
@@ -21,6 +19,7 @@ export default class CSImage {
         this.currentImageIdIndex = 0;
         this.layers = [];
         this.lastIndex = 0;
+        this.layerNumber = 1;
         this.addLayer(format, urlsOverTime, 0);
         
         CSImage.instances.set(element, this);
@@ -32,10 +31,7 @@ export default class CSImage {
         let bot = document.createElement('div');
         let movieButton = document.createElement('img');
         let text = document.createElement('div');
-        let metadataText = document.createElement('div');
         let interpolation = document.createElement('div');
-        let showMetadata = document.createElement('img');
-        let metadata = document.createElement('div');
         let patientName = document.createElement('div');
         let series = document.createElement('div');
         let modality = document.createElement('div');
@@ -51,9 +47,6 @@ export default class CSImage {
         text.classList = 'text item';
         movieButton.classList = 'imageOverlay item button';
         deleteImage.classList = 'imageOverlay item button';
-        showMetadata.classList = 'imageOverlay item button';
-        metadataText.classList = 'metadata-text';
-        metadata.classList = 'metadata delete';
         timeSlider.classList = 'slider timeSlider';
 
         patientName.innerHTML = 'patientName: ';
@@ -63,7 +56,6 @@ export default class CSImage {
         deleteImage.src = './images/delete.png';
         element.style.borderRadius = '0';
         movieButton.src =  './images/playButton.png';
-        showMetadata.src = './images/metadata.png';
         interpolation.innerHTML = 'interpolation';
         projection.innerHTML = 'projection';
         
@@ -80,7 +72,6 @@ export default class CSImage {
         element.appendChild(topLeft);
         element.appendChild(topRight);
         element.appendChild(bot);
-        metadata.appendChild(metadataText);
         container.appendChild(botRight);
         topLeft.appendChild(movieButton);
         topLeft.appendChild(text);
@@ -91,17 +82,12 @@ export default class CSImage {
         topRight.appendChild(modality);
         topRight.appendChild(date);
         bot.appendChild(timeSlider);
-        botRight.appendChild(showMetadata);
         botRight.appendChild(deleteImage);
-        container.appendChild(metadata);
-        
-        getFileMetadata(element);
-        
+                
         loadTools(element);
         
         interpolation.addEventListener('click', interpolate);
         movieButton.addEventListener('click', playMovie);
-        showMetadata.addEventListener('click', showMetadataFn);
         deleteImage.addEventListener('click', deleteImageFn);
         projection.addEventListener('click', loadStackProjection);
         timeSlider.addEventListener('input', changeTimeFrame);
@@ -118,11 +104,10 @@ export default class CSImage {
 
     static instances = new WeakMap();
     static UUID_identifier = 0;
-    static layer_number = 1;
 
     addLayer(format, urlsOverTime, startingIndex) {
-        let layer = new Layer('Layer #' + CSImage.layer_number, format, urlsOverTime, startingIndex)
-        CSImage.layer_number += 1;
+        let layer = new Layer(this.layerNumber, 'Layer #' + this.layerNumber, format, urlsOverTime, startingIndex)
+        this.layerNumber += 1;
         this.layers.push(layer);
         
         if (layer.stack[0].imageIds.length + layer.startingIndex > this.lastIndex) {
