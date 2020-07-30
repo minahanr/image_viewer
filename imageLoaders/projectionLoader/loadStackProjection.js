@@ -3,6 +3,27 @@ import updateTheImage from "../../utils/updateImageSelector.js";
 import { splitImageVertical } from "../../tools/modifyImageWindows.js";
 import Synchronizer from "../../tools/Synchronizer.js";
 
+function deepCopy(object) {
+    let copy;
+
+    if (typeof object !== "object" || object === null) {
+        return object;
+    }
+
+    if (Array.isArray(object)) {
+        copy = [];
+    } else {
+        copy = {};
+    }
+
+    for (let key in object) {
+        let value = object[key];
+
+        copy[key] = deepCopy(value);
+    }
+
+    return copy;
+}
 export default function loadStackProjection (e) {
     
     let containers = splitImageVertical(e.target.parentElement.parentElement.parentElement, 3);
@@ -15,9 +36,10 @@ export default function loadStackProjection (e) {
         containers[i].getElementsByClassName('addImage')[0].style.display = 'none';
         let element = containers[i].getElementsByClassName('image')[0];
         let CSimage = new CSImage(image, baseImage.layers[0].stack, baseImage.format);
+        CSimage.layers = deepCopy(baseImage.layers);
         CSimage.dataset = baseImage.dataset;
         CSimage.projection = 'LCI' + i + ':';
-        
+
         CSimage.layers.forEach((layer, layerIndex) => {
             layer.baseStack = Object.assign({}, layer.stack);
             layer.stack = [];
@@ -41,6 +63,7 @@ export default function loadStackProjection (e) {
                     if (numImages > CSimage.lastIndex) {
                         CSimage.lastIndex = numImages - 1;
                     }
+
                     layer.stack.push(
                         {
                             imageIds: [],

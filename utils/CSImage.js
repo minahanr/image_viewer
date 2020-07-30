@@ -15,7 +15,6 @@ export default class CSImage {
 
         this.dataset = {};
         this.movieReverse = false;
-        this.format = format;
         this.element = element;
         this.projection = '';
         this.currentTimeIndex = 0;

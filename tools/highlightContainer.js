@@ -5,6 +5,7 @@ export default function highlightContainer(evt) {
 
     const layersContainer = document.getElementById('layers-container');
     const CSimage = CSImage.instances.get(evt.target.parentElement);
+    const viewport = cornerstone.getViewport(CSimage.element);
     layersContainer.innerHTML = '';
 
     CSimage.layers.forEach(layer => {
@@ -30,6 +31,14 @@ export default function highlightContainer(evt) {
             cornerstone.getEnabledElement(thumbnail).layers = [];
             cornerstone.addLayer(thumbnail, image, {});
             cornerstone.updateImage(thumbnail);
+
+            
         });
+
+        if (viewport !== undefined) {
+            cornerstone.setViewport(thumbnail, viewport);
+        }
     });
+    
+
 }

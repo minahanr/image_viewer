@@ -3,7 +3,7 @@ import CSImage from '../utils/CSImage.js';
 
 export default function getFileMetadata(element) {
     let CSimage = CSImage.instances.get(element);
-    if (CSimage.format === 'dicom' || CSimage.format === 'dcm') {
+    if (CSimage.layers[0].format === 'dicom' || CSimage.layers[0].format === 'dcm') {
         let request = new XMLHttpRequest();
         let metatext = element.parentElement.getElementsByClassName('metadata-text')[0];
         request.responseType = 'blob';
