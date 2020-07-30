@@ -1,23 +1,23 @@
 import CSImage from "../utils/CSImage.js";
 
-export default function highlightContainer(evt) {
+export default function highlightContainer(element) {
+    console.log(element);
     const metadata = document.getElementById('metadata-viewer');
     metadata.innerHTML = '';
 
     const layersContainer = document.getElementById('layers-container');
-    const CSimage = CSImage.instances.get(evt.target.parentElement);
+    const CSimage = CSImage.instances.get(element);
     const viewport = cornerstone.getViewport(CSimage.element);
     layersContainer.innerHTML = '';
 
     CSimage.layers.forEach(layer => {
-        console.log(layer);
         metadata.innerHTML += '=================<br>';
         metadata.innerHTML += layer.name + '<br>';
         metadata.innerHTML += '=================<br>';
         metadata.innerHTML += layer.metadata;
 
         const layerDiv = document.createElement('div');
-        layerDiv.id = 'layerDiv_' + layer.id;
+        layerDiv.id = 'layerDiv_#' + layer.id;
         const thumbnail = document.createElement('div');
         const layerName = document.createElement('div');
         const visible = document.createElement('div');

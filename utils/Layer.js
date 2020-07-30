@@ -11,14 +11,13 @@ export default class Layer {
         this.dataset = {};
         this.metadata = '';
 
-        if (urlsOverTime === undefined) {
-            this.stack = [];
-        } else if (urlsOverTime[0].currentImageIdIndex !== undefined){
+        if (urlsOverTime[0].currentImageIdIndex !== undefined){
             this.stack = urlsOverTime;
         } else {
             this.stack = [];
             urlsOverTime.forEach(urls => this.stack.push({imageIds: urls, currentImageIdIndex: 0}));
         }
+
         this.getFileMetadata();
     }
 
@@ -32,7 +31,6 @@ export default class Layer {
     
                     this.metadata = '';
                     let Uint8View = new Uint8Array(buffer);
-                    console.log(layer);
                     if (Object.keys(layer.dataset).length === 0) {
                         layer.dataset = dicomParser.parseDicom(Uint8View);
                     }

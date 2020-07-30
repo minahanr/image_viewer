@@ -20,7 +20,8 @@ export default class CSImage {
         this.layers = [];
         this.lastIndex = 0;
         this.layerNumber = 1;
-        this.addLayer(format, urlsOverTime, 0);
+
+        
         
         CSImage.instances.set(element, this);
 
@@ -38,7 +39,19 @@ export default class CSImage {
         let date = document.createElement('div');
         let deleteImage = document.createElement('img');
         let projection = document.createElement('div');
-        let timeSlider = document.createElement('input');
+        this.timeSlider = document.createElement('input');
+        this.timeSlider.style.display = 'none';
+
+        this.timeSlider.type = 'range';
+        this.timeSlider.min = 0;
+        this.timeSlider.max = 0;
+
+        this.timeSlider.step = 1;
+        this.timeSlider.value = 0;
+
+        if (urlsOverTime !== undefined) {
+            this.addLayer(format, urlsOverTime, 0);
+        }
 
         topLeft.classList = 'overlay topLeft';
         topRight.classList = 'overlay topRight';
@@ -47,7 +60,7 @@ export default class CSImage {
         text.classList = 'text item';
         movieButton.classList = 'imageOverlay item button';
         deleteImage.classList = 'imageOverlay item button';
-        timeSlider.classList = 'slider timeSlider';
+        this.timeSlider.classList = 'slider timeSlider';
 
         patientName.innerHTML = 'patientName: ';
         series.innerHTML = 'series: ';
@@ -59,16 +72,6 @@ export default class CSImage {
         interpolation.innerHTML = 'interpolation';
         projection.innerHTML = 'projection';
         
-        timeSlider.type = 'range';
-        timeSlider.min = 0;
-        timeSlider.max = urlsOverTime.length - 1;
-        timeSlider.step = 1;
-        timeSlider.value = 0;
-
-        if (urlsOverTime.length === 1) {
-            timeSlider.style.display = 'none';
-        }
-    
         element.appendChild(topLeft);
         element.appendChild(topRight);
         element.appendChild(bot);
@@ -81,7 +84,7 @@ export default class CSImage {
         topRight.appendChild(series);
         topRight.appendChild(modality);
         topRight.appendChild(date);
-        bot.appendChild(timeSlider);
+        bot.appendChild(this.timeSlider);
         botRight.appendChild(deleteImage);
                 
         loadTools(element);
@@ -90,8 +93,8 @@ export default class CSImage {
         movieButton.addEventListener('click', playMovie);
         deleteImage.addEventListener('click', deleteImageFn);
         projection.addEventListener('click', loadStackProjection);
-        timeSlider.addEventListener('input', changeTimeFrame);
-        element.addEventListener('mousedown', highlightContainer);
+        this.timeSlider.addEventListener('input', changeTimeFrame);
+        this.element.addEventListener('mousedown', evt => highlightContainer(this.element));
 
         ([topLeft, topRight, bot, botRight]).forEach(element => {
             element.addEventListener('mousedown', evt => evt.stopPropagation());
@@ -112,6 +115,13 @@ export default class CSImage {
         
         if (layer.stack[0].imageIds.length + layer.startingIndex > this.lastIndex) {
             this.lastIndex = layer.stack[0].imageIds.length + layer.startingIndex - 1;
+        }
+
+        this.timeSlider.max = urlsOverTime.length - 1;
+        if (this.timeSlider.max === 0 || this.timeSlider.max === 1) {
+            this.timeSlider.style.display = 'none';
+        } else {
+            this.timeSlider.style.display = 'block';
         }
 
         cornerstoneTools.addStackStateManager(this.element, ['stack']);

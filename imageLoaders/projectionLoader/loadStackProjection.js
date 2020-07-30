@@ -18,8 +18,11 @@ function deepCopy(object) {
 
     for (let key in object) {
         let value = object[key];
-
-        copy[key] = deepCopy(value);
+        if (Array.isArray(copy)) {
+            copy.push(deepCopy(value));
+        } else {
+            copy[key] = deepCopy(value);
+        }
     }
 
     return copy;
@@ -29,24 +32,24 @@ export default function loadStackProjection (e) {
     let containers = splitImageVertical(e.target.parentElement.parentElement.parentElement, 3);
     let baseImage = CSImage.instances.get(containers[0].getElementsByClassName('image')[0]);
     let CSimages = [baseImage];
+    console.log(baseImage);
     for (let i = 1; i < 3; i++) {
         let image = document.createElement('div');
         image.classList = 'image delete';
         containers[i].appendChild(image);
         containers[i].getElementsByClassName('addImage')[0].style.display = 'none';
         let element = containers[i].getElementsByClassName('image')[0];
-        let CSimage = new CSImage(image, baseImage.layers[0].stack, baseImage.format);
-        CSimage.layers = deepCopy(baseImage.layers);
+        let CSimage = new CSImage(image);
+        CSimage.layers = [];
         CSimage.projection = 'LCI' + i + ':';
-
-        CSimage.layers.forEach((layer, layerIndex) => {
-            
-            layer.baseStack = Object.assign({}, layer.stack);
-            layer.stack = [];
+        baseImage.layers.forEach((layer, layerIndex) => {
+            CSimage.addLayer(layer.format, layer.stack, 0);
+            CSimage.layers[layerIndex].baseStack = deepCopy(CSimage.layers[layerIndex].stack);
+            CSimage.layers[layerIndex].stack = [];
 
             let promises = [];
-            for(let timeIndex = 0; timeIndex < Object.keys(layer.baseStack).length; timeIndex++) {
-                promises.push(cornerstone.loadAndCacheImage(fileFormats[layer.format] + layer.baseStack[timeIndex].imageIds[0]));
+            for(let timeIndex = 0; timeIndex < Object.keys(CSimage.layers[layerIndex].baseStack).length; timeIndex++) {
+                promises.push(cornerstone.loadAndCacheImage(fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]));
             }
 
             Promise.all(promises).then(images => {
@@ -64,7 +67,7 @@ export default function loadStackProjection (e) {
                         CSimage.lastIndex = numImages - 1;
                     }
 
-                    layer.stack.push(
+                    CSimage.layers[layerIndex].stack.push(
                         {
                             imageIds: [],
                             currentImageIdIndex: 0
@@ -72,20 +75,15 @@ export default function loadStackProjection (e) {
                     );
     
                     for(let j = 0; j < numImages; j++) {
-                        layer.stack[timeIndex].imageIds.push(layerIndex + ':' + timeIndex + ':' + j + ':' + element.id);
+                        CSimage.layers[layerIndex].stack[timeIndex].imageIds.push(layerIndex + ':' + timeIndex + ':' + j + ':' + element.id);
                     }
-    
+
                     updateTheImage(element, 0);
                 }
             });
         });
 
-
-
-        
-        
-        
-
+        console.log(CSimage);
         CSimages.push(CSimage);
     }
     

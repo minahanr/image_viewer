@@ -1,5 +1,6 @@
 import CSImage from '../utils/CSImage.js';
 import updateTheImage from '../utils/updateImageSelector.js';
+import highlightContainer from './highlightContainer.js';
 
 export default function populateGrid(e) {
     let element = e.target;
@@ -26,4 +27,5 @@ export default function populateGrid(e) {
     let CSimage = new CSImage(div, urlsOverTime, document.getElementById('format').innerHTML);
     updateTheImage(div, 0, true).then(() => document.getElementById('metadata-viewer').innerHTML = element.parentElement.getElementsByClassName('metadata-text')[0].innerHTML);
     element.removeEventListener('click', populateGrid);
+    highlightContainer(div);
 }
