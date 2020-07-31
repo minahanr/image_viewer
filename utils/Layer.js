@@ -3,6 +3,7 @@ import CSImage from '../utils/CSImage.js';
 
 export default class Layer {
     constructor(id, name, format, urlsOverTime, startingIndex) {
+        this.uid = undefined;
         this.id = id;
         this.name = name;
         this.format = format;

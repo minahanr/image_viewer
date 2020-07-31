@@ -1,6 +1,8 @@
 import CSImage from "../utils/CSImage.js";
+import highlightLayer from './highlightLayer.js';
 
 export default function highlightContainer(element) {
+    CSImage.highlightedElement = element;
     const metadata = document.getElementById('metadata-viewer');
     metadata.innerHTML = '';
 
@@ -9,7 +11,7 @@ export default function highlightContainer(element) {
     const viewport = cornerstone.getViewport(CSimage.element);
     layersContainer.innerHTML = '';
 
-    CSimage.layers.forEach(layer => {
+    CSimage.layers.forEach((layer, index) => {
         metadata.innerHTML += '=================<br>';
         metadata.innerHTML += layer.name + '<br>';
         metadata.innerHTML += '=================<br>';
@@ -36,14 +38,18 @@ export default function highlightContainer(element) {
         cornerstone.enable(thumbnail);
         cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingIndex]).then(image => {
             cornerstone.getEnabledElement(thumbnail).layers = [];
-            cornerstone.addLayer(thumbnail, image, {});
+            cornerstone.addLayer(thumbnail, image, layer.options);
             cornerstone.updateImage(thumbnail);
-
-            
         });
 
         if (viewport !== undefined) {
             cornerstone.setViewport(thumbnail, viewport);
+        }
+
+        layerDiv.addEventListener('click', evt => highlightLayer(evt.target));
+
+        if (index === 0) {
+            highlightLayer(layerDiv);
         }
     });
     

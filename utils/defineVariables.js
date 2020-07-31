@@ -49,12 +49,3 @@ const supportedTags = [
     'colorMap',
     'documentName'
 ];
-
-
-
-var mouseButtons = {
-    1: 'Pan',
-    2: 'Zoom'
-};
-
-var numViewports = 0;

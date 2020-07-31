@@ -127,6 +127,30 @@ html, body {
     margin: 0 0.25em 0 0.25em;
 }
 
+#colormaps {
+    width: 50%;
+}
+
+#opacitySlider {
+    -webkit-appearance: none;
+    margin-top: 5px;
+    width: 50%;
+    height: 10px;
+    background-color: #2e2d29;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#opacitySlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 15px;
+    width: 5px;
+    border-radius: 5px;
+    background: #B1040E;
+}
+
 .slider {
     -webkit-appearance: none;
     width: 100%;
@@ -288,10 +312,21 @@ html, body {
     -webkit-transform: rotate(-135deg);
 }
 
+#layers-container {
+    padding: 10px 0 10px 0;
+}
+
 .layer-div {
     height: 50px;
     border-bottom: 3px solid #2e2d29;
+    border-top: 3px solid #2e2d29;;
     padding: 5px 5px 5px 5px;
+    margin-bottom: 10px;
+}
+
+.highlighted {
+    border: 3px solid #B1040E;
+    background-color: #2e2d29;
 }
 
 .thumbnail-div {

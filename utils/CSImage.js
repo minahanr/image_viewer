@@ -20,8 +20,6 @@ export default class CSImage {
         this.layers = [];
         this.lastIndex = 0;
         this.layerNumber = 1;
-
-        
         
         CSImage.instances.set(element, this);
 
@@ -108,9 +106,11 @@ export default class CSImage {
     static instances = new WeakMap();
     static UUID_identifier = 0;
     static activeTools = new ActiveTools('Pan', 'Zoom');
+    static highlightedElement = undefined;
+    static highlightedLayer = undefined;
 
     addLayer(format, urlsOverTime, startingIndex) {
-        let layer = new Layer(this.layerNumber, 'Layer #' + this.layerNumber, format, urlsOverTime, startingIndex)
+        let layer = new Layer(this.layerNumber - 1, 'Layer #' + this.layerNumber, format, urlsOverTime, startingIndex)
         this.layerNumber += 1;
         this.layers.push(layer);
         

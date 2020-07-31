@@ -19,7 +19,7 @@ export default function updateTheImage(element, imageIndex, sync) {
     Promise.all(promises).then(images => {
         cornerstone.getEnabledElement(element).layers = [];
         images.forEach((image, index) => {
-            cornerstone.addLayer(element, image, CSimage.layers[index].options);
+            CSimage.layers[index].uid = cornerstone.addLayer(element, image, CSimage.layers[index].options);
         });
 
         if (sync) {
