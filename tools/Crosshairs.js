@@ -51,10 +51,16 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
             imageX = curImg.columns - 1;
         }
 
-        let baseImage = CSImage.instances.get(evt.target);
-        let frame = baseImage.currentImageIdIndex;
-        let projection = baseImage.projection;
-        this.synchronizer = Synchronizer.instances.get(baseImage);
+        this.baseImage = CSImage.instances.get(evt.target);
+        let frame = this.baseImage.currentImageIdIndex;
+        let projection = this.baseImage.projection;
+
+        if (Synchronizer.instances.has(this.baseImage)) {
+            this.synchronizer = Synchronizer.instances.get(this.baseImage);
+        } else {
+            this.synchronizer = undefined;
+        }
+        
 
         if (projection === '') {
             this.syncX = imageX;
@@ -70,15 +76,19 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
             this.syncZ = imageY;
         }
 
-        this.synchronizer.images.forEach(CSimage => {
-            if (CSimage.projection === '') {
-                updateTheImage(CSimage.element, this.syncZ);
-            } else if (CSimage.projection === 'LCI1:') {
-                updateTheImage(CSimage.element, this.syncY);
-            } else if (CSimage.projection === 'LCI2:') {
-                updateTheImage(CSimage.element, this.syncX);
-            }
-        });
+        if (this.synchronizer !== undefined) {
+            this.synchronizer.images.forEach(CSimage => {
+                if (CSimage.projection === '') {
+                    updateTheImage(CSimage.element, this.syncZ);
+                } else if (CSimage.projection === 'LCI1:') {
+                    updateTheImage(CSimage.element, this.syncY);
+                } else if (CSimage.projection === 'LCI2:') {
+                    updateTheImage(CSimage.element, this.syncX);
+                }
+            });
+        } else {
+            updateTheImage(this.baseImage.element, this.syncZ);
+        }
 
         if (this.enabled === false) {
             this.enabled = true;
@@ -88,27 +98,34 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
 
     mouseUpCallback(evt) {
         this.enabled = false;
-        this.synchronizer.images.forEach(CSimage => {
-            updateTheImage(CSimage.element, CSimage.currentImageIdIndex);
-        })
+
+        // this.synchronizer.images.forEach(CSimage => {
+        //     updateTheImage(CSimage.element, CSimage.currentImageIdIndex);
+        // })
 
         evt.target.classList.remove('hideCursor');
     }
 
     drawCrosshairOnProjections() {
-        this.synchronizer.images.forEach(CSimage => {
-            let projection = CSimage.projection;
-            let canvas = CSimage.element.getElementsByTagName('canvas')[0];
+        if (this.synchronizer !== undefined) {
+            this.synchronizer.images.forEach(CSimage => {
+                let projection = CSimage.projection;
+                let canvas = CSimage.element.getElementsByTagName('canvas')[0];
+                let context = cornerstoneTools.getNewContext(canvas);
+                context.setTransform(1, 0, 0, 1, 0, 0);
+                if (projection === '') {
+                    drawCrosshair(context, CSimage, {x: this.syncX, y: this.syncY});
+                } else if (projection === 'LCI1:') {
+                    drawCrosshair(context, CSimage, {x: this.syncX, y: this.syncZ});
+                } else if (projection === 'LCI2:') {
+                    drawCrosshair(context, CSimage, {x: this.syncY, y: this.syncZ});
+                }
+            });
+        } else {
+            let canvas = this.baseImage.element.getElementsByTagName('canvas')[0];
             let context = cornerstoneTools.getNewContext(canvas);
-            context.setTransform(1, 0, 0, 1, 0, 0);
-            if (projection === '') {
-                drawCrosshair(context, CSimage, {x: this.syncX, y: this.syncY});
-            } else if (projection === 'LCI1:') {
-                drawCrosshair(context, CSimage, {x: this.syncX, y: this.syncZ});
-            } else if (projection === 'LCI2:') {
-                drawCrosshair(context, CSimage, {x: this.syncY, y: this.syncZ});
-            }
-        });
+            drawCrosshair(context, this.baseImage, {x: this.syncX, y: this.syncY});
+        }
         
         if (this.enabled) {
             cornerstone.requestAnimationFrame(this.drawCrosshairOnProjections.bind(this));
