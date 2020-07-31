@@ -4078,6 +4078,8 @@ function syncViewports(layers, activeLayer) {
     layer.viewport.hflip = activeLayer.viewport.hflip;
     layer.viewport.vflip = activeLayer.viewport.vflip;
   });
+
+  
 }
 /**
  * Internal function to render all layers for a Cornerstone enabled element

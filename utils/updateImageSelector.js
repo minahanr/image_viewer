@@ -9,28 +9,28 @@ export default function updateTheImage(element, imageIndex, sync) {
     CSimage.currentImageIdIndex = imageIndex;
     updateImageSelector(CSimage);
     const prevViewport = cornerstone.getViewport(element);
-    let promise = new Promise(() => {
-        let promises = [];
-        CSimage.layers.forEach(layer => {
-            layer.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;
-            promises.push(cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingIndex]));
-        });
 
-        Promise.all(promises).then(images => {
-            cornerstone.getEnabledElement(element).layers = [];
-            images.forEach((image, index) => {
-                cornerstone.addLayer(element, image, CSimage.layers[index].options);
-                cornerstone.updateImage(element);
-                
-            });
-            if (prevViewport !== undefined) {
-                cornerstone.setViewport(element, prevViewport);
-            }
-
-            return true;
-        });
+    let promises = [];
+    CSimage.layers.forEach(layer => {
+        layer.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;
+        promises.push(cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingIndex]));
     });
 
-    return promise;
+    Promise.all(promises).then(images => {
+        cornerstone.getEnabledElement(element).layers = [];
+        images.forEach((image, index) => {
+            cornerstone.addLayer(element, image, CSimage.layers[index].options);
+        });
+
+        if (sync) {
+            cornerstone.renderToCanvas(element);
+        } else {
+            cornerstone.updateImage(element);
+        }
+
+        if (prevViewport !== undefined) {
+            cornerstone.setViewport(element, prevViewport);
+        }
+    });
 }
 

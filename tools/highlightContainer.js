@@ -1,7 +1,6 @@
 import CSImage from "../utils/CSImage.js";
 
 export default function highlightContainer(element) {
-    console.log(element);
     const metadata = document.getElementById('metadata-viewer');
     metadata.innerHTML = '';
 

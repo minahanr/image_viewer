@@ -1,7 +1,6 @@
 import loadTools from './loadTools.js';
 import interpolate from '../tools/interpolate.js';
 import playMovie from '../tools/playMovie.js';
-import showMetadataFn from '../tools/showMetadata.js';
 import deleteImageFn from '../tools/deleteImageFn.js';
 import loadStackProjection from '../imageLoaders/projectionLoader/loadStackProjection.js';
 import changeTimeFrame from '../tools/changeTimeFrame.js';

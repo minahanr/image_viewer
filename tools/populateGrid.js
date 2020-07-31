@@ -24,8 +24,9 @@ export default function populateGrid(e) {
         }
     }
 
-    let CSimage = new CSImage(div, urlsOverTime, document.getElementById('format').innerHTML);
-    updateTheImage(div, 0, true).then(() => document.getElementById('metadata-viewer').innerHTML = element.parentElement.getElementsByClassName('metadata-text')[0].innerHTML);
-    element.removeEventListener('click', populateGrid);
+    new CSImage(div, urlsOverTime, document.getElementById('format').innerHTML);
+    updateTheImage(div, 0, true);
     highlightContainer(div);
+    element.removeEventListener('click', populateGrid);
+    
 }
