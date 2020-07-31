@@ -10,10 +10,10 @@ cornerstoneTools.getNewContext = cornerstoneTools.importInternal('drawing/getNew
 function drawCrosshair(context, CSimage, location) {
     cornerstoneTools.draw(context, context => {
         const viewport = cornerstone.getViewport(CSimage.element);
-        cornerstoneTools.drawLine(context, CSimage.element, {x: -99999, y: location.y}, {x: location.x - 30 / viewport.displayedArea.columnPixelSpacing, y: location.y}, {color: 'greenyellow', lineWidth: 1 / viewport.displayedArea.rowPixelSpacing});
-        cornerstoneTools.drawLine(context, CSimage.element, {x: location.x + 30 / viewport.displayedArea.columnPixelSpacing, y: location.y}, {x: 99999, y: location.y}, {color: 'greenyellow', lineWidth: 1 / viewport.displayedArea.rowPixelSpacing});
-        cornerstoneTools.drawLine(context, CSimage.element, {x: location.x, y: -99999}, {x: location.x, y: location.y - 30 / viewport.displayedArea.rowPixelSpacing}, {color: 'greenyellow', lineWidth: 1 / viewport.displayedArea.columnPixelSpacing});
-        cornerstoneTools.drawLine(context, CSimage.element, {x: location.x, y: location.y + 30 / viewport.displayedArea.rowPixelSpacing}, {x: location.x, y: 99999}, {color: 'greenyellow', lineWidth: 1 / viewport.displayedArea.columnPixelSpacing});
+        cornerstoneTools.drawLine(context, CSimage.element, {x: -99999, y: location.y}, {x: location.x - 30 / viewport.displayedArea.columnPixelSpacing, y: location.y}, {color: 'greenyellow', lineWidth: 2 / viewport.displayedArea.rowPixelSpacing});
+        cornerstoneTools.drawLine(context, CSimage.element, {x: location.x + 30 / viewport.displayedArea.columnPixelSpacing, y: location.y}, {x: 99999, y: location.y}, {color: 'greenyellow', lineWidth: 2 / viewport.displayedArea.rowPixelSpacing});
+        cornerstoneTools.drawLine(context, CSimage.element, {x: location.x, y: -99999}, {x: location.x, y: location.y - 30 / viewport.displayedArea.rowPixelSpacing}, {color: 'greenyellow', lineWidth: 2 / viewport.displayedArea.columnPixelSpacing});
+        cornerstoneTools.drawLine(context, CSimage.element, {x: location.x, y: location.y + 30 / viewport.displayedArea.rowPixelSpacing}, {x: location.x, y: 99999}, {color: 'greenyellow', lineWidth: 2 / viewport.displayedArea.columnPixelSpacing});
     });
 }
 export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {

@@ -6,6 +6,7 @@ import loadStackProjection from '../imageLoaders/projectionLoader/loadStackProje
 import changeTimeFrame from '../tools/changeTimeFrame.js';
 import highlightContainer from '../tools/highlightContainer.js';
 import Layer from './Layer.js';
+import ActiveTools from './activeTools.js';
 
 export default class CSImage {
     constructor(element, urlsOverTime, format) {
@@ -106,6 +107,7 @@ export default class CSImage {
 
     static instances = new WeakMap();
     static UUID_identifier = 0;
+    static activeTools = new ActiveTools('Pan', 'Zoom');
 
     addLayer(format, urlsOverTime, startingIndex) {
         let layer = new Layer(this.layerNumber, 'Layer #' + this.layerNumber, format, urlsOverTime, startingIndex)

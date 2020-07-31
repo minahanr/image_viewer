@@ -1,6 +1,7 @@
 import { splitImageHorizontal, splitImageVertical } from './tools/modifyImageWindows.js';
 import {loadCoaxialImage_1, loadCoaxialImage_2 } from './imageLoaders/projectionLoader/loadImage.js';
 import updateDescription from './tools/updateDescription.js';
+import CSImage from './utils/CSImage.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
@@ -21,13 +22,25 @@ function createGrid(rows, cols) {
 }
 
 function switchTool(newTool, mouseButton) {
-    if (newTool in Object.values(mouseButtons)) {
-        return;
+    let activeTools = CSImage.activeTools;
+
+    if (mouseButton === 'leftClick') {
+        if (newTool === activeTools.leftClickTool) {
+            return;
+        }
+
+        cornerstoneTools.setToolEnabled(activeTools.leftClickTool, {});
+        activeTools.setLeftClick(newTool);
+    } else {
+        if (newTool === activeTools.rightClickTool) {
+            return;
+        }
+
+        cornerstoneTools.setToolEnabled(activeTools.rightClickTool, {});
+        activeTools.setRightClick(newTool);
     }
 
-    cornerstoneTools.setToolEnabled(mouseButtons[mouseButton], {});
-    cornerstoneTools.setToolActive(newTool, { mouseButtonMask : mouseButton } );
-    mouseButtons[mouseButton] = newTool;
+    cornerstoneTools.setToolActive(newTool, { mouseButtonMask : activeTools.dict[mouseButton] } );
 }
 
 let subtitleNames = document.getElementsByClassName('sub-title-name');
@@ -57,7 +70,7 @@ subtitleNames.forEach(element => {
 document.getElementsByClassName('tool').forEach(tool => {
     tool.addEventListener('click', evt => {
         updateDescription(evt.target);
-        switchTool(evt.target.id, 1);
+        switchTool(evt.target.id, 'leftClick');
     });
 });
 
