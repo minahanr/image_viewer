@@ -19,8 +19,8 @@ export function createContainer(parentElement, rows, cols, addChildren) {
     container.style.cssFloat = 'left';
     container.classList = 'image-container';
 
-    container.style.height = "calc((100% - " + (Math.min(rows, 3) - 1) + " * 0.25em) / " + Math.min(rows, 3) + ")";
-    container.style.width = "calc((100% - " + (Math.min(cols, 3) - 1) + " * 0.25em) / " + Math.min(cols, 3) + ")";
+    container.style.height = "calc((100% - " + (Math.min(rows, 3) - 1) + " * 5px) / " + Math.min(rows, 3) + ")";
+    container.style.width = "calc((100% - " + (Math.min(cols, 3) - 1) + " * 5px) / " + Math.min(cols, 3) + ")";
     
     let childArr = parentElement.children;
     if (!addChildren && childArr.length) {

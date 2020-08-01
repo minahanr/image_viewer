@@ -5,21 +5,16 @@ import generateColorLut from '../../internal/generateColorLut.js';
 import getModalityLut from '../../internal/getModalityLut.js';
 import getVOILut from '../../internal/getVOILut.js' 
 
-function requestSliceThickness(URL) {
-    let promise =  fetch(URL).then(response => response.arrayBuffer()).then((buffer) => {
-        let Uint8View = new Uint8Array(buffer);
-        let dataset = dicomParser.parseDicom(Uint8View);
-        return dataset.string('x00180050')
-    });
-
-    return promise;
-}
-
 export function loadCoaxialImage_1(imageId) {
     imageId = imageId.substring(imageId.indexOf(':') + 1);
 
     let colonIndex = imageId.indexOf(':');
     let format = imageId.substring(0, colonIndex + 1);
+    imageId = imageId.substring(colonIndex + 1);
+    colonIndex = imageId.indexOf(':');
+    let layerIndex = parseInt(imageId.substr(0, colonIndex), 10);
+    imageId = imageId.substring(colonIndex + 1);
+    let timeIndex = parseInt(imageId.substr(0, colonIndex), 10);
     imageId = imageId.substring(colonIndex + 1);
     colonIndex = imageId.indexOf(':');
     let frame = parseInt(imageId.substr(0, colonIndex), 10);
@@ -30,7 +25,7 @@ export function loadCoaxialImage_1(imageId) {
     let promises = [];
     let newImage = {};
 
-    let promiseImage = cornerstone.loadImage(format + CSimage.baseStack.imageIds[0]).then(baseImage => {
+    let promiseImage = cornerstone.loadImage(format + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]).then(baseImage => {
         newImage = {
             imageId: frame,
             minPixelValue: undefined,
@@ -41,15 +36,15 @@ export function loadCoaxialImage_1(imageId) {
             windowWidth: baseImage.windowWidth,
             getPixelData: undefined,
             getCanvas: baseImage.getCanvas,
-            rows: CSimage.baseStack.imageIds.length,
+            rows: CSimage.layers[layerIndex].baseStack[timeIndex].imageIds.length,
             columns: baseImage.columns,
-            height: CSimage.baseStack.imageIds.length,
+            height: CSimage.layers[layerIndex].baseStack[timeIndex].imageIds.length,
             width: baseImage.columns,
             color: baseImage.color,
             lut: baseImage.lut, 
             rgba: baseImage.rgba,
             columnPixelSpacing: baseImage.columnPixelSpacing,
-            rowPixelSpacing: CSimage.dataset.string('x00180050'),
+            rowPixelSpacing: CSimage.layers[layerIndex].dataset.string('x00180050'),
             invert: baseImage.invert,
             sizeInBytes: undefined,
             falseColor: baseImage.falseColor,
@@ -61,8 +56,9 @@ export function loadCoaxialImage_1(imageId) {
         newImage.data = new Uint16Array(newImage.rows * newImage.columns);
         
         for (let i = 0; i < newImage.rows; i++) {
-            promises.push(cornerstone.loadImage(fileFormats[CSimage.format] + CSimage.baseStack.imageIds[i]));
+            promises.push(cornerstone.loadImage(fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
         }
+
         return Promise.all(promises);
     }).then(images => {
         for(let i = 0; i < newImage.rows; i++) {
@@ -75,11 +71,6 @@ export function loadCoaxialImage_1(imageId) {
         newImage.maxPixelValue = max;
         return newImage;
     });
-    // }).then(() => requestSliceThickness(CSimage.baseStack.imageIds[0])).then(sliceThickness => {
-    //     newImage.rowPixelSpacing = sliceThickness;
-    //     return newImage;
-    // })
-    
 
     return {
         promise: promiseImage,
@@ -89,9 +80,13 @@ export function loadCoaxialImage_1(imageId) {
 
 export function loadCoaxialImage_2(imageId) {
     imageId = imageId.substring(imageId.indexOf(':') + 1);
-
     let colonIndex = imageId.indexOf(':');
     let format = imageId.substring(0, colonIndex + 1);
+    imageId = imageId.substring(colonIndex + 1);
+    colonIndex = imageId.indexOf(':');
+    let layerIndex = parseInt(imageId.substr(0, colonIndex), 10);
+    imageId = imageId.substring(colonIndex + 1);
+    let timeIndex = parseInt(imageId.substr(0, colonIndex), 10);
     imageId = imageId.substring(colonIndex + 1);
     colonIndex = imageId.indexOf(':');
     let frame = parseInt(imageId.substr(0, colonIndex), 10);
@@ -102,7 +97,7 @@ export function loadCoaxialImage_2(imageId) {
     let promises = [];
     let newImage = {};
 
-    let promiseImage = cornerstone.loadImage(format + CSimage.baseStack.imageIds[0]).then(baseImage => {
+    let promiseImage = cornerstone.loadImage(format + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]).then(baseImage => {
         newImage = {
             imageId: frame,
             minPixelValue: undefined,
@@ -113,15 +108,15 @@ export function loadCoaxialImage_2(imageId) {
             windowWidth: baseImage.windowWidth,
             getPixelData: undefined,
             getCanvas: baseImage.getCanvas,
-            rows: CSimage.baseStack.imageIds.length,
+            rows: CSimage.layers[layerIndex].baseStack[timeIndex].imageIds.length,
             columns: baseImage.rows,
-            height: CSimage.baseStack.imageIds.length,
+            height: CSimage.layers[layerIndex].baseStack[timeIndex].imageIds.length,
             width: baseImage.rows,
             color: baseImage.color,
             lut: baseImage.lut, 
             rgba: baseImage.rgba,
             columnPixelSpacing: baseImage.columnPixelSpacing,
-            rowPixelSpacing: CSimage.dataset.string('x00180050'),
+            rowPixelSpacing: CSimage.layers[layerIndex].dataset.string('x00180050'),
             invert: baseImage.invert,
             sizeInBytes: undefined,
             falseColor: baseImage.falseColor,
@@ -133,7 +128,7 @@ export function loadCoaxialImage_2(imageId) {
         newImage.data = new Uint16Array(newImage.rows * newImage.columns);
         
         for (let i = 0; i < newImage.rows; i++) {
-            promises.push(cornerstone.loadImage(fileFormats[CSimage.format] + CSimage.baseStack.imageIds[i]));
+            promises.push(cornerstone.loadImage(fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
         }
         return Promise.all(promises);
     }).then(images => {
@@ -149,11 +144,6 @@ export function loadCoaxialImage_2(imageId) {
         newImage.maxPixelValue = max;
         return newImage;
     });
-    // }).then(() => requestSliceThickness(CSimage.baseStack.imageIds[0])).then(sliceThickness => {
-    //     newImage.rowPixelSpacing = sliceThickness;
-    //     return newImage;
-    // })
-    
 
     return {
         promise: promiseImage,

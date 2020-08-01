@@ -1,5 +1,8 @@
 import { splitImageHorizontal, splitImageVertical } from './tools/modifyImageWindows.js';
 import {loadCoaxialImage_1, loadCoaxialImage_2 } from './imageLoaders/projectionLoader/loadImage.js';
+import updateDescription from './tools/updateDescription.js';
+import CSImage from './utils/CSImage.js';
+import updateTheImage from './utils/updateImageSelector.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
@@ -20,33 +23,83 @@ function createGrid(rows, cols) {
 }
 
 function switchTool(newTool, mouseButton) {
-    if (newTool in Object.values(mouseButtons)) {
-        return;
+    let activeTools = CSImage.activeTools;
+
+    if (mouseButton === 'leftClick') {
+        if (newTool === activeTools.leftClickTool) {
+            return;
+        }
+
+        cornerstoneTools.setToolEnabled(activeTools.leftClickTool, {});
+        activeTools.setLeftClick(newTool);
+    } else {
+        if (newTool === activeTools.rightClickTool) {
+            return;
+        }
+
+        cornerstoneTools.setToolEnabled(activeTools.rightClickTool, {});
+        activeTools.setRightClick(newTool);
     }
 
-    cornerstoneTools.setToolEnabled(mouseButtons[mouseButton], {});
-    cornerstoneTools.setToolActive(newTool, { mouseButtonMask : mouseButton } );
-    mouseButtons[mouseButton] = newTool;
+    cornerstoneTools.setToolActive(newTool, { mouseButtonMask : activeTools.dict[mouseButton] } );
 }
 
-document.getElementById('toolbar').getElementsByClassName('mouseLeft').forEach(element => {
-    element.addEventListener('click', function() {
-        switchTool(element.parentElement.parentElement.id, 1);
+let subtitleNames = document.getElementsByClassName('sub-title-name');
+subtitleNames.forEach(element => {
+    element.addEventListener('click', e => {
+        document.getElementsByClassName('sub-title-name').forEach(e2 => {
+            let classList = e2.getElementsByTagName('i')[0].classList;
+            if (e2 === e.target) {
+                e2.parentElement.getElementsByClassName('dropdown')[0].classList.toggle('visible');
+                if (classList.contains('up')) {
+                    classList.remove('up');
+                    classList.add('down');
+                } else {
+                    classList.add('up');
+                    classList.remove('down');
+                }
+
+            } else {
+                e2.parentElement.getElementsByClassName('dropdown')[0].classList.remove('visible');
+                classList.remove('up');
+                classList.add('down');
+            }
+        });
     });
 });
 
-document.getElementById('toolbar').getElementsByClassName('mouseRight').forEach(element => {
-    element.addEventListener('click', function() {
-        switchTool(element.parentElement.parentElement.id, 2);
+document.getElementsByClassName('tool').forEach(tool => {
+    tool.addEventListener('click', evt => {
+        updateDescription(evt.target);
+        switchTool(evt.target.id, 'leftClick');
     });
 });
+
+document.getElementById('opacitySlider').addEventListener('change', evt => {
+    let CSimage = CSImage.instances.get(CSImage.highlightedElement);
+    CSImage.highlightedLayer.options.opacity = parseFloat(evt.currentTarget.value);
+    updateTheImage(CSImage.highlightedElement, CSimage.currentImageIdIndex);
+});
+
+document.getElementById('colormaps').addEventListener('change', evt => {
+    let CSimage = CSImage.instances.get(CSImage.highlightedElement);
+    let layer = cornerstone.getLayer(CSimage.element, CSImage.highlightedLayer.uid);
+    layer.viewport.colormap = document.getElementById('colormaps').value;
+    cornerstone.updateImage(CSImage.highlightedElement);
+});
+
+// document.getElementById('colormaps').addEventListener('change', evt => {
+
+// });
+// document.getElementById('toolbar').getElementsByClassName('mouseLeft').forEach(element => {
+//     element.addEventListener('click', function() {
+//         switchTool(element.parentElement.parentElement.id, 1);
+//     });
+// });
+
+// document.getElementById('toolbar').getElementsByClassName('mouseRight').forEach(element => {
+//     element.addEventListener('click', function() {
+//         switchTool(element.parentElement.parentElement.id, 2);
+//     });
+// });
 createGrid(1, 1);
-document.getElementById('URLs').innerHTML = '';
-
-let num_images = 71;
-for (let i = 1; i < num_images; i++) {
-    document.getElementById('URLs').innerHTML += 'https://github.com/minahanr/image_viewer/blob/master/test_TCGA-LUAD/TCGA-17-Z011/09-05-1982-03157/2.000000-Chest%20Routine%201-41262/1-' + '0'.repeat(Math.floor(Math.log10(num_images)) - Math.floor(Math.log10(i))) + i + '.dcm?raw=true ';
-}
-
-console.log(cornerstoneTools);
-document.getElementById('URLs').innerHTML = document.getElementById('URLs').innerHTML.slice(0, -1);

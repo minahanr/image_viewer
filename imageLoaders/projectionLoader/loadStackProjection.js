@@ -3,41 +3,87 @@ import updateTheImage from "../../utils/updateImageSelector.js";
 import { splitImageVertical } from "../../tools/modifyImageWindows.js";
 import Synchronizer from "../../tools/Synchronizer.js";
 
+function deepCopy(object) {
+    let copy;
+
+    if (typeof object !== "object" || object === null) {
+        return object;
+    }
+
+    if (Array.isArray(object)) {
+        copy = [];
+    } else {
+        copy = {};
+    }
+
+    for (let key in object) {
+        let value = object[key];
+        if (Array.isArray(copy)) {
+            copy.push(deepCopy(value));
+        } else {
+            copy[key] = deepCopy(value);
+        }
+    }
+
+    return copy;
+}
 export default function loadStackProjection (e) {
     
     let containers = splitImageVertical(e.target.parentElement.parentElement.parentElement, 3);
     let baseImage = CSImage.instances.get(containers[0].getElementsByClassName('image')[0]);
     let CSimages = [baseImage];
+
     for (let i = 1; i < 3; i++) {
         let image = document.createElement('div');
         image.classList = 'image delete';
         containers[i].appendChild(image);
         containers[i].getElementsByClassName('addImage')[0].style.display = 'none';
         let element = containers[i].getElementsByClassName('image')[0];
-        let CSimage = new CSImage(image, baseImage.stack.imageIds, baseImage.format);
-        CSimage.dataset = baseImage.dataset;
+        let CSimage = new CSImage(image);
+        CSimage.layers = [];
         CSimage.projection = 'LCI' + i + ':';
-        CSimage.baseStack = Object.assign({}, CSimage.stack);
-        CSimage.stack = {
-            imageIds: [],
-            currentImageIdIndex: 0
-        };
+        baseImage.layers.forEach((layer, layerIndex) => {
+            CSimage.addLayer(layer.format, layer.stack, 0);
+            CSimage.layers[layerIndex].baseStack = deepCopy(CSimage.layers[layerIndex].stack);
+            CSimage.layers[layerIndex].stack = [];
 
-        cornerstone.loadAndCacheImage(fileFormats[CSimage.format] + CSimage.baseStack.imageIds[0]).then(tempImage => {
-            if (i === 1) {
-                CSimage.numImages = tempImage.rows;
-            } else {
-                CSimage.numImages = tempImage.columns;
+            let promises = [];
+            for(let timeIndex = 0; timeIndex < Object.keys(CSimage.layers[layerIndex].baseStack).length; timeIndex++) {
+                promises.push(cornerstone.loadAndCacheImage(fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]));
             }
 
-            for(let i = 0; i < CSimage.numImages; i++) {
-                CSimage.stack.imageIds.push(i + ':' + element.id);
-            }
+            Promise.all(promises).then(images => {
+                CSimage.lastIndex = 0;
+                for (let timeIndex = 0; timeIndex < images.length; timeIndex++) {
+                    let image = images[timeIndex];
+    
+                    if (i === 1) {
+                        var numImages = image.rows;
+                    } else {
+                        var numImages = image.columns;
+                    }
+                    
+                    if (numImages > CSimage.lastIndex) {
+                        CSimage.lastIndex = numImages - 1;
+                    }
 
-            updateTheImage(element, 0);
-        }).catch(e => console.log(e));
+                    CSimage.layers[layerIndex].stack.push(
+                        {
+                            imageIds: [],
+                            currentImageIdIndex: 0
+                        }
+                    );
+    
+                    for(let j = 0; j < numImages; j++) {
+                        CSimage.layers[layerIndex].stack[timeIndex].imageIds.push(layerIndex + ':' + timeIndex + ':' + j + ':' + element.id);
+                    }
 
-        CSimages.push(CSimage);        
+                    updateTheImage(element, 0);
+                }
+            });
+        });
+
+        CSimages.push(CSimage);
     }
     
     new Synchronizer(CSimages);

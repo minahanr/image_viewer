@@ -1,10 +1,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <meta charset="UTF-8">
     <!-- twitter bootstrap CSS stylesheet - included to make things pretty, not needed or used by cornerstone -->
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
     <link href="dist/simpleBar/simplebar.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Serif+Pro' rel='stylesheet' type='text/css'>
     <noscript>
         <style>
           [data-simplebar] {
@@ -12,121 +15,115 @@
           }
         </style>
       </noscript>
-    
 </head>
 <body>
     <noscript>You need javascript to run this</noscript>
     <root>
         <div class="container" id="root-container">
-            <div id="toolbar">
-                <div id="Zoom" class="tool">Zoom
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                    
-                <div id="Pan" class="tool">Pan
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Magnify" class="tool">Magnify
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Rotate" class="tool">Rotate
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Brush" class="tool">Brush
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Wwwc" class="tool">Wwwc
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="WwwcRegion" class="tool">WwwcRegion
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Angle" class="tool">Angle
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="CobbAngle" class="tool">CobbAngle
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="EllipticalRoi" class="tool">Elliptical
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="RectangleRoi" class="tool">Rectangle
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="FreehandRoi" class="tool">FreehandRoi
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Length" class="tool">Length
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Probe" class="tool">Probe
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="ArrowAnnotate" class="tool">ArrowAnnotate
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="ModifiedCrosshairs" class="tool">Crosshairs
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-                <div id="Bidirectional" class="tool">Bidirectional
-                    <ul>
-                        <li class='mouseLeft'>Left Click</li>
-                        <li class='mouseRight'>Right Click</li>
-                    </ul>
-                </div>
-            </div>
+            <div id="titlebar"><img src='images/canary_logo.png' width="60px" height="50.19px" style='margin-right: 30px; margin-top: -10px'>Canary Center Image Viewer</div>
 
-            <div id='URLs' style='display: none'>https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT/1-001.dcm?raw=true https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT/1-002.dcm?raw=true https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT/1-003.dcm?raw=true https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT/1-004.dcm?raw=true https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT/1-005.dcm?raw=true https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT/1-006.dcm?raw=true https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT/1-007.dcm?raw=true https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT/1-008.dcm?raw=true https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT/1-009.dcm?raw=true https://github.com/minahanr/image_viewer/blob/master/test_NeckHeadCT/1-010.dcm?raw=true</div>
-            <div id='format' style='display: none'>dicom</div>
-            <div id="grid" class="container" oncontextmenu="return false" onmousedown="return false"></div>
+            <div id='baseURL' style='display: none'>https://github.com/minahanr/image_viewer/blob/master/test_RATIB2/RATIB2/CorCTALow%20%200.75%20%20B25f%20%20Multiphase</div>
+            <div id='startingIndex' style='display: none'>9</div>
+            <div id='imgsPerFrame' style='display: none'>188</div>
+            <div id='numFrames' style='display: none'>20</div>
+            <div id='format' style='display: none'>dcm</div>
+
+            <div id='viewer-container'>
+                <div id='navigation-panel'>
+                    <div id='tools-viewer' class='sub-panel'>
+                        <div class='panel-title'>Tools </div>
+                        <div class='sub-title'>
+                            <div class='sub-title-name'>
+                                Navigation <i class="arrow down"></i>
+                            </div>
+                            <div class='dropdown'>
+                                <img id="Zoom" class='tool button' src='images/metadata.png'></button>
+                                <img id="Pan" class='tool button' src='images/metadata.png'></button>
+                                <img id="Magnify" class='tool button' src='images/metadata.png'></button>
+                                <img id="ModifiedCrosshairs" class='tool button' src='images/metadata.png'></button>
+                                <div class='description'></div>
+                            </div>
+                        </div>
+                        <div class='sub-title'>
+                            <div class='sub-title-name'>
+                                Annotation <i class="arrow down"></i>
+                            </div>
+                            <div class='dropdown'>
+                                <img id="Angle" class='tool button' src='images/metadata.png'></button>
+                                <img id="CobbAngle" class='tool button' src='images/metadata.png'></button>
+                                <img id="Length" class='tool button' src='images/metadata.png'></button>
+                                <img id="Probe" class='tool button' src='images/metadata.png'></button>
+                                <img id="ArrowAnnotate" class='tool button' src='images/metadata.png'></button>
+                                <img id="Bidirectional" class='tool button' src='images/metadata.png'></button>
+                                <div class='description'></div>
+                            </div>
+                        </div>
+                        <div class='sub-title'>
+                            <div class='sub-title-name'>
+                                Transformation <i class="arrow down"></i>
+                            </div>
+                            <div class='dropdown'>
+                                <img id="Rotate" class='tool button' src='images/metadata.png'></button>
+                                <img id="Wwwc" class='tool button' src='images/metadata.png'></button>
+                                <img id="WwwcRegion" class='tool button' src='images/metadata.png'></button>
+                                <div class='description'></div>
+                            </div>
+                        </div>
+                        <div class='sub-title'>
+                            <div class='sub-title-name'>
+                                Segmentation <i class="arrow down"></i>
+                            </div>
+                            <div class='dropdown'>
+                                <img id="Brush" class='tool button' src='images/metadata.png'></button>
+                                <img id="EllipticalRoi" class='tool button' src='images/metadata.png'></button>
+                                <img id="RectangleRoi" class='tool button' src='images/metadata.png'></button>
+                                <img id="FreehandRoi" class='tool button' src='images/metadata.png'></button>
+                                <div class='description'></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id='layers-viewer' class='sub-panel'>
+                        
+                        <div class='panel-title'>Layers</div>
+                        <div class='container'>
+                            <label for='opacitySlider' style='font-weight: 400'>Opacity</label>
+                            <input type='range' min='0' max='1' step='.01' value = '1' id='opacitySlider'>
+                        </div>
+                        <div class='container'>
+                            <label for='colormaps' style='font-weight: 400'>Color scheme</label>
+                            <select id="colormaps">
+                                <option value="">None</option>
+                                <option value="autumn">Autumn</option>
+                                <option value="blues">Blues</option>
+                                <option value="bone">Bone</option>
+                                <option value="cool">Cool</option>
+                                <option value="coolwarm">CoolWarm</option>
+                                <option value="copper">Copper</option>
+                                <option value="gray">Gray</option>
+                                <option value="hot">Hot</option>
+                                <option value="hotIron">Hot Iron</option>
+                                <option value="hotMetalBlue">Hot Metal Blue</option>
+                                <option value="hsv">HSV</option>
+                                <option value="jet">Jet</option>
+                                <option value="pet">PET</option>
+                                <option value="pet20Step">PET 20 Step</option>
+                                <option value="spectral">Spectral</option>
+                                <option value="spring">Spring</option>
+                                <option value="summer">Summer</option>
+                                <option value="winter">Winter</option>
+                            </select>
+                        </div>
+                        <div id='layers-container'></div>
+                    </div>
+                    <div class='panel-title sub-panel'>Metadata</div>
+                    <div id='metadata-viewer' class='sub-panel'></div>
+                </div>
+                <div id='grid-container'>
+                    <div id='image-info'>Image: </div>
+                    <div id="grid" class="container" oncontextmenu="return false" onmousedown="return false"></div>
+                </div>
+                
+            </div>
         </div>
         <!-- include libraries -->
         <script type="text/javascript" src="dist/cornerstone.js"></script>
@@ -137,6 +134,7 @@
         <script type="text/javascript" src="imageLoaders/cornerstoneWADOImageLoader.js"></script>
         <script type="text/javascript" src="imageLoaders/cornerstoneWebImageLoader.js"></script>
         <script type="text/javascript" src="dist/simpleBar/simplebar.min.js"></script>
+        
 
         <!-- define global variables -->
         <script src="utils/defineVariables.js"></script>

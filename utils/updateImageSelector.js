@@ -1,27 +1,36 @@
 import CSImage from './CSImage.js';
 
 function updateImageSelector(CSimage) {
-    CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.stack.currentImageIdIndex + 1) + '/' + CSimage.numImages;
+    CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.currentImageIdIndex + CSimage.layers[0].startingIndex + 1) + '/' + (CSimage.lastIndex + 1);
 }
 
 export default function updateTheImage(element, imageIndex, sync) {
-
     let CSimage = CSImage.instances.get(element);
-    CSimage.stack.currentImageIdIndex = imageIndex;
+    CSimage.currentImageIdIndex = imageIndex;
     updateImageSelector(CSimage);
+    const prevViewport = cornerstone.getViewport(element);
 
-    
-    return cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[CSimage.format] + CSimage.stack.imageIds[CSimage.stack.currentImageIdIndex]).then(image => {
+    let promises = [];
+    CSimage.layers.forEach(layer => {
+        layer.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;
+        promises.push(cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingIndex]));
+    });
+
+    Promise.all(promises).then(images => {
+        cornerstone.getEnabledElement(element).layers = [];
+        images.forEach((image, index) => {
+            CSimage.layers[index].uid = cornerstone.addLayer(element, image, CSimage.layers[index].options);
+        });
+
         if (sync) {
-            cornerstone.renderToCanvas(element.getElementsByClassName('cornerstone-canvas')[0], image, cornerstone.getViewport(element));
+            cornerstone.renderToCanvas(element);
         } else {
-            cornerstone.displayImage(element, image, cornerstone.getViewport(element));
+            cornerstone.updateImage(element);
         }
 
-        cornerstoneTools.addStackStateManager(element, ['stack'])
-        cornerstoneTools.addToolState(element, 'stack', CSimage.stack);
-
-        return image;
+        if (prevViewport !== undefined) {
+            cornerstone.setViewport(element, prevViewport);
+        }
     });
 }
 
