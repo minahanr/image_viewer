@@ -9,7 +9,7 @@ html, body {
 }
 
 .container {
-    height: 100%;
+    width: 100%;
     margin: 0;
 }
 
@@ -128,7 +128,10 @@ html, body {
 }
 
 #colormaps {
+    color: black;
+    float: right;
     width: 50%;
+    border-radius: 5px;
 }
 
 #opacitySlider {
@@ -140,6 +143,7 @@ html, body {
     outline: none;
     border-radius: 5px;
     cursor: pointer;
+    float: right;
 }
 
 #opacitySlider::-webkit-slider-thumb {
@@ -149,6 +153,17 @@ html, body {
     width: 5px;
     border-radius: 5px;
     background: #B1040E;
+    border: none;
+}
+
+#opacitySlider::-moz-range-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 15px;
+    width: 5px;
+    border-radius: 5px;
+    background: #B1040E;
+    border: none;
 }
 
 .slider {
@@ -175,13 +190,17 @@ html, body {
     width: 40px;
     border-radius: 5px;
     background: #8c1515;
+    border: none;
 }
   
 .slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    background: #4CAF50;
-    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 10px;
+    width: 40px;
+    border-radius: 5px;
+    background: #8c1515;
+    border: none;
 }
 
 .button:hover {

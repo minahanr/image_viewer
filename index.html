@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <meta charset="UTF-8">
     <!-- twitter bootstrap CSS stylesheet - included to make things pretty, not needed or used by cornerstone -->
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
@@ -82,29 +83,36 @@
                         </div>
                     </div>
                     <div id='layers-viewer' class='sub-panel'>
+                        
                         <div class='panel-title'>Layers</div>
-                        <input type='range' min='0' max='1' step='.01' value = '1' id='opacitySlider'>
-                        <select id="colormaps">
-                            <option value="">None</option>
-                            <option value="autumn">Autumn</option>
-                            <option value="blues">Blues</option>
-                            <option value="bone">Bone</option>
-                            <option value="cool">Cool</option>
-                            <option value="coolwarm">CoolWarm</option>
-                            <option value="copper">Copper</option>
-                            <option value="gray">Gray</option>
-                            <option value="hot">Hot</option>
-                            <option value="hotIron">Hot Iron</option>
-                            <option value="hotMetalBlue">Hot Metal Blue</option>
-                            <option value="hsv">HSV</option>
-                            <option value="jet">Jet</option>
-                            <option value="pet">PET</option>
-                            <option value="pet20Step">PET 20 Step</option>
-                            <option value="spectral">Spectral</option>
-                            <option value="spring">Spring</option>
-                            <option value="summer">Summer</option>
-                            <option value="winter">Winter</option>
-                        </select>
+                        <div class='container'>
+                            <label for='opacitySlider' style='font-weight: 400'>Opacity</label>
+                            <input type='range' min='0' max='1' step='.01' value = '1' id='opacitySlider'>
+                        </div>
+                        <div class='container'>
+                            <label for='colormaps' style='font-weight: 400'>Color scheme</label>
+                            <select id="colormaps">
+                                <option value="">None</option>
+                                <option value="autumn">Autumn</option>
+                                <option value="blues">Blues</option>
+                                <option value="bone">Bone</option>
+                                <option value="cool">Cool</option>
+                                <option value="coolwarm">CoolWarm</option>
+                                <option value="copper">Copper</option>
+                                <option value="gray">Gray</option>
+                                <option value="hot">Hot</option>
+                                <option value="hotIron">Hot Iron</option>
+                                <option value="hotMetalBlue">Hot Metal Blue</option>
+                                <option value="hsv">HSV</option>
+                                <option value="jet">Jet</option>
+                                <option value="pet">PET</option>
+                                <option value="pet20Step">PET 20 Step</option>
+                                <option value="spectral">Spectral</option>
+                                <option value="spring">Spring</option>
+                                <option value="summer">Summer</option>
+                                <option value="winter">Winter</option>
+                            </select>
+                        </div>
                         <div id='layers-container'></div>
                     </div>
                     <div class='panel-title sub-panel'>Metadata</div>
