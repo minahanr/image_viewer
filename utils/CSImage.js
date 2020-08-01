@@ -7,6 +7,7 @@ import changeTimeFrame from '../tools/changeTimeFrame.js';
 import highlightContainer from '../tools/highlightContainer.js';
 import Layer from './Layer.js';
 import ActiveTools from './activeTools.js';
+import Synchronizer from '../tools/Synchronizer.js';
 
 export default class CSImage {
     constructor(element, urlsOverTime, format) {
@@ -21,7 +22,7 @@ export default class CSImage {
         this.lastIndex = 0;
         this.layerNumber = 1;
         
-        CSImage.instances.set(element, this);
+        CSImage.instances().set(element, this);
 
         let container = element.parentElement;
         let topLeft = document.createElement('div');
@@ -99,15 +100,49 @@ export default class CSImage {
         });
 
         
-        element.id = 'image_' + CSImage.UUID_identifier;
-        CSImage.UUID_identifier += 1;
+        element.id = 'image_' + CSImage.UUID_incrementer();
     }
 
-    static instances = new WeakMap();
-    static UUID_identifier = 0;
-    static activeTools = new ActiveTools('Pan', 'Zoom');
-    static highlightedElement = undefined;
-    static highlightedLayer = undefined;
+    static instances() {
+        if (CSImage.instances.map === undefined) {
+            CSImage.instances.map = new WeakMap();
+        }
+    
+        return CSImage.instances.map;
+    }
+
+    static UUID_incrementer() {
+
+        if (CSImage.UUID_incrementer.uid === undefined) {
+            CSImage.UUID_incrementer.uid = 0;
+        }
+    
+        return CSImage.UUID_incrementer.uid++;
+    }
+
+    static activeTools() {
+        if (CSImage.activeTools.tools === undefined) {
+            CSImage.activeTools.tools = new ActiveTools('Pan', 'Zoom');
+        }
+    
+        return CSImage.activeTools.tools;
+    }
+
+    static highlightedElement(element) {
+        if (element !== undefined) {
+            CSImage.highlightedElement.element = element;
+        }
+
+        return CSImage.highlightedElement.element;
+    }
+
+    static highlightedLayer(layer) {
+        if (layer !== undefined) {
+            CSImage.highlightedLayer.layer = layer;
+        }
+
+        return CSImage.highlightedLayer.layer;
+    }
 
     addLayer(format, urlsOverTime, startingIndex) {
         let layer = new Layer(this.layerNumber - 1, 'Layer #' + this.layerNumber, format, urlsOverTime, startingIndex)

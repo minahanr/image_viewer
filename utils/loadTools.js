@@ -28,7 +28,7 @@ export default function loadTools(element) {
     cornerstoneTools.addToolForElement(element, cornerstoneTools.BidirectionalTool);
     cornerstoneTools.addToolForElement(element, ModifiedCrosshairsTool);
 
-    cornerstoneTools.setToolActiveForElement(element, CSImage.activeTools.leftClickTool, { mouseButtonMask: 1 });  
+    cornerstoneTools.setToolActiveForElement(element, CSImage.activeTools().leftClickTool, { mouseButtonMask: 1 });  
     cornerstoneTools.setToolActiveForElement(element, 'ScrollWheelUpdater', {});
-    cornerstoneTools.setToolActiveForElement(element, CSImage.activeTools.rightClickTool, { mouseButtonMask: 2});
+    cornerstoneTools.setToolActiveForElement(element, CSImage.activeTools().rightClickTool, { mouseButtonMask: 2});
 }

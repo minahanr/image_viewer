@@ -16,11 +16,12 @@ export default function highlightLayer (layer) {
     const layerIndex = parseInt(layer.id.substring(layer.id.indexOf('#') + 1), 10);
     let highlightedLayer;
 
-    CSImage.instances.get(CSImage.highlightedElement).layers.forEach(tempLayer => {
+    CSImage.instances().get(CSImage.highlightedElement()).layers.forEach(tempLayer => {
         if (tempLayer.id === layerIndex) {
             highlightedLayer = tempLayer;
         }
     });
 
-    CSImage.highlightedLayer = highlightedLayer;
+    CSImage.highlightedLayer(highlightedLayer);
+    console.log(CSImage.highlightedLayer());
 }

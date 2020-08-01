@@ -21,7 +21,7 @@ export function loadCoaxialImage_1(imageId) {
     imageId = imageId.substring(imageId.indexOf(":") + 1);
     
     let element = document.getElementById(imageId);
-    let CSimage = CSImage.instances.get(element);
+    let CSimage = CSImage.instances().get(element);
     let promises = [];
     let newImage = {};
 
@@ -93,7 +93,7 @@ export function loadCoaxialImage_2(imageId) {
     imageId = imageId.substring(imageId.indexOf(":") + 1);
     
     let element = document.getElementById(imageId);
-    let CSimage = CSImage.instances.get(element);
+    let CSimage = CSImage.instances().get(element);
     let promises = [];
     let newImage = {};
 

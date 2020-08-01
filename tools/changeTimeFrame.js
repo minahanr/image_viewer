@@ -3,8 +3,8 @@ import updateTheImage from "../utils/updateImageSelector.js";
 import Synchronizer from "./Synchronizer.js";
 
 export default function changeTimeFrame(evt) {
-    let CSimage = CSImage.instances.get(evt.target.parentElement.parentElement);
-    let synchronizer = Synchronizer.instances.get(CSimage);
+    let CSimage = CSImage.instances().get(evt.target.parentElement.parentElement);
+    let synchronizer = Synchronizer.instances().get(CSimage);
     let currentTimeIndex = parseInt(evt.target.value, 10);
 
     if (synchronizer === undefined) {

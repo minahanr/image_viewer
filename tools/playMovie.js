@@ -2,7 +2,7 @@ import CSImage from '../utils/CSImage.js';
 import updateTheImage from '../utils/updateImageSelector.js';
 
 export default function playMovie(e) {
-    let CSimage = CSImage.instances.get(e.target.parentElement.parentElement);
+    let CSimage = CSImage.instances().get(e.target.parentElement.parentElement);
     if (CSimage.lastIndex === 0)
         return;
     else if (CSimage.currentImageIdIndex === CSimage.lastIndex)

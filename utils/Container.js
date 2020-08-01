@@ -5,8 +5,15 @@ export default class Container {
         this.borderRight = borderRight;
         this.borderDown = borderDown;
         this.borderLeft = borderLeft;
-        Container.instances.set(container, this);
+        Container.instances().set(container, this);
     }
 
-    static instances = new WeakMap();
+    static instances() {
+
+        if (Container.instances.map === undefined) {
+            Container.instances.map = new WeakMap();
+        }
+    
+        return Container.instances.map;
+    }
 }

@@ -30,7 +30,7 @@ function deepCopy(object) {
 export default function loadStackProjection (e) {
     
     let containers = splitImageVertical(e.target.parentElement.parentElement.parentElement, 3);
-    let baseImage = CSImage.instances.get(containers[0].getElementsByClassName('image')[0]);
+    let baseImage = CSImage.instances().get(containers[0].getElementsByClassName('image')[0]);
     let CSimages = [baseImage];
 
     for (let i = 1; i < 3; i++) {

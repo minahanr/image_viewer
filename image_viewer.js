@@ -23,7 +23,7 @@ function createGrid(rows, cols) {
 }
 
 function switchTool(newTool, mouseButton) {
-    let activeTools = CSImage.activeTools;
+    let activeTools = CSImage.activeTools();
 
     if (mouseButton === 'leftClick') {
         if (newTool === activeTools.leftClickTool) {
@@ -76,16 +76,17 @@ document.getElementsByClassName('tool').forEach(tool => {
 });
 
 document.getElementById('opacitySlider').addEventListener('change', evt => {
-    let CSimage = CSImage.instances.get(CSImage.highlightedElement);
-    CSImage.highlightedLayer.options.opacity = parseFloat(evt.currentTarget.value);
-    updateTheImage(CSImage.highlightedElement, CSimage.currentImageIdIndex);
+    let CSimage = CSImage.instances().get(CSImage.highlightedElement());
+    console.log(CSImage.highlightedLayer);
+    CSImage.highlightedLayer().options.opacity = parseFloat(evt.currentTarget.value);
+    updateTheImage(CSImage.highlightedElement(), CSimage.currentImageIdIndex);
 });
 
 document.getElementById('colormaps').addEventListener('change', evt => {
-    let CSimage = CSImage.instances.get(CSImage.highlightedElement);
-    let layer = cornerstone.getLayer(CSimage.element, CSImage.highlightedLayer.uid);
+    let CSimage = CSImage.instances().get(CSImage.highlightedElement());
+    let layer = cornerstone.getLayer(CSimage.element, CSImage.highlightedLayer().uid);
     layer.viewport.colormap = document.getElementById('colormaps').value;
-    cornerstone.updateImage(CSImage.highlightedElement);
+    cornerstone.updateImage(CSImage.highlightedElement());
 });
 
 // document.getElementById('colormaps').addEventListener('change', evt => {

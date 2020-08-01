@@ -18,7 +18,7 @@ function merge(border, largerContainer, smallerContainer, mergeMethod) {
         resize(largerContainer, largerContainer.getBoundingClientRect().width, newHeight);
     }
 
-    Border.instances.delete(border);
+    Border.instances().delete(border);
     border.remove();
     smallerContainer.remove();
 }
@@ -101,9 +101,16 @@ export default class Border {
         this.up = up;
         this.down = down;
         this.border.addEventListener('mousedown', resizeContainer);
-        Border.instances.set(border, this);
+        Border.instances().set(border, this);
         
     }
 
-    static instances = new WeakMap();
+    static instances() {
+
+        if (Border.instances.map === undefined) {
+            Border.instances.map = new WeakMap();
+        }
+    
+        return Border.instances.map;
+    }
 }

@@ -2,12 +2,12 @@ import CSImage from "../utils/CSImage.js";
 import highlightLayer from './highlightLayer.js';
 
 export default function highlightContainer(element) {
-    CSImage.highlightedElement = element;
+    CSImage.highlightedElement(element);
     const metadata = document.getElementById('metadata-viewer');
     metadata.innerHTML = '';
 
     const layersContainer = document.getElementById('layers-container');
-    const CSimage = CSImage.instances.get(element);
+    const CSimage = CSImage.instances().get(element);
     const viewport = cornerstone.getViewport(CSimage.element);
     layersContainer.innerHTML = '';
 

@@ -5,7 +5,7 @@ function updateImageSelector(CSimage) {
 }
 
 export default function updateTheImage(element, imageIndex, sync) {
-    let CSimage = CSImage.instances.get(element);
+    let CSimage = CSImage.instances().get(element);
     CSimage.currentImageIdIndex = imageIndex;
     updateImageSelector(CSimage);
     const prevViewport = cornerstone.getViewport(element);
