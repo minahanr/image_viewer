@@ -144,7 +144,7 @@ class CSImage {
     }
 
     addLayer(format, urlsOverTime, startingIndex) {
-        let layer = new Layer(this.layerNumber - 1, 'Layer #' + this.layerNumber, format, urlsOverTime, startingIndex)
+        let layer = new Layer.Layer(this.layerNumber - 1, 'Layer #' + this.layerNumber, format, urlsOverTime, startingIndex)
         this.layerNumber += 1;
         this.layers.push(layer);
         

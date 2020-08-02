@@ -1,5 +1,5 @@
 import standardDataElements from '../utils/dicomDict.js';
-export default class Layer {
+class Layer {
     constructor(id, name, format, urlsOverTime, startingIndex) {
         this.uid = undefined;
         this.id = id;
@@ -27,22 +27,23 @@ export default class Layer {
             request.responseType = 'arraybuffer';
             request.onload = function(e) {
                 let buffer = request.response;
-                this.metadata = '';
+                
                 let Uint8View = new Uint8Array(buffer);
                 if (Object.keys(layer.dataset).length === 0) {
                     layer.dataset = dicomParser.parseDicom(Uint8View);
                 }
-    
+                
+                layer.dataset.metadata = '';
                 Object.keys(layer.dataset.elements).forEach(tag => {
                     try {
-                        layer.metadata += standardDataElements[tag.slice(1).toUpperCase()]['name'] + ': ' +  layer.dataset.string(tag) + '<br>';
+                        layer.dataset.metadata += standardDataElements[tag.slice(1).toUpperCase()]['name'] + ': ' +  layer.dataset.string(tag) + '<br>';
                     } catch(error) {
                         layer.dataset.warnings.push('unable to read tag \'' + tag + '\'');
                     }
                 });
     
                 layer.dataset.warnings.forEach(warning => {
-                    layer.metadata += warning + '<br>';
+                    layer.dataset.metadata += warning + '<br>';
                 });
             }
             request.open('GET', this.stack[0].imageIds[0], true);
@@ -50,3 +51,9 @@ export default class Layer {
         }
     }
 }
+
+const obj = {
+    Layer
+}
+
+export default obj;

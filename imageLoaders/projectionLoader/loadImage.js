@@ -25,7 +25,6 @@ export function loadCoaxialImage_1(imageId) {
     let CSimage = CSImage.instances().get(element);
     let promises = [];
     let newImage = {};
-
     let promiseImage = cornerstone.loadImage(format + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]).then(baseImage => {
         newImage = {
             imageId: frame,

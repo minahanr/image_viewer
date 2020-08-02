@@ -7,7 +7,9 @@ import defineVariables from "../../utils/defineVariables.js";
 function deepCopy(object) {
     let copy;
 
-    if (typeof object !== "object" || object === null) {
+    if (typeof object instanceof Function) {
+        return;
+    } else if (typeof object !== "object" || object === null) {
         return object;
     }
 

@@ -16,7 +16,7 @@ export default function highlightContainer(element) {
         metadata.innerHTML += '=================<br>';
         metadata.innerHTML += layer.name + '<br>';
         metadata.innerHTML += '=================<br>';
-        metadata.innerHTML += layer.metadata;
+        metadata.innerHTML += layer.dataset.metadata;
 
         const layerDiv = document.createElement('div');
         layerDiv.id = 'layerDiv_#' + layer.id;
