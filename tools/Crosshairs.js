@@ -89,11 +89,6 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
         } else {
             updateTheImage(this.baseImage.element, this.syncZ);
         }
-
-        if (this.enabled === false) {
-            this.enabled = true;
-            this.drawCrosshairOnProjections();
-        }
     }
 
     mouseUpCallback(evt) {
@@ -106,7 +101,7 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
         evt.target.classList.remove('hideCursor');
     }
 
-    drawCrosshairOnProjections() {
+    renderToolData(evt) {
         if (this.synchronizer !== undefined) {
             this.synchronizer.images.forEach(CSimage => {
                 let projection = CSimage.projection;
@@ -127,8 +122,8 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
             drawCrosshair(context, this.baseImage, {x: this.syncX, y: this.syncY});
         }
         
-        if (this.enabled) {
-            cornerstone.requestAnimationFrame(this.drawCrosshairOnProjections.bind(this));
-        }
+        // if (this.enabled) {
+        //     cornerstone.requestAnimationFrame(this.drawCrosshairOnProjections.bind(this));
+        // }
     }
 }

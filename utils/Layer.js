@@ -36,7 +36,7 @@ export default class Layer {
                 Object.keys(layer.dataset.elements).forEach(tag => {
                     try {
                         layer.metadata += standardDataElements[tag.slice(1).toUpperCase()]['name'] + ': ' +  layer.dataset.string(tag) + '<br>';
-                    } catch {
+                    } catch(error) {
                         layer.dataset.warnings.push('unable to read tag \'' + tag + '\'');
                     }
                 });
