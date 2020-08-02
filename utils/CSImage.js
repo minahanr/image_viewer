@@ -7,9 +7,49 @@ import changeTimeFrame from '../tools/changeTimeFrame.js';
 import highlightContainer from '../tools/highlightContainer.js';
 import Layer from './Layer.js';
 import ActiveTools from './activeTools.js';
-import Synchronizer from '../tools/Synchronizer.js';
 
-export default class CSImage {
+function instances() {
+    if (instances.map === undefined) {
+        instances.map = new WeakMap();
+    }
+
+    return instances.map;
+}
+
+function UUID_incrementer() {
+
+    if (UUID_incrementer.uid === undefined) {
+        UUID_incrementer.uid = 0;
+    }
+
+    return UUID_incrementer.uid++;
+}
+
+function activeTools() {
+    if (activeTools.tools === undefined) {
+        activeTools.tools = new ActiveTools('Pan', 'Zoom');
+    }
+
+    return activeTools.tools;
+}
+
+function highlightedElement(element) {
+    if (element !== undefined) {
+        highlightedElement.element = element;
+    }
+
+    return highlightedElement.element;
+}
+
+function highlightedLayer(layer) {
+    if (layer !== undefined) {
+        highlightedLayer.layer = layer;
+    }
+
+    return highlightedLayer.layer;
+}
+
+class CSImage {
     constructor(element, urlsOverTime, format) {
         cornerstone.enable(element);
 
@@ -22,7 +62,7 @@ export default class CSImage {
         this.lastIndex = 0;
         this.layerNumber = 1;
         
-        CSImage.instances().set(element, this);
+        instances().set(element, this);
 
         let container = element.parentElement;
         let topLeft = document.createElement('div');
@@ -100,48 +140,7 @@ export default class CSImage {
         });
 
         
-        element.id = 'image_' + CSImage.UUID_incrementer();
-    }
-
-    static instances() {
-        if (CSImage.instances.map === undefined) {
-            CSImage.instances.map = new WeakMap();
-        }
-    
-        return CSImage.instances.map;
-    }
-
-    static UUID_incrementer() {
-
-        if (CSImage.UUID_incrementer.uid === undefined) {
-            CSImage.UUID_incrementer.uid = 0;
-        }
-    
-        return CSImage.UUID_incrementer.uid++;
-    }
-
-    static activeTools() {
-        if (CSImage.activeTools.tools === undefined) {
-            CSImage.activeTools.tools = new ActiveTools('Pan', 'Zoom');
-        }
-    
-        return CSImage.activeTools.tools;
-    }
-
-    static highlightedElement(element) {
-        if (element !== undefined) {
-            CSImage.highlightedElement.element = element;
-        }
-
-        return CSImage.highlightedElement.element;
-    }
-
-    static highlightedLayer(layer) {
-        if (layer !== undefined) {
-            CSImage.highlightedLayer.layer = layer;
-        }
-
-        return CSImage.highlightedLayer.layer;
+        element.id = 'image_' + UUID_incrementer();
     }
 
     addLayer(format, urlsOverTime, startingIndex) {
@@ -164,3 +163,14 @@ export default class CSImage {
         cornerstoneTools.addToolState(this.element, 'stack', this.layers[this.layers.length - 1].stack[this.currentTimeIndex]);
     }
 }
+
+const obj = {
+    CSImage,
+    instances,
+    UUID_incrementer,
+    activeTools,
+    highlightedElement,
+    highlightedLayer
+};
+
+export default obj;

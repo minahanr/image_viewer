@@ -24,7 +24,7 @@ export default function populateGrid(e) {
         }
     }
 
-    new CSImage(div, urlsOverTime, document.getElementById('format').innerHTML);
+    new CSImage.CSImage(div, urlsOverTime, document.getElementById('format').innerHTML);
     updateTheImage(div, 0, true);
     highlightContainer(div);
     element.removeEventListener('click', populateGrid);

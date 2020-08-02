@@ -23,6 +23,14 @@ function merge(border, largerContainer, smallerContainer, mergeMethod) {
     smallerContainer.remove();
 }
 
+function instances() {
+    if (instances.map === undefined) {
+        instances.map = new WeakMap();
+    }
+
+    return instances.map;
+}
+
 function resizeContainer(e) {
     let border = e.target;
     let containerUp = border.previousSibling;
@@ -94,23 +102,20 @@ function resizeContainer(e) {
     }
 }
 
-export default class Border {
+class Border {
     //if border is a vertical border, up = left, down = right
     constructor(border, up, down) {
         this.border = border;
         this.up = up;
         this.down = down;
         this.border.addEventListener('mousedown', resizeContainer);
-        Border.instances().set(border, this);
-        
-    }
-
-    static instances() {
-
-        if (Border.instances.map === undefined) {
-            Border.instances.map = new WeakMap();
-        }
-    
-        return Border.instances.map;
+        instances().set(border, this);    
     }
 }
+
+const obj = {
+    Border,
+    instances
+};
+
+export default obj;

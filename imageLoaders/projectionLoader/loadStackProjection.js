@@ -39,7 +39,7 @@ export default function loadStackProjection (e) {
         containers[i].appendChild(image);
         containers[i].getElementsByClassName('addImage')[0].style.display = 'none';
         let element = containers[i].getElementsByClassName('image')[0];
-        let CSimage = new CSImage(image);
+        let CSimage = new CSImage.CSImage(image);
         CSimage.layers = [];
         CSimage.projection = 'LCI' + i + ':';
         baseImage.layers.forEach((layer, layerIndex) => {
@@ -86,5 +86,5 @@ export default function loadStackProjection (e) {
         CSimages.push(CSimage);
     }
     
-    new Synchronizer(CSimages);
+    new Synchronizer.Synchronizer(CSimages);
 }

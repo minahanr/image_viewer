@@ -1,4 +1,4 @@
-export default class Container {
+class Container {
     constructor(container, borderUp, borderRight, borderDown, borderLeft) {
         this.container = container;
         this.borderUp = borderUp;
@@ -17,3 +17,10 @@ export default class Container {
         return Container.instances.map;
     }
 }
+
+const obj = {
+    Container,
+    instances
+};
+
+export default obj;

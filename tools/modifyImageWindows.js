@@ -10,7 +10,7 @@ export function splitImageHorizontal(element, numRows) {
         containers.push(createContainer(element, numRows, 1, i));
 
         if (i !== 0) {
-            new Border(border, containers[i-1], containers[i]);
+            new Border.Border(border, containers[i-1], containers[i]);
         }
 
         if (i !== numRows - 1) {
@@ -33,7 +33,7 @@ export function splitImageVertical(element, numCols) {
         containers.push(createContainer(element, 1, numCols, i));
 
         if (i !== 0) {
-            new Border(border, containers[i-1], containers[i]);
+            new Border.Border(border, containers[i-1], containers[i]);
         }
 
         if (i !== numCols - 1) {
