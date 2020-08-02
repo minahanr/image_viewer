@@ -3621,7 +3621,6 @@ var onImageRendered = function onImageRendered(evt) {
   var toolsToRender = _store_index_js__WEBPACK_IMPORTED_MODULE_0__["state"].tools.filter(function (tool) {
     return tool.element === element && (tool.mode === 'active' || tool.mode === 'passive' || tool.mode === 'enabled');
   }); // Must be using stacks in order to use segmentation tools.
-
   var stackToolState = Object(_stateManagement_toolState__WEBPACK_IMPORTED_MODULE_1__["getToolState"])(element, 'stack');
   var segmentationConfiguration = segmentationModule.configuration;
 

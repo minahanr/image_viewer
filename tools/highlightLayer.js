@@ -23,5 +23,4 @@ export default function highlightLayer (layer) {
     });
 
     CSImage.highlightedLayer(highlightedLayer);
-    console.log(CSImage.highlightedLayer());
 }
