@@ -24,29 +24,26 @@ export default class Layer {
         if (this.format === 'dicom' || this.format === 'dcm') {
             let layer = this;
             let request = new XMLHttpRequest();
-            request.responseType = 'blob';
+            request.responseType = 'arraybuffer';
             request.onload = function(e) {
-                this.response.arrayBuffer().then(buffer => {
+                let buffer = request.response;
+                this.metadata = '';
+                let Uint8View = new Uint8Array(buffer);
+                if (Object.keys(layer.dataset).length === 0) {
+                    layer.dataset = dicomParser.parseDicom(Uint8View);
+                }
     
-                    this.metadata = '';
-                    let Uint8View = new Uint8Array(buffer);
-                    if (Object.keys(layer.dataset).length === 0) {
-                        layer.dataset = dicomParser.parseDicom(Uint8View);
+                Object.keys(layer.dataset.elements).forEach(tag => {
+                    try {
+                        layer.metadata += standardDataElements[tag.slice(1).toUpperCase()]['name'] + ': ' +  layer.dataset.string(tag) + '<br>';
+                    } catch {
+                        layer.dataset.warnings.push('unable to read tag \'' + tag + '\'');
                     }
+                });
     
-                    Object.keys(layer.dataset.elements).forEach(tag => {
-                        try {
-                            layer.metadata += standardDataElements[tag.slice(1).toUpperCase()]['name'] + ': ' +  layer.dataset.string(tag) + '<br>';
-                        } catch {
-                            layer.dataset.warnings.push('unable to read tag \'' + tag + '\'');
-                        }
-                    })
-    
-                    layer.dataset.warnings.forEach(warning => {
-                        layer.metadata += warning + '<br>';
-                    })
-    
-                })
+                layer.dataset.warnings.forEach(warning => {
+                    layer.metadata += warning + '<br>';
+                });
             }
             request.open('GET', this.stack[0].imageIds[0], true);
             request.send();
