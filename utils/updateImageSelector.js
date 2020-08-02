@@ -1,4 +1,5 @@
 import CSImage from './CSImage.js';
+import defineVariables from './defineVariables.js';
 
 function updateImageSelector(CSimage) {
     CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.currentImageIdIndex + CSimage.layers[0].startingIndex + 1) + '/' + (CSimage.lastIndex + 1);
@@ -13,7 +14,7 @@ export default function updateTheImage(element, imageIndex, sync) {
     let promises = [];
     CSimage.layers.forEach(layer => {
         layer.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;
-        promises.push(cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingIndex]));
+        promises.push(cornerstone.loadAndCacheImage(CSimage.projection + defineVariables().fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingIndex]));
     });
 
     Promise.all(promises).then(images => {

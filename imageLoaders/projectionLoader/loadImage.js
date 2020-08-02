@@ -4,6 +4,7 @@ import generateLut from '../../internal/generateLut.js';
 import generateColorLut from '../../internal/generateColorLut.js';
 import getModalityLut from '../../internal/getModalityLut.js';
 import getVOILut from '../../internal/getVOILut.js' 
+import defineVariables from '../../utils/defineVariables.js';
 
 export function loadCoaxialImage_1(imageId) {
     imageId = imageId.substring(imageId.indexOf(':') + 1);
@@ -56,7 +57,7 @@ export function loadCoaxialImage_1(imageId) {
         newImage.data = new Uint16Array(newImage.rows * newImage.columns);
         
         for (let i = 0; i < newImage.rows; i++) {
-            promises.push(cornerstone.loadImage(fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
+            promises.push(cornerstone.loadImage(defineVariables().fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
         }
 
         return Promise.all(promises);
@@ -128,7 +129,7 @@ export function loadCoaxialImage_2(imageId) {
         newImage.data = new Uint16Array(newImage.rows * newImage.columns);
         
         for (let i = 0; i < newImage.rows; i++) {
-            promises.push(cornerstone.loadImage(fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
+            promises.push(cornerstone.loadImage(defineVariables().fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
         }
         return Promise.all(promises);
     }).then(images => {

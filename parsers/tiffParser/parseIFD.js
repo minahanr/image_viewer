@@ -1,3 +1,5 @@
+import defineVariables from "../../utils/defineVariables.js";
+
 export default function parseIFD(byteStream) {
     var tag = byteStream.readUint16();
     var type = byteStream.readUint16();
@@ -11,7 +13,7 @@ export default function parseIFD(byteStream) {
         offset: offset
     };
 
-    if (typeSize[type] * count <= 4)
+    if (defineVariables().typeSize[type] * count <= 4)
         IFD['value'] = IFD['offset'];
 
     return IFD

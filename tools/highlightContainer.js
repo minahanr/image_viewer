@@ -1,5 +1,6 @@
 import CSImage from "../utils/CSImage.js";
 import highlightLayer from './highlightLayer.js';
+import defineVariables from "../utils/defineVariables.js";
 
 export default function highlightContainer(element) {
     CSImage.highlightedElement(element);
@@ -36,7 +37,7 @@ export default function highlightContainer(element) {
         layerName.innerHTML = '<span>' + layer.name + ' </span>';
 
         cornerstone.enable(thumbnail);
-        cornerstone.loadAndCacheImage(CSimage.projection + fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingIndex]).then(image => {
+        cornerstone.loadAndCacheImage(CSimage.projection + defineVariables().fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingIndex]).then(image => {
             cornerstone.getEnabledElement(thumbnail).layers = [];
             cornerstone.addLayer(thumbnail, image, layer.options);
             cornerstone.updateImage(thumbnail);

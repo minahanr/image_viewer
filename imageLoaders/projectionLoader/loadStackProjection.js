@@ -2,6 +2,7 @@ import CSImage from "../../utils/CSImage.js";
 import updateTheImage from "../../utils/updateImageSelector.js";
 import { splitImageVertical } from "../../tools/modifyImageWindows.js";
 import Synchronizer from "../../tools/Synchronizer.js";
+import defineVariables from "../../utils/defineVariables.js";
 
 function deepCopy(object) {
     let copy;
@@ -49,7 +50,7 @@ export default function loadStackProjection (e) {
 
             let promises = [];
             for(let timeIndex = 0; timeIndex < Object.keys(CSimage.layers[layerIndex].baseStack).length; timeIndex++) {
-                promises.push(cornerstone.loadAndCacheImage(fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]));
+                promises.push(cornerstone.loadAndCacheImage(defineVariables().fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]));
             }
 
             Promise.all(promises).then(images => {

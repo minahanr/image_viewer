@@ -1,6 +1,7 @@
 import bigEndianByteArrayParser from "./bigEndianByteArrayParser.js";
 import littleEndianByteArrayParser from "./littleEndianByteArrayParser.js"
 import ByteStream from './byteStream.js';
+import defineVariables from '../../utils/defineVariables.js';
 
 function transformToRational(byteStream, numBytes) {
     byteStream.byteArrayParser = bigEndianByteArrayParser;
@@ -22,7 +23,7 @@ function getValues(byteStream, IFD) {
     }
 
     byteStream.setPosition(IFD['offset']);
-    let numBytes = IFD['count'] * typeSize[IFD['type']];
+    let numBytes = IFD['count'] * defineVariables().typeSize[IFD['type']];
     var valueArray = [];
     switch (IFD['type']) {
         case 1:
