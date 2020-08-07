@@ -3,9 +3,9 @@ import updateTheImage from '../utils/updateImageSelector.js';
 
 export default function playMovie(e) {
     let CSimage = CSImage.instances().get(e.target.parentElement.parentElement);
-    if (CSimage.lastIndex === 0)
+    if (CSimage.lastSpaceIndex === 0)
         return;
-    else if (CSimage.currentImageIdIndex === CSimage.lastIndex)
+    else if (CSimage.currentImageIdIndex === CSimage.lastSpaceIndex)
         CSimage.movieReverse = true;
     else if (CSimage.currentImageIdIndex === 0)
         CSimage.movieReverse = false;
@@ -29,7 +29,7 @@ export default function playMovie(e) {
     function movieHandlerForward() {
         updateTheImage(CSimage.element, CSimage.currentImageIdIndex + 1);
         
-        if (CSimage.currentImageIdIndex === CSimage.lastIndex) {
+        if (CSimage.currentImageIdIndex === CSimage.lastSpaceIndex) {
             clearInterval(movie);
             CSimage.movieReverse = true;
             movieTimeout = setTimeout(movieHandlerReverse, 1000);

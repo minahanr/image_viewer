@@ -5,13 +5,11 @@ import Synchronizer from "../../tools/Synchronizer.js";
 import defineVariables from "../../utils/defineVariables.js";
 
 function deepCopy(object) {
-    let copy;
-
-    if (typeof object instanceof Function) {
-        return;
-    } else if (typeof object !== "object" || object === null) {
+    if (typeof object !== "object" || object === null) {
         return object;
     }
+
+    let copy = Object.create(Object.getPrototypeOf(object));
 
     if (Array.isArray(object)) {
         copy = [];
@@ -40,13 +38,14 @@ export default function loadStackProjection (e) {
         let image = document.createElement('div');
         image.classList = 'image delete';
         containers[i].appendChild(image);
-        containers[i].getElementsByClassName('addImage')[0].style.display = 'none';
         let element = containers[i].getElementsByClassName('image')[0];
         let CSimage = new CSImage.CSImage(image);
         CSimage.layers = [];
         CSimage.projection = 'LCI' + i + ':';
+        CSimage.lastSpaceIndex = 0;
+
         baseImage.layers.forEach((layer, layerIndex) => {
-            CSimage.addLayer(layer.format, layer.stack, 0);
+            CSimage.addLayer(layer.format, layer.stack, layer.options);
             CSimage.layers[layerIndex].baseStack = deepCopy(CSimage.layers[layerIndex].stack);
             CSimage.layers[layerIndex].stack = [];
 
@@ -67,7 +66,7 @@ export default function loadStackProjection (e) {
                     }
                     
                     if (numImages > CSimage.lastIndex) {
-                        CSimage.lastIndex = numImages - 1;
+                        CSimage.lastSpaceIndex = Math.max(CSimage.lastSpaceIndex, numImages - 1);
                     }
 
                     CSimage.layers[layerIndex].stack.push(
@@ -80,14 +79,12 @@ export default function loadStackProjection (e) {
                     for(let j = 0; j < numImages; j++) {
                         CSimage.layers[layerIndex].stack[timeIndex].imageIds.push(layerIndex + ':' + timeIndex + ':' + j + ':' + element.id);
                     }
-
-                    updateTheImage(element, 0);
+                    
                 }
+                updateTheImage(element, 0);
             });
         });
-
         CSimages.push(CSimage);
     }
-    
     new Synchronizer.Synchronizer(CSimages);
 }

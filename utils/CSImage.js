@@ -34,11 +34,20 @@ function activeTools() {
 }
 
 function highlightedElement(element) {
+    console.log(element);
     if (element !== undefined) {
         highlightedElement.element = element;
     }
 
     return highlightedElement.element;
+}
+
+function highlightedContainer(container) {
+    if (container !== undefined) {
+        highlightedContainer.container = container;
+    }
+
+    return highlightedContainer.container;
 }
 
 function highlightedLayer(layer) {
@@ -59,7 +68,8 @@ class CSImage {
         this.currentTimeIndex = 0;
         this.currentImageIdIndex = 0;
         this.layers = [];
-        this.lastIndex = 0;
+        this.lastSpaceIndex = 0;
+        this.lastTimeIndex = 0;
         this.layerNumber = 1;
         
         instances().set(element, this);
@@ -89,7 +99,7 @@ class CSImage {
         this.timeSlider.value = 0;
 
         if (urlsOverTime !== undefined) {
-            this.addLayer(format, urlsOverTime, 0);
+            this.addLayer(format, urlsOverTime);
         }
 
         topLeft.classList = 'overlay topLeft';
@@ -133,7 +143,14 @@ class CSImage {
         deleteImage.addEventListener('click', deleteImageFn);
         projection.addEventListener('click', loadStackProjection);
         this.timeSlider.addEventListener('input', changeTimeFrame);
-        this.element.addEventListener('mousedown', evt => highlightContainer(this.element));
+
+        this.element.getElementsByTagName('canvas')[0].addEventListener('click', evt => {
+            console.log(evt);
+            console.log(evt.target);
+            evt.stopPropagation();
+
+            highlightContainer(evt.target.parentElement)
+        });
 
         ([topLeft, topRight, bot, botRight]).forEach(element => {
             element.addEventListener('mousedown', evt => evt.stopPropagation());
@@ -143,13 +160,17 @@ class CSImage {
         element.id = 'image_' + UUID_incrementer();
     }
 
-    addLayer(format, urlsOverTime, startingIndex) {
-        let layer = new Layer.Layer(this.layerNumber - 1, 'Layer #' + this.layerNumber, format, urlsOverTime, startingIndex)
+    addLayer(format, urlsOverTime, options) {
+        let layer = new Layer.Layer(this.layerNumber - 1, 'Layer #' + this.layerNumber, format, urlsOverTime, options)
         this.layerNumber += 1;
         this.layers.push(layer);
         
-        if (layer.stack[0].imageIds.length + layer.startingIndex > this.lastIndex) {
-            this.lastIndex = layer.stack[0].imageIds.length + layer.startingIndex - 1;
+        if (layer.stack[0].imageIds.length + layer.startingSpaceIndex > this.lastSpaceIndex) {
+            this.lastSpaceIndex = layer.stack[0].imageIds.length + layer.startingSpaceIndex - 1;
+        }
+
+        if (layer.stack.length + layer.startingTimeIndex > this.lastTimeIndex) {
+            this.lastTimeIndex = layer.stack.length + layer.startingTimeIndex - 1;
         }
 
         this.timeSlider.max = urlsOverTime.length - 1;
@@ -170,6 +191,7 @@ const obj = {
     UUID_incrementer,
     activeTools,
     highlightedElement,
+    highlightedContainer,
     highlightedLayer
 };
 

@@ -1,5 +1,3 @@
-import populateGrid from './populateGrid.js';
-
 export default function deleteImageFn(e) {
     let image = e.target.parentElement.parentElement;
     
@@ -10,5 +8,4 @@ export default function deleteImageFn(e) {
         ele.parentElement.removeChild(ele);
     }
     image.getElementsByClassName('addImage')[0].style.display = 'inline-block';
-    image.getElementsByClassName('addImage')[0].addEventListener('click', populateGrid);
 }

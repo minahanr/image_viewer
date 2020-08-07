@@ -277,17 +277,19 @@ html, body {
 }
 
 .panel-title {
-    font-size: 16px;
+    font-size: 18px;
     background-color: #2e2d29;
     padding: 3px 0 3px 10px;
 }
 
 .sub-title {
     border-bottom: 3px solid #2e2d29;
-    font-size: 14px;
     padding: 3px 0 3px 30px;
 }
 
+.sub-title-name {
+    font-size: 16px;
+}
 .sub-title:hover {
     cursor: pointer;
 }
@@ -300,7 +302,11 @@ html, body {
 
 .visible {
     height: 100px;
-    
+    overflow: auto;
+}
+
+.display-visible {
+    display: block;
 }
 
 .dropdown img {
@@ -335,6 +341,11 @@ html, body {
     padding: 10px 0 10px 0;
 }
 
+#image-filters-container {
+    padding: 0 15px 0 15px;
+    overflow: auto;
+}
+
 .layer-div {
     height: 50px;
     border-bottom: 3px solid #2e2d29;
@@ -363,6 +374,30 @@ html, body {
     line-height: 37px;
 }
 
+label, table td, table th {
+    font-weight: 400;
+}
+
+input, #submit-filters {
+    color: black;
+}
+
+
+#image-database input {
+    float: right;
+    border-radius: 5px;
+    width: 60%;
+    height: 20px;
+    margin-bottom: 5px;
+}
+
+#image-database input, #image-database label {
+    margin-top: 5px;
+}
+
+#image-results table {
+    width: 100%;
+}
 .layer-name-div span {
     vertical-align: middle;
 }
@@ -373,6 +408,7 @@ html, body {
     background-color: black;
     float: right;
 }
+
 
 #metadata-viewer {
     flex-grow: 1;

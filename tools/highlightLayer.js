@@ -7,9 +7,10 @@ export default function highlightLayer (layer) {
 
     layer.parentElement.children.forEach(childLayer => {
         if (childLayer === layer) {
-            layer.classList.toggle('highlighted');
+            childLayer.classList.add('highlighted');
         } else {
-            layer.classList.remove('highlighted');
+            console.log('not equal');
+            childLayer.classList.remove('highlighted');
         }
     })
 
@@ -23,4 +24,15 @@ export default function highlightLayer (layer) {
     });
 
     CSImage.highlightedLayer(highlightedLayer);
+    if (highlightedLayer.options.opacity === undefined) {
+        document.getElementById('opacitySlider').value = '1.00';
+    } else {
+        document.getElementById('opacitySlider').value = highlightedLayer.options.opacity;
+    }
+    if (highlightedLayer.options.colormap === undefined) {
+        document.getElementById('colormaps').value = 'None';
+    } else {
+        document.getElementById('colormaps').value = highlightedLayer.options.colormap;
+    }
+    
 }

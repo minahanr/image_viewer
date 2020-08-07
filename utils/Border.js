@@ -1,4 +1,12 @@
 
+function instances() {
+    if (instances.map === undefined) {
+        instances.map = new WeakMap();
+    }
+
+    return instances.map;
+}
+
 function resize(element, sizeX, sizeY) {
     element.style.width = (sizeX * 100 / element.parentElement.getBoundingClientRect().width) + '%';
     element.style.height = (sizeY * 100 / element.parentElement.getBoundingClientRect().height) + '%';
@@ -18,17 +26,10 @@ function merge(border, largerContainer, smallerContainer, mergeMethod) {
         resize(largerContainer, largerContainer.getBoundingClientRect().width, newHeight);
     }
 
-    Border.instances().delete(border);
-    border.remove();
+    instances().delete(border);
     smallerContainer.remove();
-}
-
-function instances() {
-    if (instances.map === undefined) {
-        instances.map = new WeakMap();
-    }
-
-    return instances.map;
+    border.remove();
+    
 }
 
 function resizeContainer(e) {
@@ -80,7 +81,6 @@ function resizeContainer(e) {
         function dragY(e) {
             let newHeightUp = initHeightUp + (e.clientY - startY);
             let newHeightDown = initHeightDown - (e.clientY - startY);
-
             if (newHeightUp <= 0) {
                 merge(border, containerDown, containerUp, 'horizontal');
                 mouseUpHandler();
@@ -88,8 +88,8 @@ function resizeContainer(e) {
                 merge(border, containerUp, containerDown, 'horizontal');
                 mouseUpHandler();
             } else {
-            resize(containerUp, initWidthUp, newHeightUp);
-            resize(containerDown, initWidthDown, newHeightDown);
+                resize(containerUp, initWidthUp, newHeightUp);
+                resize(containerDown, initWidthDown, newHeightDown);
             }
         }
 

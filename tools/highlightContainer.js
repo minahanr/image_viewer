@@ -3,7 +3,13 @@ import highlightLayer from './highlightLayer.js';
 import defineVariables from "../utils/defineVariables.js";
 
 export default function highlightContainer(element) {
+    if (!element.classList.contains('image')) {
+        return;
+    }
+
     CSImage.highlightedElement(element);
+    CSImage.highlightedContainer(element.parentElement);
+    console.log(CSImage.instances().get(CSImage.highlightedElement()));
     const metadata = document.getElementById('metadata-viewer');
     metadata.innerHTML = '';
 
@@ -16,7 +22,7 @@ export default function highlightContainer(element) {
         metadata.innerHTML += '=================<br>';
         metadata.innerHTML += layer.name + '<br>';
         metadata.innerHTML += '=================<br>';
-        metadata.innerHTML += layer.dataset.metadata;
+        metadata.innerHTML += layer.options.dataset.metadata;
 
         const layerDiv = document.createElement('div');
         layerDiv.id = 'layerDiv_#' + layer.id;
@@ -37,7 +43,7 @@ export default function highlightContainer(element) {
         layerName.innerHTML = '<span>' + layer.name + ' </span>';
 
         cornerstone.enable(thumbnail);
-        cornerstone.loadAndCacheImage(CSimage.projection + defineVariables().fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingIndex]).then(image => {
+        cornerstone.loadAndCacheImage(CSimage.projection + defineVariables().fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex - layer.startingTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingSpaceIndex]).then(image => {
             cornerstone.getEnabledElement(thumbnail).layers = [];
             cornerstone.addLayer(thumbnail, image, layer.options);
             cornerstone.updateImage(thumbnail);

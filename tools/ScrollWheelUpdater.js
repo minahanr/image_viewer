@@ -19,7 +19,7 @@ export default class ScrollWheelUpdaterTool extends cornerstoneTools.StackScroll
     mouseWheelCallback(evt) {
         let CSimage = CSImage.instances().get(evt.target);
         if (evt.detail.direction > 0) {
-            if (CSimage.currentImageIdIndex < CSimage.lastIndex) {
+            if (CSimage.currentImageIdIndex < CSimage.lastSpaceIndex) {
                 updateTheImage(evt.target, CSimage.currentImageIdIndex + 1);
             }
         } else {

@@ -3,6 +3,7 @@ import {loadCoaxialImage_1, loadCoaxialImage_2 } from './imageLoaders/projection
 import updateDescription from './tools/updateDescription.js';
 import CSImage from './utils/CSImage.js';
 import updateTheImage from './utils/updateImageSelector.js';
+import dropdown_util from './utils/dropdown_util.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
@@ -46,26 +47,7 @@ function switchTool(newTool, mouseButton) {
 
 let subtitleNames = document.getElementsByClassName('sub-title-name');
 subtitleNames.forEach(element => {
-    element.addEventListener('click', e => {
-        document.getElementsByClassName('sub-title-name').forEach(e2 => {
-            let classList = e2.getElementsByTagName('i')[0].classList;
-            if (e2 === e.target) {
-                e2.parentElement.getElementsByClassName('dropdown')[0].classList.toggle('visible');
-                if (classList.contains('up')) {
-                    classList.remove('up');
-                    classList.add('down');
-                } else {
-                    classList.add('up');
-                    classList.remove('down');
-                }
-
-            } else {
-                e2.parentElement.getElementsByClassName('dropdown')[0].classList.remove('visible');
-                classList.remove('up');
-                classList.add('down');
-            }
-        });
-    });
+    element.addEventListener('click', evt => dropdown_util(evt.target));
 });
 
 document.getElementsByClassName('tool').forEach(tool => {
@@ -77,7 +59,7 @@ document.getElementsByClassName('tool').forEach(tool => {
 
 document.getElementById('opacitySlider').addEventListener('change', evt => {
     let CSimage = CSImage.instances().get(CSImage.highlightedElement());
-    console.log(CSImage.highlightedLayer);
+    console.log(CSImage.highlightedLayer());
     CSImage.highlightedLayer().options.opacity = parseFloat(evt.currentTarget.value);
     updateTheImage(CSImage.highlightedElement(), CSimage.currentImageIdIndex);
 });
@@ -85,6 +67,7 @@ document.getElementById('opacitySlider').addEventListener('change', evt => {
 document.getElementById('colormaps').addEventListener('change', evt => {
     let CSimage = CSImage.instances().get(CSImage.highlightedElement());
     let layer = cornerstone.getLayer(CSimage.element, CSImage.highlightedLayer().uid);
+    CSImage.highlightedLayer().options.colormap = document.getElementById('colormaps').value;
     layer.viewport.colormap = document.getElementById('colormaps').value;
     cornerstone.updateImage(CSImage.highlightedElement());
 });

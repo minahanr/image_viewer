@@ -2,7 +2,7 @@ import CSImage from './CSImage.js';
 import defineVariables from './defineVariables.js';
 
 function updateImageSelector(CSimage) {
-    CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.currentImageIdIndex + CSimage.layers[0].startingIndex + 1) + '/' + (CSimage.lastIndex + 1);
+    CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.currentImageIdIndex + 1) + '/' + (CSimage.lastSpaceIndex + 1);
 }
 
 export default function updateTheImage(element, imageIndex, sync) {
@@ -13,8 +13,13 @@ export default function updateTheImage(element, imageIndex, sync) {
 
     let promises = [];
     CSimage.layers.forEach(layer => {
-        layer.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;
-        promises.push(cornerstone.loadAndCacheImage(CSimage.projection + defineVariables().fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingIndex]));
+        console.log(layer);
+        if (CSimage.currentImageIdIndex < layer.startingSpaceIndex + layer.stack[0].imageIds.length && CSimage.currentImageIdIndex >= layer.startingSpaceIndex &&
+            CSimage.currentTimeIndex < layer.startingSpaceIndex + layer.stack[0].imageIds.length && CSimage.currentTimeIndex >= layer.startingTimeIndex) {
+                layer.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;
+                promises.push(cornerstone.loadAndCacheImage(CSimage.projection + defineVariables().fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingSpaceIndex]));
+            }
+        
     });
 
     Promise.all(promises).then(images => {

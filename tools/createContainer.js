@@ -1,5 +1,6 @@
 import populateGrid from './populateGrid.js';
 import { splitImageVertical, splitImageHorizontal } from './modifyImageWindows.js';
+import CSImage from '../utils/CSImage.js';
 
 export function createHorizontalBorder() {
     let border = document.createElement('div');
@@ -36,10 +37,10 @@ export function createContainer(parentElement, rows, cols, addChildren) {
         });
     } else {
         parentElement.appendChild(container);
-        let addImage = document.createElement('div');
-        addImage.innerHTML = 'add image';
-        addImage.classList = 'addImage';
-        container.appendChild(addImage);
+        // let addImage = document.createElement('div');
+        // addImage.innerHTML = 'add image';
+        // addImage.classList = 'addImage';
+        // container.appendChild(addImage);
         
         let botLeft = document.createElement('div');
         botLeft.classList = 'overlay botLeft';
@@ -50,12 +51,21 @@ export function createContainer(parentElement, rows, cols, addChildren) {
         let vertical = document.createElement('img');
         vertical.src = './images/verticalSplit.png';
         vertical.classList = 'imageOverlay item button';
-        
+
         container.appendChild(botLeft);
         botLeft.appendChild(horizontal);
         botLeft.appendChild(vertical);
 
-        addImage.addEventListener('click', populateGrid);
+        container.addEventListener('click', evt => {
+            if (evt.target.classList.contains('image-container')) {
+                console.log('test');
+                console.log(evt.target);
+                CSImage.highlightedContainer(evt.target);
+                CSImage.highlightedElement('');
+            }
+            
+        });
+
         horizontal.addEventListener('click', function(e) {
             splitImageHorizontal(e.target.parentElement.parentElement, 2);
         });

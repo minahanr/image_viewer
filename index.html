@@ -86,13 +86,13 @@
                         
                         <div class='panel-title'>Layers</div>
                         <div class='container'>
-                            <label for='opacitySlider' style='font-weight: 400'>Opacity</label>
-                            <input type='range' min='0' max='1' step='.01' value = '1' id='opacitySlider'>
+                            <label for='opacitySlider'>Opacity</label>
+                            <input type='range' min='0' max='1' step='.01' value='1.00' id='opacitySlider'>
                         </div>
                         <div class='container'>
-                            <label for='colormaps' style='font-weight: 400'>Color scheme</label>
+                            <label for='colormaps'>Color scheme</label>
                             <select id="colormaps">
-                                <option value="">None</option>
+                                <option value="" selected='selected'>None</option>
                                 <option value="autumn">Autumn</option>
                                 <option value="blues">Blues</option>
                                 <option value="bone">Bone</option>
@@ -114,6 +114,34 @@
                             </select>
                         </div>
                         <div id='layers-container'></div>
+                    </div>
+                    <div id='image-database' class='sub-panel'>
+                        <div class='panel-title'>Image database</div>
+                        <div class='sub-title'>
+                            <div class='sub-title-name'>
+                                Filters <i class="arrow down"></i>
+                            </div>
+                            <div class='dropdown'>
+                                <div id='image-filters-container'>
+                                    <label for='name'>Name</label>
+                                    <input type='text' id='name'><br>
+                                    <label for='modality'>Modality</label>
+                                    <input type='text' id='modality'><br>
+                                    <label for='subject'>Subject</label>
+                                    <input type='text' id='subject'><br>
+                                    <button id='submit-filters'>Submit Filters</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='sub-title'>
+                            <div class='sub-title-name'>
+                                Results <i class='arrow down'></i>
+                            </div>
+                            <div class='dropdown'>
+                                <div id='image-results'>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class='panel-title sub-panel'>Metadata</div>
                     <div id='metadata-viewer' class='sub-panel'></div>
@@ -138,6 +166,31 @@
 
         <!-- define global variables -->
         <script type='module' src="utils/defineVariables.js"></script>
+
+        <script>
+            var imageSeries = [];
+            imageSeries.push({
+                baseURL: 'https://github.com/minahanr/image_viewer/blob/master/test_RATIB2/RATIB2/CorCTALow%20%200.75%20%20B25f%20%20Multiphase',
+                format: 'dcm',
+                numFrames: 20,
+                imgsPerFrame: 188,
+                name: 'heart',
+                modality: 'ecg',
+                subject: 'ME2'
+            });
+            imageSeries.push({
+                baseURL: 'https://github.com/minahanr/image_viewer/blob/master/test_CPTAC-GBM/C3L-00631/04-23-2000-MR%20BRAIN%20W%20CONTRAST-49394/501.000000-sT1W3DTFEAX%20POST-22981',
+                format: 'dcm',
+                numFrames: 1,
+                imgsPerFrame: 180,
+                name: 'brain',
+                modality: 'MRI',
+                subject: 'idk'
+            })
+        </script>
+
+        <!-- side scripts -->
+        <script type='module' src='tools/chooseImageToAdd.js'></script>
 
         <!-- run main script -->
         <script type="module" src="image_viewer.js"></script>
