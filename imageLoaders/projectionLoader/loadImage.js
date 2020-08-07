@@ -25,7 +25,10 @@ export function loadCoaxialImage_1(imageId) {
     let CSimage = CSImage.instances().get(element);
     let promises = [];
     let newImage = {};
-    let promiseImage = cornerstone.loadImage(format + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]).then(baseImage => {
+    let baseImage = {};
+
+    let promiseImage = cornerstone.loadImage(format + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]).then(img => {
+        baseImage = img;
         newImage = {
             imageId: frame,
             minPixelValue: undefined,
@@ -54,7 +57,16 @@ export function loadCoaxialImage_1(imageId) {
             colormap: element.colormap,
             data: undefined
         };
-        //newImage.data = new Uint16Array(newImage.rows * newImage.columns);
+        let pixelData = baseImage.getPixelData();
+        if (pixelData instanceof Int16Array) {
+            newImage.data = new Int16Array(newImage.rows * newImage.columns);
+        } else if (pixelData instanceof Int8Array) {
+            newImage.data = new Int8Array(newImage.rows * newImage.columns);
+        } else if (pixelData instanceof Uint16Array) {
+            newImage.data = new Uint16Array(newImage.rows * newImage.columns);
+        } else if (pixelData instanceof Uint8Array) {
+            newImage.data = new Uint8Array(newImage.rows * newImage.columns);
+        }
         
         for (let i = 0; i < newImage.rows; i++) {
             promises.push(cornerstone.loadImage(defineVariables().fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
@@ -63,7 +75,7 @@ export function loadCoaxialImage_1(imageId) {
         return Promise.all(promises);
     }).then(images => {
 
-        let pixelData = promiseImage.getPixelData();
+        let pixelData = baseImage.getPixelData();
         let colorMultiplier = 1;
         if (promiseImage.color) {
             colorMultiplier = 3;
@@ -116,8 +128,10 @@ export function loadCoaxialImage_2(imageId) {
     let CSimage = CSImage.instances().get(element);
     let promises = [];
     let newImage = {};
+    let baseImage = {};
 
-    let promiseImage = cornerstone.loadImage(format + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]).then(baseImage => {
+    let promiseImage = cornerstone.loadImage(format + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[0]).then(img => {
+        baseImage = img;
         newImage = {
             imageId: frame,
             minPixelValue: undefined,
@@ -145,7 +159,16 @@ export function loadCoaxialImage_2(imageId) {
             cachedLut: undefined,
             colormap: element.colormap
         };
-        //newImage.data = new Uint16Array(newImage.rows * newImage.columns);
+        let pixelData = baseImage.getPixelData();
+        if (pixelData instanceof Int16Array) {
+            newImage.data = new Int16Array(newImage.rows * newImage.columns);
+        } else if (pixelData instanceof Int8Array) {
+            newImage.data = new Int8Array(newImage.rows * newImage.columns);
+        } else if (pixelData instanceof Uint16Array) {
+            newImage.data = new Uint16Array(newImage.rows * newImage.columns);
+        } else if (pixelData instanceof Uint8Array) {
+            newImage.data = new Uint8Array(newImage.rows * newImage.columns);
+        }
         
         for (let i = 0; i < newImage.rows; i++) {
             promises.push(cornerstone.loadImage(defineVariables().fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
@@ -153,7 +176,7 @@ export function loadCoaxialImage_2(imageId) {
         return Promise.all(promises);
     }).then(images => {
 
-        let pixelData = promiseImage.getPixelData();
+        let pixelData = baseImage.getPixelData();
         let colorMultiplier = 1;
         if (promiseImage.color) {
             colorMultiplier = 3;
