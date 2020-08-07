@@ -46,7 +46,6 @@ document.getElementById('submit-filters').addEventListener('click', evt => {
 
         
         tr.addEventListener('click', evt => {
-            console.log(i);
             if (CSImage.highlightedContainer() === undefined) {
                 return;
             } else if (CSImage.highlightedElement() === '') {

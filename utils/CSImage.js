@@ -144,8 +144,6 @@ class CSImage {
         this.timeSlider.addEventListener('input', changeTimeFrame);
 
         this.element.getElementsByTagName('canvas')[0].addEventListener('click', evt => {
-            console.log(evt);
-            console.log(evt.target);
             evt.stopPropagation();
 
             highlightContainer(evt.target.parentElement)

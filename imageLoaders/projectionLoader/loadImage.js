@@ -51,9 +51,10 @@ export function loadCoaxialImage_1(imageId) {
             origPixelData: undefined,
             stats: undefined,
             cachedLut: undefined,
-            colormap: element.colormap
+            colormap: element.colormap,
+            data: undefined
         };
-        newImage.data = new Uint16Array(newImage.rows * newImage.columns);
+        //newImage.data = new Uint16Array(newImage.rows * newImage.columns);
         
         for (let i = 0; i < newImage.rows; i++) {
             promises.push(cornerstone.loadImage(defineVariables().fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
@@ -61,9 +62,28 @@ export function loadCoaxialImage_1(imageId) {
 
         return Promise.all(promises);
     }).then(images => {
-        for(let i = 0; i < newImage.rows; i++) {
-            newImage.data.set(new Uint16Array(images[i].getPixelData().buffer, frame * newImage.columns * 2, newImage.columns), i * newImage.columns)
+
+        let pixelData = promiseImage.getPixelData();
+        let colorMultiplier = 1;
+        if (promiseImage.color) {
+            colorMultiplier = 3;
+            if (promiseImage.rgba) {
+                colorMultiplier = 4;
+            }
         }
+
+        for(let i = 0; i < newImage.rows; i++) {            
+            if (pixelData instanceof Int16Array) {
+                newImage.data.set(new Int16Array(images[i].getPixelData().buffer, frame * newImage.columns * 2 * colorMultiplier, newImage.columns), i * newImage.columns);
+            } else if (pixelData instanceof Int8Array) {
+                newImage.data.set(new Int8Array(images[i].getPixelData().buffer, frame * newImage.columns * colorMultiplier, newImage.columns), i * newImage.columns);
+            } else if (pixelData instanceof Uint16Array) {
+                newImage.data.set(new Uint16Array(images[i].getPixelData().buffer, frame * newImage.columns * 2 * colorMultiplier, newImage.columns), i * newImage.columns);
+            } else if (pixelData instanceof Uint8Array) {
+                newImage.data.set(new Uint8Array(images[i].getPixelData().buffer, frame * newImage.columns * colorMultiplier, newImage.columns), i * newImage.columns);
+            }
+        }
+        
         newImage.getPixelData = () => newImage.data;
         newImage.sizeInBytes = newImage.getPixelData().byteLength;
         let { min, max } = getMinMax(newImage.getPixelData());
@@ -125,18 +145,35 @@ export function loadCoaxialImage_2(imageId) {
             cachedLut: undefined,
             colormap: element.colormap
         };
-        newImage.data = new Uint16Array(newImage.rows * newImage.columns);
+        //newImage.data = new Uint16Array(newImage.rows * newImage.columns);
         
         for (let i = 0; i < newImage.rows; i++) {
             promises.push(cornerstone.loadImage(defineVariables().fileFormats[CSimage.layers[layerIndex].format] + CSimage.layers[layerIndex].baseStack[timeIndex].imageIds[i]));
         }
         return Promise.all(promises);
     }).then(images => {
-        for(let i = 0; i < newImage.rows; i++) {
-            for (let j = 0; j < newImage.columns; j++) {
-                newImage.data[i * newImage.columns + j] = images[i].getPixelData()[j * images[i].columns + frame];
+
+        let pixelData = promiseImage.getPixelData();
+        let colorMultiplier = 1;
+        if (promiseImage.color) {
+            colorMultiplier = 3;
+            if (promiseImage.rgba) {
+                colorMultiplier = 4;
             }
         }
+
+        for(let i = 0; i < newImage.rows; i++) {            
+            if (pixelData instanceof Int16Array) {
+                newImage.data.set(new Int16Array(images[i].getPixelData().buffer, frame * newImage.columns * 2 * colorMultiplier, newImage.columns), i * newImage.columns);
+            } else if (pixelData instanceof Int8Array) {
+                newImage.data.set(new Int8Array(images[i].getPixelData().buffer, frame * newImage.columns * colorMultiplier, newImage.columns), i * newImage.columns);
+            } else if (pixelData instanceof Uint16Array) {
+                newImage.data.set(new Uint16Array(images[i].getPixelData().buffer, frame * newImage.columns * 2 * colorMultiplier, newImage.columns), i * newImage.columns);
+            } else if (pixelData instanceof Uint8Array) {
+                newImage.data.set(new Uint8Array(images[i].getPixelData().buffer, frame * newImage.columns * colorMultiplier, newImage.columns), i * newImage.columns);
+            }
+        }
+
         newImage.getPixelData = () => newImage.data;
         newImage.sizeInBytes = newImage.getPixelData().byteLength;
         let { min, max } = getMinMax(newImage.getPixelData());
