@@ -2,7 +2,7 @@ import CSImage from './CSImage.js';
 import ScrollWheelUpdaterTool from '../tools/ScrollWheelUpdater.js';
 import ModifiedCrosshairsTool from '../tools/Crosshairs.js';
 const cursors = cornerstoneTools.importInternal('tools/cursors');
-console.log(cursors);
+
 export default function loadTools(element) {
     cornerstoneTools.addToolForElement(element, cornerstoneTools.PanTool); 
     cornerstoneTools.addToolForElement(element, cornerstoneTools.ZoomTool, {

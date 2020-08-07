@@ -13,7 +13,6 @@ export default function updateTheImage(element, imageIndex, sync) {
 
     let promises = [];
     CSimage.layers.forEach(layer => {
-        console.log(layer);
         if (CSimage.currentImageIdIndex < layer.startingSpaceIndex + layer.stack[0].imageIds.length && CSimage.currentImageIdIndex >= layer.startingSpaceIndex &&
             CSimage.currentTimeIndex < layer.startingSpaceIndex + layer.stack[0].imageIds.length && CSimage.currentTimeIndex >= layer.startingTimeIndex) {
                 layer.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;

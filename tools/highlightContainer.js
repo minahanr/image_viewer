@@ -9,7 +9,6 @@ export default function highlightContainer(element) {
 
     CSImage.highlightedElement(element);
     CSImage.highlightedContainer(element.parentElement);
-    console.log(CSImage.instances().get(CSImage.highlightedElement()));
     const metadata = document.getElementById('metadata-viewer');
     metadata.innerHTML = '';
 

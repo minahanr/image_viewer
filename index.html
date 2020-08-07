@@ -170,23 +170,37 @@
         <script>
             var imageSeries = [];
             imageSeries.push({
+                series_id: 'some_string',
                 baseURL: 'https://github.com/minahanr/image_viewer/blob/master/test_RATIB2/RATIB2/CorCTALow%20%200.75%20%20B25f%20%20Multiphase',
                 format: 'dcm',
                 numFrames: 20,
                 imgsPerFrame: 188,
                 name: 'heart',
                 modality: 'ecg',
-                subject: 'ME2'
+                subject: 'a person'
             });
             imageSeries.push({
+                series_id: 'some_other_string',
                 baseURL: 'https://github.com/minahanr/image_viewer/blob/master/test_CPTAC-GBM/C3L-00631/04-23-2000-MR%20BRAIN%20W%20CONTRAST-49394/501.000000-sT1W3DTFEAX%20POST-22981',
                 format: 'dcm',
                 numFrames: 1,
                 imgsPerFrame: 180,
                 name: 'brain',
                 modality: 'MRI',
-                subject: 'idk'
-            })
+                subject: 'random'
+            });
+
+            var imageSeriesDict = imageSeries.reduce((accumulator, images, index) => {
+
+                if (accumulator[images.series_id] !== undefined) {
+                    console.warn('Image series ID has been repeated. Ignoring image series.');
+                } else {
+                    accumulator[images.series_id] = index;
+                }
+
+                return accumulator;
+            }, {});
+            console.log(imageSeriesDict);
         </script>
 
         <!-- side scripts -->

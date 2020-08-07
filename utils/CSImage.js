@@ -34,7 +34,6 @@ function activeTools() {
 }
 
 function highlightedElement(element) {
-    console.log(element);
     if (element !== undefined) {
         highlightedElement.element = element;
     }

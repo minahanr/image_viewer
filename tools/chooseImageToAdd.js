@@ -44,14 +44,16 @@ document.getElementById('submit-filters').addEventListener('click', evt => {
 
         table.appendChild(tr);
 
+        
         tr.addEventListener('click', evt => {
+            console.log(i);
             if (CSImage.highlightedContainer() === undefined) {
                 return;
             } else if (CSImage.highlightedElement() === '') {
-                populateGrid(CSImage.highlightedContainer(), 0);
+                populateGrid(CSImage.highlightedContainer(), imageSeriesDict[image.series_id]);
             } else {
                 let CSimage = CSImage.instances().get(CSImage.highlightedElement());
-                let { urlsOverTime, format } = parseArray(1);
+                let { urlsOverTime, format } = parseArray(imageSeriesDict[image.series_id]);
                 CSimage.addLayer(format, urlsOverTime);
                 updateTheImage(CSImage.highlightedElement(), CSImage.instances().get(CSImage.highlightedElement()).currentImageIdIndex);
                 highlightContainer(CSimage.element);

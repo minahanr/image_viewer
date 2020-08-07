@@ -1,4 +1,3 @@
-import populateGrid from './populateGrid.js';
 import { splitImageVertical, splitImageHorizontal } from './modifyImageWindows.js';
 import CSImage from '../utils/CSImage.js';
 
@@ -58,8 +57,6 @@ export function createContainer(parentElement, rows, cols, addChildren) {
 
         container.addEventListener('click', evt => {
             if (evt.target.classList.contains('image-container')) {
-                console.log('test');
-                console.log(evt.target);
                 CSImage.highlightedContainer(evt.target);
                 CSImage.highlightedElement('');
             }
