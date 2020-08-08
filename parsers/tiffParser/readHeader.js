@@ -1,12 +1,11 @@
 import ByteStream from './byteStream.js';
 import littleEndianByteArrayParser from './littleEndianByteArrayParser.js';
 import bigEndianByteArrayParser from './bigEndianByteArrayParser.js';
-import {readFixedString } from './byteArrayParser.js';
+import { readFixedString } from './byteArrayParser.js';
 
 export default function readHeader(byteArray, options) {
     if (byteArray === undefined)
         throw 'tiff.parser: missing required parameter \'byteArray\'';
-
     let endianness = readFixedString(byteArray, 0, 2);
     if (endianness === 'II'){
         var byteStream = new ByteStream(littleEndianByteArrayParser, byteArray, 2);

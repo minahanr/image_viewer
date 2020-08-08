@@ -17,8 +17,7 @@ export default function updateTheImage(element, imageIndex, sync) {
             CSimage.currentTimeIndex < layer.startingSpaceIndex + layer.stack[0].imageIds.length && CSimage.currentTimeIndex >= layer.startingTimeIndex) {
                 layer.stack[CSimage.currentTimeIndex].currentImageIdIndex = imageIndex;
                 promises.push(cornerstone.loadAndCacheImage(CSimage.projection + defineVariables().fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingSpaceIndex]));
-            }
-        
+        } 
     });
 
     Promise.all(promises).then(images => {

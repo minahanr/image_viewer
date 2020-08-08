@@ -1,6 +1,7 @@
 import readHeader from './readHeader.js';
 import parseIFD from './parseIFD.js';
-import Image from './image.js';
+import tiffParser from './tiffParser.js';
+import obj from '../../tools/Synchronizer.js';
 
 export default function parseTiff(byteArray, options) {
     if (byteArray === undefined)
@@ -16,5 +17,5 @@ export default function parseTiff(byteArray, options) {
         imageDescriptor[IFD['tag']] = IFD;
     }
     
-    return new Image(byteStream, imageDescriptor);
+    return new tiffParser(byteStream, imageDescriptor);
 }

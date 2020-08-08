@@ -4,11 +4,14 @@ import updateDescription from './tools/updateDescription.js';
 import CSImage from './utils/CSImage.js';
 import updateTheImage from './utils/updateImageSelector.js';
 import dropdown_util from './utils/dropdown_util.js';
+import loadTiff from './imageLoaders/tiffLoader.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
 cornerstone.registerImageLoader('LCI1', loadCoaxialImage_1);
 cornerstone.registerImageLoader('LCI2', loadCoaxialImage_2);
+cornerstone.registerImageLoader('tiff', loadTiff);
+loadTiff('tiff:https://github.com/minahanr/image_viewer/blob/master/test_tiff/uncompressed_grayscale.tif?raw=true');
 
 cornerstoneTools.external.cornerstone = cornerstone;
 cornerstoneTools.external.Hammer = Hammer;
