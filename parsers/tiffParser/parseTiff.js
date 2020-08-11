@@ -7,7 +7,6 @@ export default function parseTiff(byteArray, options) {
     if (byteArray === undefined)
         throw 'tiffParser.parseTiff: missing required parameter \'byteArray\'';
 
-    var foundBitMapValue = false;
     var byteStream = readHeader(byteArray, options);
     var numDirectories = byteStream.readUint16();
     

@@ -17,7 +17,7 @@ export default function parseArray(imageIndex) {
     } else {
         urlsOverTime.push([]);
         for(let i = 0; i < imgsPerFrame; i++) {
-            urlsOverTime[0].push(baseURL + '/' + (1) + '-' + '0'.repeat(2 - Math.floor(Math.log10(Math.max(i + startingSpaceIndex, 1)))) + (i + startingSpaceIndex) + '.' + format + '?raw=true');
+            urlsOverTime[0].push(baseURL + '/' + (1) + '-' + '0'.repeat((Math.floor(Math.log10(imgsPerFrame))) - Math.floor(Math.log10(Math.max(i + startingSpaceIndex, 1)))) + (i + startingSpaceIndex) + '.' + format + '?raw=true');
         }
     }
 

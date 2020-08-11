@@ -2,6 +2,8 @@ export default function defineVariables() {
     const fileFormats = {
         dicom: 'wadouri:',
         dcm: 'wadouri:',
+        tiff: 'tiff:',
+        tif: 'tiff:',
         jpg: '',
         jpeg: '',
         jpe: '',
@@ -16,8 +18,6 @@ export default function defineVariables() {
         cur: '',
         svg: '',
         webp: '',
-        tiff: '',
-        tif: '',
     };
 
     const typeSize = {

@@ -11,7 +11,6 @@ cornerstoneWebImageLoader.external.cornerstone = cornerstone;
 cornerstone.registerImageLoader('LCI1', loadCoaxialImage_1);
 cornerstone.registerImageLoader('LCI2', loadCoaxialImage_2);
 cornerstone.registerImageLoader('tiff', loadTiff);
-loadTiff('tiff:https://github.com/minahanr/image_viewer/blob/master/test_tiff/uncompressed_grayscale.tif?raw=true');
 
 cornerstoneTools.external.cornerstone = cornerstone;
 cornerstoneTools.external.Hammer = Hammer;
@@ -75,18 +74,4 @@ document.getElementById('colormaps').addEventListener('change', evt => {
     cornerstone.updateImage(CSImage.highlightedElement());
 });
 
-// document.getElementById('colormaps').addEventListener('change', evt => {
-
-// });
-// document.getElementById('toolbar').getElementsByClassName('mouseLeft').forEach(element => {
-//     element.addEventListener('click', function() {
-//         switchTool(element.parentElement.parentElement.id, 1);
-//     });
-// });
-
-// document.getElementById('toolbar').getElementsByClassName('mouseRight').forEach(element => {
-//     element.addEventListener('click', function() {
-//         switchTool(element.parentElement.parentElement.id, 2);
-//     });
-// });
 createGrid(1, 1);

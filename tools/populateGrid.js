@@ -11,7 +11,7 @@ export default function populateGrid(container, seriesIndex) {
     container.appendChild(div);
     let { urlsOverTime } = parseArray(seriesIndex);
 
-    new CSImage.CSImage(div, urlsOverTime, document.getElementById('format').innerHTML);
+    new CSImage.CSImage(div, urlsOverTime, imageSeries[seriesIndex].format);
     updateTheImage(div, 0);
     highlightContainer(div);
     

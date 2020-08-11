@@ -83,58 +83,10 @@ function getValues(byteStream, IFD) {
 
 export default class tiffParser {
     constructor(byteStream, imageDescriptor) {
-        this.elements = [];
-        // this.byteStream = byteStream;
-        // this.imageWidth = getValues(byteStream, imageDescriptor[256]);
-        // this.imageLength = getValues(byteStream, imageDescriptor[257]);
-        // this.bitsPerSample = getValues(byteStream, imageDescriptor[258]);
-        // this.compression = getValues(byteStream, imageDescriptor[259]);
-        // this.photoInterp = getValues(byteStream, imageDescriptor[262]);
-        // this.documentName = getValues(byteStream, imageDescriptor[269]);
-        // this.stripOffsets = getValues(byteStream, imageDescriptor[273]);
-        // this.rowsPerStrip = getValues(byteStream, imageDescriptor[278]);
-        // this.stripByteCounts = getValues(byteStream, imageDescriptor[279]);
-        // this.xRes = getValues(byteStream, imageDescriptor[282]);
-        // this.yRes = getValues(byteStream, imageDescriptor[283]);
-        // this.resUnit = getValues(byteStream, imageDescriptor[296]);
-        // this.colorMap = getValues(byteStream, imageDescriptor[320]);
+        this.elements = {};
+
         Object.keys(imageDescriptor).forEach(tag => {
             this.elements[tag] = getValues(byteStream, imageDescriptor[tag]);
         });
-    }
-
-    getMetadata(tag) {
-        switch (tag) {
-            case 'byteStream':
-                return this.byteStream;
-            case 'imageWidth':
-                return this.imageWidth;
-            case 'imageLength':
-                return this.imageLength;
-            case 'bitsPerSample':
-                return this.bitsPerSample;
-            case 'compression':
-                return this.compression;
-            case 'photoInterp':
-                return this.photoInterp;
-            case 'stripOffsets':
-                return this.stripOffsets;
-            case 'rowsPerStrip':
-                return this.rowsPerStrip;
-            case 'stripBytesCounts':
-                return this.stripByteCounts;
-            case 'xRes':
-                return this.xRes;
-            case 'yRes':
-                return this.yRes;
-            case 'resUnit':
-                return this.resUnit;
-            case 'colorMap':
-                return this.colorMap;
-            case 'documentName':
-                return this.documentName;
-            default:
-                return undefined;
-        }
     }
 }

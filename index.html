@@ -189,6 +189,27 @@
                 modality: 'MRI',
                 subject: 'random'
             });
+            imageSeries.push({
+                series_id: 'jpg_string',
+                baseURL: 'https://raw.githubusercontent.com/minahanr/image_viewer/tiffLoader/test_jpg',
+                format: 'jpg',
+                numFrames: 1,
+                imgsPerFrame: 2,
+                name: 'test',
+                modality: 'xray?',
+                subject: 'unknown'
+            });
+            imageSeries.push({
+                series_id: 'tiff_string',
+                baseURL: 'https://github.com/minahanr/image_viewer/blob/tiffLoader/test_tiff/1-1.tif?raw=true',
+                format: 'tif',
+                numFrames: 1,
+                imgsPerFrame: 2,
+                name: 'tiff_test',
+                modality: 'none',
+                subject: 'none'
+            });
+            
             var imageSeriesDict = imageSeries.reduce((accumulator, images, index) => {
 
                 if (accumulator[images.series_id] !== undefined) {
