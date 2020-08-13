@@ -5,6 +5,7 @@ import CSImage from './utils/CSImage.js';
 import updateTheImage from './utils/updateImageSelector.js';
 import dropdown_util from './utils/dropdown_util.js';
 import loadTiff from './imageLoaders/tiffLoader.js';
+import populateGrid from './tools/populateGrid.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
@@ -69,9 +70,9 @@ document.getElementById('opacitySlider').addEventListener('change', evt => {
 document.getElementById('colormaps').addEventListener('change', evt => {
     let CSimage = CSImage.instances().get(CSImage.highlightedElement());
     let layer = cornerstone.getLayer(CSimage.element, CSImage.highlightedLayer().uid);
-    CSImage.highlightedLayer().options.colormap = document.getElementById('colormaps').value;
     layer.viewport.colormap = document.getElementById('colormaps').value;
     cornerstone.updateImage(CSImage.highlightedElement());
 });
 
 createGrid(1, 1);
+populateGrid(document.getElementById('grid').getElementsByClassName('image-container')[0], imageSeriesDict[chosen_id], { name: imageSeries[imageSeriesDict[chosen_id]].name })
