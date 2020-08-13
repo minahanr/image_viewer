@@ -1,52 +1,33 @@
-function readData(view, lut, bitOffset, bytesInCompressedStrip) {
-    const bitIndex = bitOffset % 8;
-    const byteIndex = (bitOffset - bitIndex) / 8;
-
-    let data = [];
-    data.push(view.readUint8(byteIndex++));
-    if (byteIndex < bytesInCompressedStrip) {
-        data.push(view.readUint8(byteIndex++));
-    }
-    if (byteIndex < bytesInCompressedStrip) {
-        data.push(view.readUint8(byteIndex++));
-    }
-
+function readData(dataView, lut, bitOffset, bytesInCompressedStrip, color) {
+    let bitIndex = bitOffset % 8;
+    let byteIndex = (bitOffset - bitIndex) / 8;
     let integer = 0;
-    for (let i = 0; i < data.length; i++) {
-        integer += data[i] * (256 ** (3 - i));
-    }
-    integer = integer << bitIndex;
 
-    if (lut[((integer & parseInt('10000000000000000000000000000000', 2)) >> 31).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('10000000000000000000000000000000', 2)) >> 31).toString(2)], length: 1 };
-    } else if (lut[((integer & parseInt('11000000000000000000000000000000', 2)) >> 30).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11000000000000000000000000000000', 2)) >> 30).toString(2)], length: 2 };
-    } else if (lut[((integer & parseInt('11100000000000000000000000000000', 2)) >> 29).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11100000000000000000000000000000', 2)) >> 29).toString(2)], length: 3 };
-    } else if (lut[((integer & parseInt('11110000000000000000000000000000', 2)) >> 28).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11110000000000000000000000000000', 2)) >> 28).toString(2)], length: 4 };
-    } else if (lut[((integer & parseInt('11111000000000000000000000000000', 2)) >> 27).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11111000000000000000000000000000', 2)) >> 27).toString(2)], length: 5 };
-    } else if (lut[((integer & parseInt('11111100000000000000000000000000', 2)) >> 26).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11111100000000000000000000000000', 2)) >> 26).toString(2)], length: 6 };
-    } else if (lut[((integer & parseInt('11111110000000000000000000000000', 2)) >> 25).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11111110000000000000000000000000', 2)) >> 25).toString(2)], length: 7 };
-    } else if (lut[((integer & parseInt('11111111000000000000000000000000', 2)) >> 24).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11111111000000000000000000000000', 2)) >> 24).toString(2)], length: 8 };
-    } else if (lut[((integer & parseInt('11111111100000000000000000000000', 2)) >> 23).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11111111100000000000000000000000', 2)) >> 23).toString(2)], length: 9 };
-    } else if (lut[((integer & parseInt('11111111110000000000000000000000', 2)) >> 22).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11111111110000000000000000000000', 2)) >> 22).toString(2)], length: 10 };
-    } else if (lut[((integer & parseInt('11111111111000000000000000000000', 2)) >> 21).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11111111111000000000000000000000', 2)) >> 21).toString(2)], length: 11 };
-    } else if (lut[((integer & parseInt('11111111111100000000000000000000', 2)) >> 20).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11111111111100000000000000000000', 2)) >> 20).toString(2)], length: 12 };
-    } else if (lut[((integer & parseInt('11111111111110000000000000000000', 2)) >> 19).toString(2)] !== undefined) {
-        return { data: lut[((integer & parseInt('11111111111110000000000000000000', 2)) >> 19).toString(2)], length: 13 };
+    for(let i = 0; i < 3; i++) {
+        if (byteIndex < bytesInCompressedStrip) {
+            console.log(dataView[byteIndex]);
+            integer += dataView[byteIndex++] << (8 * (2 - i));
+        }
+    }
+    console.log('byteIndex', byteIndex);
+    console.log('bitIndex', bitIndex);
+    integer = integer.toString(2);
+    if (integer.length < 24) {
+        integer = '0'.repeat(24 - integer.length) + integer; 
+    }
+    console.log(integer);
+    integer = integer.substr(bitIndex) + '0'.repeat(bitIndex);
+    console.log(integer);
+    for (let i = 2; i < 14; i++) {
+        let data = lut[integer.substr(0, i)];
+        if (data !== undefined && color === data.color) {
+            console.log(data, i);
+            return { data, length: i }
+        }
     }
 }
 
-export default function huffmanDecoding() {
+export default function huffmanCompression(dataView, imageDescriptor, stripIndex, numRows, samplesPerRow) {
     const lut = {
         '0000110111': { color: 'black', length: 0, terminate: true },    
         '010': { color: 'black', length: 1, terminate: true },    
@@ -234,30 +215,43 @@ export default function huffmanDecoding() {
         '00000000000': { color: 'black', length: 'EOL', terminate: false }  
     };
 
+   
     const bytesInCompressedStrip = imageDescriptor.elements[279][stripIndex];
-    let view = new DataView(dataView, imageDescriptor.elements[273][stripIndex], bytesInCompressedStrip);
-    let readIndex, writeIndex = 0;
-    let stripPixelData = new Uint8Array(new ArrayBuffer(image.SizeInBytes));
+    console.log(dataView);
+    let stripView = new Uint8Array(dataView, imageDescriptor.elements[273][stripIndex], bytesInCompressedStrip);
+    let bitOffset = 0;
+    let writeIndex = 0;
+
+    let stripPixelData = new Uint8Array(new ArrayBuffer(imageDescriptor.elements[257][0] * imageDescriptor.elements[256][0] * imageDescriptor.elements[277][0] * imageDescriptor.elements[258][0] / 8));
 
     for (let i = 0; i < imageDescriptor.elements[278][0]; i++) {
-        let bitOffset = readIndex * 8;
+        let color = 'white';
+        bitOffset = Math.ceil(bitOffset / 8) * 8;
         let totalRunLength = 0;
-
-        while(totalRunLength < imageDescriptor[256][0]) {
-            let { data, length } = readData(view, lut, bitOffset, bytesInCompressedStrip);
+        while(totalRunLength < imageDescriptor.elements[256][0]) {
+            let { data, length } = readData(stripView, lut, bitOffset, bytesInCompressedStrip, color);
             bitOffset += length;
-            totalRunLength += length;
+            totalRunLength += data.length;
 
             if(data.color === 'white') {
-                stripPixelData.fill(0, writeIndex, writeIndex + length);
+                stripPixelData.fill(0, writeIndex, writeIndex + data.length);
             } else {
-                stripPixelData.fill(255, writeIndex, writeIndex + length);
+                stripPixelData.fill(255, writeIndex, writeIndex + data.length);
             }
 
-            writeIndex += length;
+            if (data.terminate === true) {
+                if (color === 'white') {
+                    color = 'black';
+                } else {
+                    color = 'white';
+                }
+            }
+
+            writeIndex += data.length;
+            console.log('totalRunLength', totalRunLength);
+            
         }
         
-        readIndex = (bitOffset - (bitOffset % 8)) / 8 + 1 ;
     }
 
     return stripPixelData;

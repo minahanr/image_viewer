@@ -49,6 +49,7 @@ html, body {
     background-color: #4d4f53;
     float: left;
     position: relative;
+    cursor: pointer;
 }
 
 .vertical-border {
@@ -57,7 +58,9 @@ html, body {
     background-color: #4d4f53;
     float: left;
     position: relative;
+    cursor: pointer;
 }
+
 .addImage {
     width: 100%;
     height: 100%;

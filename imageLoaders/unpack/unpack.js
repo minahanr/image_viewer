@@ -1,4 +1,4 @@
-import huffmanDecoding from "./huffmanDecoding.js";
+import huffmanCompression from "./huffmanDecoding.js";
 
 function noCompression(dataView, imageDescriptor, stripIndex, numRows, samplesPerRow) {
     return new Uint8Array(dataView, imageDescriptor.elements[273][stripIndex], numRows * samplesPerRow);
@@ -6,25 +6,23 @@ function noCompression(dataView, imageDescriptor, stripIndex, numRows, samplesPe
 
 function packBits(dataView, imageDescriptor, stripIndex, numRows, samplesPerRow) {
     const bytesInCompressedStrip = imageDescriptor.elements[279][stripIndex];
-    let signedView = Int8Array(dataView.buffer);
+    let signedView = new Int8Array(dataView, imageDescriptor.elements[273][stripIndex], bytesInCompressedStrip);
     let readIndex = 0;
     let writeIndex = 0;
     let stripPixelData = new Uint8Array(new ArrayBuffer(numRows * samplesPerRow));
 
     while (readIndex < bytesInCompressedStrip) {
-        if (signedView[readIndex] >= 0) {
-            stripPixelData.set(new Uint8Array(dataView, imageDescriptor.elements[273][stripIndex], signedView[readIndex] + 1), writeIndex);
-            writeIndex += (signedView[readIndex] + 1);
-            readIndex += (signedView[readIndex] + 2);
-        } else if (signedView[readIndex] > -128) {
-            stripPixelData.fill(signedView[readIndex + 1], writeIndex, writeIndex + (1 - signedView[readIndex + 1]));
-            readIndex += 2;
-            writeIndex += (1 - signedView[readIndex + 1]);
-        } else {
-            readIndex += 1;
+        let header = signedView[readIndex++];
+        if (header >= 0) {
+            stripPixelData.set(new Uint8Array(signedView.buffer, imageDescriptor.elements[273][stripIndex] + readIndex, header + 1), writeIndex);
+            writeIndex += (header + 1);
+            readIndex += (header + 1);
+        } else if (header > -128) {
+            stripPixelData.fill(signedView[readIndex], writeIndex, writeIndex + (1 - header));
+            writeIndex += (1 - header);
+            readIndex++;
         }
     }
-
     return stripPixelData;
 }
 
@@ -37,7 +35,7 @@ export default function unpack(dataView, imageDescriptor, stripIndex) {
     if (compressionSyntax === 1) {
         return noCompression(dataView, imageDescriptor, stripIndex, numRows, samplesPerRow);
     } else if (compressionSyntax === 2) {
-        return huffmanCompression
+        return huffmanCompression(dataView, imageDescriptor, stripIndex, numRows, samplesPerRow);
     } else if (compressionSyntax === 32773) {
         return packBits(dataView, imageDescriptor, stripIndex, numRows, samplesPerRow);
     }

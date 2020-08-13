@@ -14,7 +14,6 @@ export default function loadTiff(image_id) {
             }
 
             if (request.status >= 200 && request.status < 300) {
-                
                 let imageDescriptor = parseTiff(new Uint8Array(request.response));
                 let image = {
                     imageId: image_id, //check
@@ -32,12 +31,19 @@ export default function loadTiff(image_id) {
                     width: imageDescriptor.elements[256][0], //check
                     color: imageDescriptor.elements[262][0] !== 0 && imageDescriptor.elements[262][0] !== 1, //check
                     rgba: imageDescriptor[277] === 4, //check
-                    columnPixelSpacing: imageDescriptor.elements[282][0], //check
-                    rowPixelSpacing: imageDescriptor.elements[283][0], //check
+                    columnPixelSpacing: undefined, //check
+                    rowPixelSpacing: undefined, //check
                     invert: imageDescriptor.elements[262][0] === 0, //check
                     sizeInBytes: imageDescriptor.elements[257][0] * imageDescriptor.elements[256][0] * imageDescriptor.elements[277][0] * imageDescriptor.elements[258][0] / 8, //check
                 };
 
+                if (imageDescriptor.elements[296][0] === 2) {
+                    image.columnPixelSpacing = 25.4 / imageDescriptor.elements[282][0];
+                    image.rowPixelSpacing = 25.4 / imageDescriptor.elements[283][0];
+                } else if (imageDescriptor.elements[296][0] === 3) {
+                    image.columnPixelSpacing = 10 / imageDescriptor.elements[282][0];
+                    image.rowPixelSpacing = 10 / imageDescriptor.elements[283][0];
+                } 
                 let maxPossibleSampleValue;
                 let pixelData = new ArrayBuffer(image.sizeInBytes);
                 pixelData = new Uint8Array(pixelData);
@@ -62,8 +68,6 @@ export default function loadTiff(image_id) {
                 image.minPixelValue = minMax[0];
                 image.maxPixelValue = minMax[1];
 
-                console.log(image.getPixelData());
-                console.log(image);
                 resolve(image);
             } else {
                 reject({

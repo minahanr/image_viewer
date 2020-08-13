@@ -168,6 +168,7 @@
         <script type='module' src="utils/defineVariables.js"></script>
 
         <script>
+            var chosen_id = 'some_other_string';
             var imageSeries = [];
             imageSeries.push({
                 series_id: 'some_string',
@@ -201,10 +202,10 @@
             });
             imageSeries.push({
                 series_id: 'tiff_string',
-                baseURL: 'https://github.com/minahanr/image_viewer/blob/tiffLoader/test_tiff/1-1.tif?raw=true',
+                baseURL: 'https://github.com/minahanr/image_viewer/blob/tiffLoader/test_tiff',
                 format: 'tif',
                 numFrames: 1,
-                imgsPerFrame: 2,
+                imgsPerFrame: 3,
                 name: 'tiff_test',
                 modality: 'none',
                 subject: 'none'

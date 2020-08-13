@@ -1,6 +1,10 @@
 import standardDataElements from '../utils/dicomDict.js';
 class Layer {
     constructor(id, name, format, urlsOverTime, options) {
+        if (options !== undefined && options.name !== undefined) {
+            name = options.name;
+        }
+
         this.uid = undefined;
         this.id = id;
         this.name = name;
