@@ -62,7 +62,6 @@ document.getElementsByClassName('tool').forEach(tool => {
 
 document.getElementById('opacitySlider').addEventListener('change', evt => {
     let CSimage = CSImage.instances().get(CSImage.highlightedElement());
-    console.log(CSImage.highlightedLayer());
     CSImage.highlightedLayer().options.opacity = parseFloat(evt.currentTarget.value);
     updateTheImage(CSImage.highlightedElement(), CSimage.currentImageIdIndex);
 });
