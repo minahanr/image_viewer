@@ -47,7 +47,7 @@ export function loadCoaxialImage_1(imageId) {
             lut: baseImage.lut, 
             rgba: baseImage.rgba,
             columnPixelSpacing: baseImage.columnPixelSpacing,
-            rowPixelSpacing: CSimage.layers[layerIndex].options.dataset.string('x00180050'),
+            rowPixelSpacing: undefined,
             invert: baseImage.invert,
             sizeInBytes: undefined,
             falseColor: baseImage.falseColor,
@@ -57,6 +57,13 @@ export function loadCoaxialImage_1(imageId) {
             colormap: element.colormap,
             data: undefined
         };
+
+        if (CSimage.layers[layerIndex].sliceThickness !== undefined) {
+            newImage.rowPixelSpacing = CSimage.layers[layerIndex].sliceThickness;
+        } else if (CSimage.layers[layerIndex].options.dataset.string !== undefined) {
+            newImage.rowPixelSpacing = CSimage.layers[layerIndex].options.dataset.string('x00180050');
+        }
+
         let pixelData = baseImage.getPixelData();
         if (pixelData instanceof Int16Array) {
             newImage.data = new Int16Array(newImage.rows * newImage.columns);
@@ -150,7 +157,7 @@ export function loadCoaxialImage_2(imageId) {
             lut: baseImage.lut, 
             rgba: baseImage.rgba,
             columnPixelSpacing: baseImage.columnPixelSpacing,
-            rowPixelSpacing: CSimage.layers[layerIndex].options.dataset.string('x00180050'),
+            rowPixelSpacing: undefined,
             invert: baseImage.invert,
             sizeInBytes: undefined,
             falseColor: baseImage.falseColor,
@@ -159,6 +166,13 @@ export function loadCoaxialImage_2(imageId) {
             cachedLut: undefined,
             colormap: element.colormap
         };
+
+        if (CSimage.layers[layerIndex].sliceThickness !== undefined) {
+            newImage.rowPixelSpacing = CSimage.layers[layerIndex].sliceThickness;
+        } else if (CSimage.layers[layerIndex].options.dataset.string !== undefined) {
+            newImage.rowPixelSpacing = CSimage.layers[layerIndex].options.dataset.string('x00180050');
+        }
+
         let pixelData = baseImage.getPixelData();
         if (pixelData instanceof Int16Array) {
             newImage.data = new Int16Array(newImage.rows * newImage.columns);

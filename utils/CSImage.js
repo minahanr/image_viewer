@@ -102,7 +102,7 @@ class CSImage {
         this.timeSlider.value = 0;
 
         if (urlsOverTime !== undefined) {
-            this.addLayer(format, urlsOverTime, { name: options.name });
+            this.addLayer(format, urlsOverTime, { name: options.name, sliceThickness: options.sliceThickness });
         }
 
         topLeft.classList = 'overlay topLeft';

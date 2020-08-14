@@ -33,7 +33,6 @@ function merge(border, largerContainer, smallerContainer, mergeMethod) {
 }
 
 function resizeContainer(e) {
-    console.log('test');
     let border = e.target;
     let containerUp = border.previousSibling;
     let containerDown = border.nextSibling;
