@@ -21,10 +21,10 @@ export default function parseArray(imageIndex) {
     //     }
     // }
 
-    urlsOverTime.push([]);
     for (let i = 0; i < numFrames; i++) {
+        urlsOverTime.push([]);
         for(let j = 0; j < imgsPerFrame; j++) {
-            urlsOverTime[0].push(baseURL + '/' + '0'.repeat(Math.floor(Math.log10(numFrames)) - Math.floor(Math.log10(Math.max(i + startingTimeIndex, 1)))) + (i + startingTimeIndex) + '/' + '0'.repeat(Math.floor(Math.log10(imgsPerFrame)) - Math.floor(Math.log10(Math.max(i + startingSpaceIndex, 1)))) + (i + startingSpaceIndex));
+            urlsOverTime[i].push(baseURL + '/' + '0'.repeat(Math.floor(Math.log10(numFrames)) - Math.floor(Math.log10(Math.max(i + startingTimeIndex, 1)))) + (i + startingTimeIndex) + '-' + '0'.repeat(Math.floor(Math.log10(imgsPerFrame)) - Math.floor(Math.log10(Math.max(i + startingSpaceIndex, 1)))) + (i + startingSpaceIndex) + '.' + format);
         }
     }
 
