@@ -58,7 +58,11 @@ function highlightedLayer(layer) {
 }
 
 class CSImage {
-    constructor(element, urlsOverTime, format) {
+    constructor(element, urlsOverTime, format, options) {
+        if (options === undefined) {
+            options = {};
+        }
+        
         cornerstone.enable(element);
 
         this.movieReverse = false;
@@ -75,16 +79,16 @@ class CSImage {
 
         let container = element.parentElement;
         let topLeft = document.createElement('div');
-        let topRight = document.createElement('div');
+        //let topRight = document.createElement('div');
         let botRight = document.createElement('div');
         let bot = document.createElement('div');
         let movieButton = document.createElement('img');
         let text = document.createElement('div');
         let interpolation = document.createElement('div');
-        let patientName = document.createElement('div');
-        let series = document.createElement('div');
-        let modality = document.createElement('div');
-        let date = document.createElement('div');
+        // let patientName = document.createElement('div');
+        // let series = document.createElement('div');
+        // let modality = document.createElement('div');
+        // let date = document.createElement('div');
         let deleteImage = document.createElement('img');
         let projection = document.createElement('div');
         this.timeSlider = document.createElement('input');
@@ -98,11 +102,11 @@ class CSImage {
         this.timeSlider.value = 0;
 
         if (urlsOverTime !== undefined) {
-            this.addLayer(format, urlsOverTime);
+            this.addLayer(format, urlsOverTime, { name: options.name });
         }
 
         topLeft.classList = 'overlay topLeft';
-        topRight.classList = 'overlay topRight';
+        //topRight.classList = 'overlay topRight';
         bot.classList = 'overlay bot';
         botRight.classList = 'overlay botRight delete';
         text.classList = 'text item';
@@ -110,10 +114,10 @@ class CSImage {
         deleteImage.classList = 'imageOverlay item button';
         this.timeSlider.classList = 'slider timeSlider';
 
-        patientName.innerHTML = 'patientName: ';
-        series.innerHTML = 'series: ';
-        modality.innerHTML = 'modality: ';
-        date.innerHTML = 'date: ';
+        //patientName.innerHTML = 'patientName: ';
+        //series.innerHTML = 'series: ';
+        //modality.innerHTML = 'modality: ';
+        //date.innerHTML = 'date: ';
         deleteImage.src = './images/delete.png';
         element.style.borderRadius = '0';
         movieButton.src =  './images/playButton.png';
@@ -121,17 +125,17 @@ class CSImage {
         projection.innerHTML = 'projection';
         
         element.appendChild(topLeft);
-        element.appendChild(topRight);
+        // element.appendChild(topRight);
         element.appendChild(bot);
         container.appendChild(botRight);
         topLeft.appendChild(movieButton);
         topLeft.appendChild(text);
         topLeft.appendChild(interpolation);
         topLeft.appendChild(projection);
-        topRight.appendChild(patientName);
-        topRight.appendChild(series);
-        topRight.appendChild(modality);
-        topRight.appendChild(date);
+        // topRight.appendChild(patientName);
+        // topRight.appendChild(series);
+        // topRight.appendChild(modality);
+        //topRight.appendChild(date);
         bot.appendChild(this.timeSlider);
         botRight.appendChild(deleteImage);
                 
@@ -149,7 +153,7 @@ class CSImage {
             highlightContainer(evt.target.parentElement)
         });
 
-        ([topLeft, topRight, bot, botRight]).forEach(element => {
+        ([topLeft, /*topRight, */bot, botRight]).forEach(element => {
             element.addEventListener('mousedown', evt => evt.stopPropagation());
         });
 
