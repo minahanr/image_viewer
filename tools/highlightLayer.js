@@ -29,10 +29,12 @@ export default function highlightLayer (layer) {
     } else {
         document.getElementById('opacitySlider').value = highlightedLayer.options.opacity;
     }
-    if (highlightedLayer.options.colormap === undefined) {
+    let CSimage = CSImage.instances().get(CSImage.highlightedElement());
+    let CSlayer = cornerstone.getLayer(CSimage.element, CSImage.highlightedLayer().uid);
+    if (CSImage.highlightedLayer().uid === undefined || CSlayer.viewport.colormap === undefined) {
         document.getElementById('colormaps').value = 'None';
     } else {
-        document.getElementById('colormaps').value = highlightedLayer.options.colormap;
+        document.getElementById('colormaps').value = CSlayer.viewport.colormap;
     }
     
 }

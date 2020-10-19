@@ -168,6 +168,7 @@
         <script type='module' src="utils/defineVariables.js"></script>
 
         <script>
+            var chosen_id = 'some_other_string';
             var imageSeries = [];
             imageSeries.push({
                 series_id: 'some_string',
@@ -189,7 +190,27 @@
                 modality: 'MRI',
                 subject: 'random'
             });
-
+            imageSeries.push({
+                series_id: 'jpg_string',
+                baseURL: 'https://raw.githubusercontent.com/minahanr/image_viewer/tiffLoader/test_jpg',
+                format: 'jpg',
+                numFrames: 1,
+                imgsPerFrame: 2,
+                name: 'test',
+                modality: 'xray?',
+                subject: 'unknown'
+            });
+            imageSeries.push({
+                series_id: 'tiff_string',
+                baseURL: 'https://github.com/minahanr/image_viewer/blob/tiffLoader/test_tiff',
+                format: 'tif',
+                numFrames: 1,
+                imgsPerFrame: 3,
+                name: 'tiff_test',
+                modality: 'none',
+                subject: 'none'
+            });
+            
             var imageSeriesDict = imageSeries.reduce((accumulator, images, index) => {
 
                 if (accumulator[images.series_id] !== undefined) {

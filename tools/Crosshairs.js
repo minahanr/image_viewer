@@ -61,7 +61,7 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
                 this.syncX = imageX;
                 this.syncY = imageY;
                 this.syncZ = frame;
-            } else if (projection === 'LCI1:') {
+            } else if (projection === 'LCI:') {
                 this.syncX = imageX;
                 this.syncY = frame;
                 this.syncZ = imageY;
@@ -75,7 +75,7 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
                 synchronizer.syncX = imageX;
                 synchronizer.syncY = imageY;
                 synchronizer.syncZ = frame;
-            } else if (projection === 'LCI1:') {
+            } else if (projection === 'LSI:') {
                 synchronizer.syncX = imageX;
                 synchronizer.syncY = frame;
                 synchronizer.syncZ = imageY;
@@ -90,9 +90,9 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
             synchronizer.images.forEach(CSimage => {
                 if (CSimage.projection === '') {
                     updateTheImage(CSimage.element, synchronizer.syncZ);
-                } else if (CSimage.projection === 'LCI1:') {
+                } else if (CSimage.projection === 'LCI:') {
                     updateTheImage(CSimage.element, synchronizer.syncY);
-                } else if (CSimage.projection === 'LCI2:') {
+                } else if (CSimage.projection === 'LSI:') {
                     updateTheImage(CSimage.element, synchronizer.syncX);
                 }
             });
@@ -140,9 +140,9 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
             context.setTransform(1, 0, 0, 1, 0, 0);
             if (projection === '') {
                 drawCrosshair(context, CSimage, {x: synchronizer.syncX, y: synchronizer.syncY});
-            } else if (projection === 'LCI1:') {
+            } else if (projection === 'LCI:') {
                 drawCrosshair(context, CSimage, {x: synchronizer.syncX, y: synchronizer.syncZ});
-            } else if (projection === 'LCI2:') {
+            } else if (projection === 'LSI:') {
                 drawCrosshair(context, CSimage, {x: synchronizer.syncY, y: synchronizer.syncZ});
             }
         } else {

@@ -52,6 +52,7 @@ function resizeContainer(e) {
         const startX = e.clientX;
 
         function dragX(e) {
+            
             let newWidthUp = initWidthUp + e.clientX - startX;
             let newWidthDown = initWidthDown - (e.clientX - startX);
 

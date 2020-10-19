@@ -1,4 +1,4 @@
-import getModalityLUT from './getModalityLUT.js';
+import getModalityLUT from './getModalityLut.js';
 import getVOILUT from './getVOILut.js';
 
 /**

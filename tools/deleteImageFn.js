@@ -7,5 +7,4 @@ export default function deleteImageFn(e) {
     while (ele = elements[0]) {
         ele.parentElement.removeChild(ele);
     }
-    image.getElementsByClassName('addImage')[0].style.display = 'inline-block';
 }

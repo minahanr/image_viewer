@@ -1,12 +1,12 @@
 import readHeader from './readHeader.js';
 import parseIFD from './parseIFD.js';
-import Image from './image.js';
+import tiffParser from './tiffParser.js';
+import obj from '../../tools/Synchronizer.js';
 
 export default function parseTiff(byteArray, options) {
     if (byteArray === undefined)
         throw 'tiffParser.parseTiff: missing required parameter \'byteArray\'';
 
-    var foundBitMapValue = false;
     var byteStream = readHeader(byteArray, options);
     var numDirectories = byteStream.readUint16();
     
@@ -16,5 +16,5 @@ export default function parseTiff(byteArray, options) {
         imageDescriptor[IFD['tag']] = IFD;
     }
     
-    return new Image(byteStream, imageDescriptor);
+    return new tiffParser(byteStream, imageDescriptor);
 }

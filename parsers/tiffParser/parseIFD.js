@@ -14,7 +14,7 @@ export default function parseIFD(byteStream) {
     };
 
     if (defineVariables().typeSize[type] * count <= 4)
-        IFD['value'] = IFD['offset'];
+        IFD['value'] = [IFD['offset']];
 
     return IFD
 }
