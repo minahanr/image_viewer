@@ -28,10 +28,7 @@ class Layer {
         }
         if (this.options.dataset === undefined) {
             this.options.dataset = {};
-            if (this.format === 'dicom' || this.format === 'dcm') {
-                this.getFileMetadata();
-            }
-            
+            this.getFileMetadata();
         }
     }
 

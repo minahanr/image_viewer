@@ -42,7 +42,7 @@ export default function highlightContainer(element) {
         layerName.innerHTML = '<span>' + layer.name + ' </span>';
 
         cornerstone.enable(thumbnail);
-        cornerstone.loadAndCacheImage(CSimage.projection + defineVariables().fileFormats[layer.format] + layer.stack[CSimage.currentTimeIndex - layer.startingTimeIndex].imageIds[CSimage.currentImageIdIndex - layer.startingSpaceIndex]).then(image => {
+        cornerstone.loadAndCacheImage(defineVariables().fileFormats[layer.format] + ':' + defineVariables().BASE_URL + '/' + CSimage.projection + '/' + layer.stack[CSimage.currentTimeIndex].imageIds[CSimage.currentImageIdIndex]).then(image => {
             cornerstone.getEnabledElement(thumbnail).layers = [];
             cornerstone.addLayer(thumbnail, image, layer.options);
             cornerstone.updateImage(thumbnail);

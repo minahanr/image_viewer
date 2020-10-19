@@ -67,7 +67,7 @@ class CSImage {
 
         this.movieReverse = false;
         this.element = element;
-        this.projection = '';
+        this.projection = 'frontal';
         this.currentTimeIndex = 0;
         this.currentImageIdIndex = 0;
         this.layers = [];

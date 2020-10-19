@@ -1,5 +1,4 @@
 import { splitImageHorizontal, splitImageVertical } from './tools/modifyImageWindows.js';
-import {loadCoaxialImage_1, loadCoaxialImage_2 } from './imageLoaders/projectionLoader/loadImage.js';
 import updateDescription from './tools/updateDescription.js';
 import CSImage from './utils/CSImage.js';
 import updateTheImage from './utils/updateImageSelector.js';
@@ -9,8 +8,8 @@ import populateGrid from './tools/populateGrid.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
-cornerstone.registerImageLoader('LCI1', loadCoaxialImage_1);
-cornerstone.registerImageLoader('LCI2', loadCoaxialImage_2);
+// cornerstone.registerImageLoader('LCI', loadCoaxialImage);
+// cornerstone.registerImageLoader('LSI', loadSagitalImage);
 cornerstone.registerImageLoader('tiff', loadTiff);
 
 cornerstoneTools.external.cornerstone = cornerstone;

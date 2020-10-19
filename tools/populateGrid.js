@@ -7,7 +7,7 @@ export default function populateGrid(container, seriesIndex, options) {
     let div = document.createElement('div');
     div.classList = 'image delete';
     container.appendChild(div);
-    let { urlsOverTime } = parseArray(seriesIndex);
+    let { urlsOverTime } = parseArray(seriesIndex, 'frontal');
 
     new CSImage.CSImage(div, urlsOverTime, imageSeries[seriesIndex].format, { name: options.name });
     updateTheImage(div, 0);

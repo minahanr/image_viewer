@@ -1,4 +1,4 @@
-export default function parseArray(imageIndex) {
+export default function parseArray(imageIndex, projection) {
     const baseURL = imageSeries[imageIndex].baseURL;
     const format = imageSeries[imageIndex].format;
     const numFrames = imageSeries[imageIndex].numFrames
@@ -24,7 +24,7 @@ export default function parseArray(imageIndex) {
     for (let i = 0; i < numFrames; i++) {
         urlsOverTime.push([]);
         for(let j = 0; j < imgsPerFrame; j++) {
-            urlsOverTime[i].push(baseURL + '/' + '0'.repeat(Math.floor(Math.log10(numFrames)) - Math.floor(Math.log10(Math.max(i + startingTimeIndex, 1)))) + (i + startingTimeIndex) + '-' + '0'.repeat(Math.floor(Math.log10(imgsPerFrame)) - Math.floor(Math.log10(Math.max(j + startingSpaceIndex, 1)))) + (j + startingSpaceIndex) + '.' + format + '?raw=true');
+            urlsOverTime[i].push(baseURL + '/' + projection + '/' + '0'.repeat(Math.floor(Math.log10(numFrames)) - Math.floor(Math.log10(Math.max(i + startingTimeIndex, 1)))) + (i + startingTimeIndex) + '-' + '0'.repeat(Math.floor(Math.log10(imgsPerFrame)) - Math.floor(Math.log10(Math.max(j + startingSpaceIndex, 1)))) + (j + startingSpaceIndex) + '.' + format + '?raw=true');
         }
     }
 
