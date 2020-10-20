@@ -57,11 +57,11 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
         let synchronizer = Synchronizer.instances().get(CSImage.instances().get(this.element));
 
         if (synchronizer === undefined) {
-            if (projection === '') {
+            if (projection === 'frontal') {
                 this.syncX = imageX;
                 this.syncY = imageY;
                 this.syncZ = frame;
-            } else if (projection === 'LCI:') {
+            } else if (projection === 'coaxial') {
                 this.syncX = imageX;
                 this.syncY = frame;
                 this.syncZ = imageY;
@@ -71,11 +71,11 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
                 this.syncZ = imageY;
             }
         } else {
-            if (projection === '') {
+            if (projection === 'frontal') {
                 synchronizer.syncX = imageX;
                 synchronizer.syncY = imageY;
                 synchronizer.syncZ = frame;
-            } else if (projection === 'LSI:') {
+            } else if (projection === 'coaxial') {
                 synchronizer.syncX = imageX;
                 synchronizer.syncY = frame;
                 synchronizer.syncZ = imageY;
@@ -88,11 +88,11 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
 
         if (synchronizer !== undefined) {
             synchronizer.images.forEach(CSimage => {
-                if (CSimage.projection === '') {
+                if (CSimage.projection === 'frontal') {
                     updateTheImage(CSimage.element, synchronizer.syncZ);
-                } else if (CSimage.projection === 'LCI:') {
+                } else if (CSimage.projection === 'coaxial') {
                     updateTheImage(CSimage.element, synchronizer.syncY);
-                } else if (CSimage.projection === 'LSI:') {
+                } else {
                     updateTheImage(CSimage.element, synchronizer.syncX);
                 }
             });
@@ -124,6 +124,7 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
     }
 
     renderToolData(evt) {
+        console.log('test');
         let CSimage = CSImage.instances().get(evt.detail.element);
         let synchronizer = Synchronizer.instances().get(CSImage.instances().get(evt.detail.element));
 
@@ -134,15 +135,16 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
         }
 
         if (synchronizer !== undefined) {
+            console.log('test2');
             let projection = CSimage.projection;
             let canvas = CSimage.element.getElementsByTagName('canvas')[0];
             let context = cornerstoneTools.getNewContext(canvas);
             context.setTransform(1, 0, 0, 1, 0, 0);
-            if (projection === '') {
+            if (projection === 'frontal') {
                 drawCrosshair(context, CSimage, {x: synchronizer.syncX, y: synchronizer.syncY});
-            } else if (projection === 'LCI:') {
+            } else if (projection === 'coaxial') {
                 drawCrosshair(context, CSimage, {x: synchronizer.syncX, y: synchronizer.syncZ});
-            } else if (projection === 'LSI:') {
+            } else {
                 drawCrosshair(context, CSimage, {x: synchronizer.syncY, y: synchronizer.syncZ});
             }
         } else {

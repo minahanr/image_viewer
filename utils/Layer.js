@@ -20,7 +20,11 @@ class Layer {
         } else {
             this.options = options;
         };
-        if (urlsOverTime[0].currentImageIdIndex !== undefined){
+
+        if (urlsOverTime === []) {
+            
+            this.stack = urlsOverTime;
+        } else if (urlsOverTime[0].currentImageIdIndex !== undefined){
             this.stack = urlsOverTime;
         } else {
             this.stack = [];

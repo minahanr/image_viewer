@@ -104,52 +104,58 @@ export default function loadStackProjection(e) {
         CSimage.layers = [];
  
         if (i === 1) {
-            CSimage.projection = 'LCI';
+            CSimage.projection = 'coaxial';
         } else {
-            CSimage.projection = 'LSI';
+            CSimage.projection = 'sagital';
         }
         
         baseImage.layers.forEach((layer, layerIndex) => {
-            CSimage.addLayer(layer.format, layer.stack, layer.options);
+            CSimage.addLayer(layer.format, deepCopy(layer.stack), layer.options);
 
             let promises = [];
             for(let timeIndex = 0; timeIndex < Object.keys(CSimage.layers[layerIndex].stack).length; timeIndex++) {
-                promises.push(cornerstone.loadAndCacheImage(defineVariables().fileFormats[layer.format] + ':' + layer.stack[timeIndex].imageIds[baseImage.currentImageIdIndex]));
+                promises.push(cornerstone.loadAndCacheImage(defineVariables().fileFormats[layer.format] + layer.stack[timeIndex].imageIds[baseImage.currentImageIdIndex]));
             }
 
             var numImages = 0;
             Promise.all(promises).then(images => {
                 for (let j = 0; j < images.length; j++) {
                     if (i === 1) {
-                        numImages = max(numImages, images[j].rows);
+                        numImages = Math.max(numImages, images[j].rows);
                     } else {
-                        numImages = max(numImages, images[j].cols);
+                        numImages = Math.max(numImages, images[j].columns);
                     }
                 }
                 CSimage.lastSpaceIndex = numImages;
-            }).then((images, numImages) => {
+
+                return images;
+            }).then( images => {
                 for (let j = 0; j < images.length; j++) {
+                    CSimage.layers[layerIndex].stack.push([]);
+                    CSimage.layers[layerIndex].stack[j].imageIds = [];
+                    CSimage.layers[layerIndex].stack[j].currentImageIdIndex = 0;
 
-                    let projectionIndex = CSimage.layers[layerIndex].stack[j].imageIds[0].lastIndexOf('frontal');
+                    let projectionIndex = baseImage.layers[layerIndex].stack[j].imageIds[0].lastIndexOf('frontal');
                     if (projectionIndex === -1) {
-                        projectionIndex = CSimage.layers[layerIndex].stack[j].imageIds[0].lastIndexOf('coaxial')
+                        projectionIndex = baseImage.layers[layerIndex].stack[j].imageIds[0].lastIndexOf('coaxial')
                     }
                     if (projectionIndex === -1) {
-                        projectionIndex = CSimage.layers[layerIndex].stack[j].imageIds[0].lastIndexOf('sagital');
+                        projectionIndex = baseImage.layers[layerIndex].stack[j].imageIds[0].lastIndexOf('sagital');
                     }
 
-                    for (let k = 0; k < numImages; k++) {
+                    for (let k = 0; k < CSimage.lastSpaceIndex; k++) {
+                        let suffix = '/' + '0'.repeat(Math.floor(Math.log10(images.length)) - Math.floor(Math.log10(Math.max(j + 1, 1)))) + (j + 1) + '-' + '0'.repeat(Math.floor(Math.log10(CSimage.lastSpaceIndex)) - Math.floor(Math.log10(Math.max(k + 1, 1)))) + (k + 1) + '.' + layer.format
                         if (i === 1) {
-                            CSimage.layers[layerIndex].stack[j].imageIds[k] = baseImage.layers[layerIndex].stack[j].imageIds[k].slice(0, projectionIndex) + 'coaxial' + baseImage.layers[layerIndex].stack[j].imageIds[k].slice(projectionIndex + 7);
+                            CSimage.layers[layerIndex].stack[j].imageIds.push(baseImage.layers[layerIndex].stack[j].imageIds[0].slice(0, projectionIndex) + 'coaxial' + suffix);
                         } else {
-                            CSimage.layers[layerIndex].stack[j].imageIds[k] = baseImage.layers[layerIndex].stack[j].imageIds[k].slice(0, projectionIndex) + 'sagital' + baseImage.layers[layerIndex].stack[j].imageIds[k].slice(projectionIndex + 7);
+                            CSimage.layers[layerIndex].stack[j].imageIds.push(baseImage.layers[layerIndex].stack[j].imageIds[0].slice(0, projectionIndex) + 'sagital' + suffix);
                         }
-                        console.log(CSimage.layers[layerIndex].stack[j].imageIds[k]);
                     }
                 }
                 updateTheImage(element, 0);
             });
         });
+        CSimages.push(CSimage);
     };
     new Synchronizer.Synchronizer(CSimages);
 }
