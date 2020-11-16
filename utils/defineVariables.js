@@ -51,7 +51,7 @@ export default function defineVariables() {
         'documentName'
     ];
 
-    const BASE_URL = 'github.com';
+    const BASE_URL = 'https://github.com';
 
     return {
         fileFormats,

@@ -8,8 +8,7 @@ import populateGrid from './tools/populateGrid.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
-// cornerstone.registerImageLoader('LCI', loadCoaxialImage);
-// cornerstone.registerImageLoader('LSI', loadSagitalImage);
+cornerstoneWebImageLoader.registerImageLoader
 cornerstone.registerImageLoader('tiff', loadTiff);
 
 cornerstoneTools.external.cornerstone = cornerstone;
