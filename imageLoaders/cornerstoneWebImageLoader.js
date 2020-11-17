@@ -1034,7 +1034,7 @@ var options = {
 // Loads an image given a url to an image
 function loadImage(imageId) {
   var cornerstone = _externalModules.external.cornerstone;
-
+  imageId = imageId.substring(4);
   var xhr = new XMLHttpRequest();
 
   xhr.open('GET', imageId, true);

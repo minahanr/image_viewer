@@ -8,7 +8,8 @@ import populateGrid from './tools/populateGrid.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
-cornerstoneWebImageLoader.registerImageLoader
+//cornerstoneWebImageLoader.loadImage pointing to wrong loader???
+cornerstone.registerImageLoader('web', cornerstoneWebImageLoader.loadImage);
 cornerstone.registerImageLoader('tiff', loadTiff);
 
 cornerstoneTools.external.cornerstone = cornerstone;
