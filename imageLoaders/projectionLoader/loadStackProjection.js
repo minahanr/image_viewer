@@ -101,7 +101,6 @@ export default function loadStackProjection(e) {
         containers[i].appendChild(image);
         let element = containers[i].getElementsByClassName('image')[0];
         let CSimage = new CSImage.CSImage(image);
-        CSimage.baseURL = baseImage.baseURL;
         CSimage.layers = [];
  
         if (i === 1) {
@@ -111,7 +110,7 @@ export default function loadStackProjection(e) {
         }
         
         baseImage.layers.forEach((layer, layerIndex) => {
-            CSimage.addLayer(layer.format, deepCopy(layer.stack), layer.options);
+            CSimage.addLayer(layer.format, deepCopy(layer.stack), layer.baseURL, layer.options);
 
             let promises = [];
             for(let timeIndex = 0; timeIndex < Object.keys(CSimage.layers[layerIndex].stack).length; timeIndex++) {

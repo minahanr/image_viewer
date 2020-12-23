@@ -53,7 +53,7 @@ document.getElementById('submit-filters').addEventListener('click', evt => {
             } else {
                 let CSimage = CSImage.instances().get(CSImage.highlightedElement());
                 let { urlsOverTime, format } = parseArray(imageSeriesDict[image.series_id]);
-                CSimage.addLayer(format, urlsOverTime, { name: image.name, sliceThickness: image.slice_thickness });
+                CSimage.addLayer(format, urlsOverTime, imageSeries[imageSeriesDict[image.series_id]].baseURL, { name: image.name, sliceThickness: image.slice_thickness });
                 updateTheImage(CSImage.highlightedElement(), CSImage.instances().get(CSImage.highlightedElement()).currentImageIdIndex);
                 highlightContainer(CSimage.element);
             }

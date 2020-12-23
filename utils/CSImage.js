@@ -62,7 +62,6 @@ class CSImage {
         if (options === undefined) {
             options = {};
         }
-        this.baseURL = baseURL;
 
         cornerstone.enable(element);
         
@@ -103,7 +102,7 @@ class CSImage {
         this.timeSlider.value = 0;
 
         if (urlsOverTime !== undefined) {
-            this.addLayer(format, urlsOverTime, { name: options.name, sliceThickness: options.sliceThickness });
+            this.addLayer(format, urlsOverTime, baseURL, { name: options.name, sliceThickness: options.sliceThickness });
         }
 
         topLeft.classList = 'overlay topLeft';
@@ -162,9 +161,10 @@ class CSImage {
         element.id = 'image_' + UUID_incrementer();
     }
 
-    addLayer(format, urlsOverTime, options) {
-        let layer = new Layer.Layer(this.layerNumber - 1, 'Layer #' + this.layerNumber, format, urlsOverTime, options)
+    addLayer(format, urlsOverTime, baseURL, options) {
+        let layer = new Layer.Layer(this.layerNumber - 1, 'Layer #' + this.layerNumber, format, urlsOverTime, baseURL, options)
         this.layerNumber += 1;
+        
         this.layers.push(layer);
         
         if (layer.stack[0].imageIds.length + layer.startingSpaceIndex > this.lastSpaceIndex) {
