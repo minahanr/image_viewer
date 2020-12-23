@@ -67,9 +67,12 @@ document.getElementById('opacitySlider').addEventListener('change', evt => {
 
 document.getElementById('colormaps').addEventListener('change', evt => {
     let CSimage = CSImage.instances().get(CSImage.highlightedElement());
+    CSImage.highlightedLayer().colormap = document.getElementById('colormaps').value;
     let layer = cornerstone.getLayer(CSimage.element, CSImage.highlightedLayer().uid);
-    layer.viewport.colormap = document.getElementById('colormaps').value;
+    //layer.viewport.colormap = document.getElementById('colormaps').value;
+    layer.viewport.colormap = CSImage.highlightedLayer().colormap;
     cornerstone.updateImage(CSImage.highlightedElement());
+    //updateTheImage(CSImage.highlightedElement(), CSimage.currentImageIdIndex);
 });
 
 createGrid(1, 1);

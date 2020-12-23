@@ -26,6 +26,7 @@ export default function updateTheImage(element, imageIndex, sync) {
         cornerstone.getEnabledElement(element).layers = [];
         images.forEach((image, index) => {
             CSimage.layers[index].uid = cornerstone.addLayer(element, image, CSimage.layers[index].options);
+            cornerstone.getLayer(CSimage.element, CSimage.layers[index].uid).viewport.colormap = CSimage.layers[index].colormap;
         });
 
         if (sync) {
