@@ -58,13 +58,14 @@ function highlightedLayer(layer) {
 }
 
 class CSImage {
-    constructor(element, urlsOverTime, format, options) {
+    constructor(element, urlsOverTime, format, baseURL, options) {
         if (options === undefined) {
             options = {};
         }
-        
-        cornerstone.enable(element);
+        this.baseURL = baseURL;
 
+        cornerstone.enable(element);
+        
         this.movieReverse = false;
         this.element = element;
         this.projection = 'frontal';
@@ -74,7 +75,7 @@ class CSImage {
         this.lastSpaceIndex = 0;
         this.lastTimeIndex = 0;
         this.layerNumber = 1;
-        
+
         instances().set(element, this);
 
         let container = element.parentElement;
@@ -174,8 +175,8 @@ class CSImage {
             this.lastTimeIndex = layer.stack.length + layer.startingTimeIndex - 1;
         }
 
-        this.timeSlider.max = urlsOverTime.length - 1;
-        if (this.timeSlider.max === 0 || this.timeSlider.max === 1) {
+        //this.timeSlider.max = urlsOverTime.length - 1;
+        if (urlsOverTime.length === 1) {
             this.timeSlider.style.display = 'none';
         } else {
             this.timeSlider.style.display = 'block';

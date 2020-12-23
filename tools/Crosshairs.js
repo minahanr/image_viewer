@@ -124,7 +124,6 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
     }
 
     renderToolData(evt) {
-        console.log('test');
         let CSimage = CSImage.instances().get(evt.detail.element);
         let synchronizer = Synchronizer.instances().get(CSImage.instances().get(evt.detail.element));
 
@@ -135,7 +134,6 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
         }
 
         if (synchronizer !== undefined) {
-            console.log('test2');
             let projection = CSimage.projection;
             let canvas = CSimage.element.getElementsByTagName('canvas')[0];
             let context = cornerstoneTools.getNewContext(canvas);

@@ -29,6 +29,7 @@ export default function highlightLayer (layer) {
     } else {
         document.getElementById('opacitySlider').value = highlightedLayer.options.opacity;
     }
+    
     let CSimage = CSImage.instances().get(CSImage.highlightedElement());
     let CSlayer = cornerstone.getLayer(CSimage.element, CSImage.highlightedLayer().uid);
     if (CSImage.highlightedLayer().uid === undefined || CSlayer.viewport.colormap === undefined) {

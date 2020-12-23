@@ -101,6 +101,7 @@ export default function loadStackProjection(e) {
         containers[i].appendChild(image);
         let element = containers[i].getElementsByClassName('image')[0];
         let CSimage = new CSImage.CSImage(image);
+        CSimage.baseURL = baseImage.baseURL;
         CSimage.layers = [];
  
         if (i === 1) {
@@ -152,10 +153,10 @@ export default function loadStackProjection(e) {
                         }
                     }
                 }
-                updateTheImage(element, 0);
             });
         });
         CSimages.push(CSimage);
+        updateTheImage(element, 0);
     };
     new Synchronizer.Synchronizer(CSimages);
 }
