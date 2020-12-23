@@ -8,7 +8,6 @@ import populateGrid from './tools/populateGrid.js';
 
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
-//cornerstoneWebImageLoader.loadImage pointing to wrong loader???
 cornerstone.registerImageLoader('web', cornerstoneWebImageLoader.loadImage);
 cornerstone.registerImageLoader('tiff', loadTiff);
 
@@ -69,10 +68,9 @@ document.getElementById('colormaps').addEventListener('change', evt => {
     let CSimage = CSImage.instances().get(CSImage.highlightedElement());
     CSImage.highlightedLayer().colormap = document.getElementById('colormaps').value;
     let layer = cornerstone.getLayer(CSimage.element, CSImage.highlightedLayer().uid);
-    //layer.viewport.colormap = document.getElementById('colormaps').value;
     layer.viewport.colormap = CSImage.highlightedLayer().colormap;
+    updateTheImage(CSImage.highlightedElement(), CSimage.currentImageIdIndex);
     cornerstone.updateImage(CSImage.highlightedElement());
-    //updateTheImage(CSImage.highlightedElement(), CSimage.currentImageIdIndex);
 });
 
 createGrid(1, 1);
