@@ -168,10 +168,10 @@
         <script type='module' src="utils/defineVariables.js"></script>
 
         <script>
-            var chosen_id = 'some_other_string';
+            var chosen_id = 'timeSeries_image';
             var imageSeries = [];
             imageSeries.push({
-                series_id: 'some_string',
+                series_id: 'timeSeries_image',
                 baseURL: 'https://github.com/minahanr/image_viewer/blob/master/test_RATIB2/RATIB2/CorCTALow%20%200.75%20%20B25f%20%20Multiphase',
                 format: 'dcm',
                 numFrames: 20,
@@ -210,7 +210,6 @@
                 modality: 'none',
                 subject: 'none'
             });
-            
             var imageSeriesDict = imageSeries.reduce((accumulator, images, index) => {
 
                 if (accumulator[images.series_id] !== undefined) {
