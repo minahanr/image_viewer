@@ -95,11 +95,11 @@ class CSImage {
         this.timeSlider.style.display = 'none';
 
         this.timeSlider.type = 'range';
-        this.timeSlider.min = 0;
-        this.timeSlider.max = 0;
+        this.timeSlider.min = 1;
+        this.timeSlider.max = 1;
 
         this.timeSlider.step = 1;
-        this.timeSlider.value = 0;
+        this.timeSlider.value = 1;
 
         if (urlsOverTime !== undefined) {
             this.addLayer(format, urlsOverTime, baseURL, { name: options.name, sliceThickness: options.sliceThickness });
@@ -175,7 +175,7 @@ class CSImage {
             this.lastTimeIndex = layer.stack.length + layer.startingTimeIndex - 1;
         }
 
-        //this.timeSlider.max = urlsOverTime.length - 1;
+        this.timeSlider.max = urlsOverTime.length - 1;
         if (urlsOverTime.length === 1) {
             this.timeSlider.style.display = 'none';
         } else {
