@@ -81,8 +81,8 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
                 synchronizer.syncZ = imageY;
             } else {
                 synchronizer.syncX = frame;
-                synchronizer.syncY = imageX;
-                synchronizer.syncZ = imageY;
+                synchronizer.syncY = imageY;
+                synchronizer.syncZ = imageX;
             }
         }
 
@@ -143,7 +143,7 @@ export default class ModifiedCrosshairsTool extends cornerstoneTools.BaseTool {
             } else if (projection === 'coaxial') {
                 drawCrosshair(context, CSimage, {x: synchronizer.syncX, y: synchronizer.syncZ});
             } else {
-                drawCrosshair(context, CSimage, {x: synchronizer.syncY, y: synchronizer.syncZ});
+                drawCrosshair(context, CSimage, {x: synchronizer.syncZ, y: synchronizer.syncY});
             }
         } else {
             let context = cornerstoneTools.getNewContext(evt.detail.canvasContext.canvas);

@@ -23,7 +23,6 @@ class Layer {
         };
 
         if (urlsOverTime === []) {
-            
             this.stack = urlsOverTime;
         } else if (urlsOverTime[0].currentImageIdIndex !== undefined){
             this.stack = urlsOverTime;
@@ -63,7 +62,7 @@ class Layer {
                     layer.options.dataset.metadata += warning + '<br>';
                 });
             }
-            request.open('GET', this.stack[0].imageIds[0], true);
+            request.open('GET', this.baseURL + '/frontal/' + this.stack[0].imageIds[0], true);
             request.send();
         }
     }

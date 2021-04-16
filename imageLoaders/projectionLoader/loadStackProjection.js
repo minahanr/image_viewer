@@ -4,6 +4,9 @@ import { splitImageVertical } from "../../tools/modifyImageWindows.js";
 import Synchronizer from "../../tools/Synchronizer.js";
 import defineVariables from "../../utils/defineVariables.js";
 
+function updateImageSelector(CSimage) {
+    CSimage.element.parentElement.getElementsByClassName('text')[0].innerHTML = (CSimage.currentImageIdIndex + 1) + '/' + (CSimage.lastSpaceIndex + 1);
+}
 
 function deepCopy(object) {
     if (typeof object !== "object" || object === null) {
@@ -29,6 +32,7 @@ function deepCopy(object) {
 
     return copy;
 }
+
 // export default function loadStackProjection (e) {
     
 //     let containers = splitImageVertical(e.target.parentElement.parentElement.parentElement, 3);
@@ -114,7 +118,7 @@ export default function loadStackProjection(e) {
 
             let promises = [];
             for(let timeIndex = 0; timeIndex < Object.keys(CSimage.layers[layerIndex].stack).length; timeIndex++) {
-                promises.push(cornerstone.loadAndCacheImage(defineVariables().fileFormats[layer.format] + layer.stack[timeIndex].imageIds[baseImage.currentImageIdIndex]));
+                promises.push(cornerstone.loadAndCacheImage(defineVariables().fileFormats[layer.format] + layer.baseURL + '/' + CSimage.projection + '/' + layer.stack[timeIndex].imageIds[baseImage.currentImageIdIndex]));
             }
 
             var numImages = 0;
@@ -127,6 +131,8 @@ export default function loadStackProjection(e) {
                     }
                 }
                 CSimage.lastSpaceIndex = numImages;
+                
+                updateImageSelector(CSimage);
 
                 return images;
             }).then( images => {
@@ -137,23 +143,20 @@ export default function loadStackProjection(e) {
 
                     let projectionIndex = baseImage.layers[layerIndex].stack[j].imageIds[0].lastIndexOf('frontal');
                     if (projectionIndex === -1) {
-                        projectionIndex = baseImage.layers[layerIndex].stack[j].imageIds[0].lastIndexOf('coaxial')
+                        projectionIndex = baseImage.layers[layerIndex].stack[j].imageIds[0].lastIndexOf('coaxial');
                     }
                     if (projectionIndex === -1) {
                         projectionIndex = baseImage.layers[layerIndex].stack[j].imageIds[0].lastIndexOf('sagital');
                     }
 
                     for (let k = 0; k < CSimage.lastSpaceIndex; k++) {
-                        let suffix = '/' + '0'.repeat(Math.floor(Math.log10(images.length)) - Math.floor(Math.log10(Math.max(j + 1, 1)))) + (j + 1) + '-' + '0'.repeat(Math.floor(Math.log10(CSimage.lastSpaceIndex)) - Math.floor(Math.log10(Math.max(k + 1, 1)))) + (k + 1) + '.' + layer.format
-                        if (i === 1) {
-                            CSimage.layers[layerIndex].stack[j].imageIds.push(baseImage.layers[layerIndex].stack[j].imageIds[0].slice(0, projectionIndex) + 'coaxial' + suffix);
-                        } else {
-                            CSimage.layers[layerIndex].stack[j].imageIds.push(baseImage.layers[layerIndex].stack[j].imageIds[0].slice(0, projectionIndex) + 'sagital' + suffix);
-                        }
+                        let prefix = '0'.repeat(Math.floor(Math.log10(images.length)) - Math.floor(Math.log10(Math.max(j + 1, 1)))) + (j + 1) + '-' + '0'.repeat(Math.floor(Math.log10(CSimage.lastSpaceIndex)) - Math.floor(Math.log10(Math.max(k + 1, 1)))) + (k + 1);
+                        CSimage.layers[layerIndex].stack[j].imageIds.push(prefix + '.' + layer.format + '?raw=true');
                     }
                 }
             });
         });
+
         CSimages.push(CSimage);
         updateTheImage(element, 0);
     };
