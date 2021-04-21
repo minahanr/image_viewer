@@ -151,7 +151,7 @@ export default function loadStackProjection(e) {
 
                     for (let k = 0; k < CSimage.lastSpaceIndex; k++) {
                         let prefix = '0'.repeat(Math.floor(Math.log10(images.length)) - Math.floor(Math.log10(Math.max(j + 1, 1)))) + (j + 1) + '-' + '0'.repeat(Math.floor(Math.log10(CSimage.lastSpaceIndex)) - Math.floor(Math.log10(Math.max(k + 1, 1)))) + (k + 1);
-                        CSimage.layers[layerIndex].stack[j].imageIds.push(prefix + '.' + layer.format + '?raw=true');
+                        CSimage.layers[layerIndex].stack[j].imageIds.push(prefix + '.' + layer.format);
                     }
                 }
             });
