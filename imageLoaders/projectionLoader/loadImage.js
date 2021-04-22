@@ -5,7 +5,6 @@ import defineVariables from '../../utils/defineVariables.js';
 function loadFrontalImage(imageId, layer) {
     let colonIndex = imageId.indexOf(':');
     let URL = imageId.substring(colonIndex + 1);
-    console.log(layer);
     
     return {
         promise: cornerstone.loadImage(URL),
