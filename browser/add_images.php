@@ -11,20 +11,20 @@
         printf("Connect failed: %s\n", mysqli_connect_error());
         exit();
     }
-
+    
     $conditions = array();
-    if (isset($_POST['name_hidden']) AND $_POST['name_hidden'] != '') {
-        $name=mysqli_real_escape_string($conn, $_POST['name_hidden']);
+    if (isset($_GET['name']) AND $_GET['name'] != '') {
+        $name=mysqli_real_escape_string($conn, $_GET['name']);
         $conditions[] = 'name LIKE \''.$name.'\' AND ';
     }
 
-    if (isset($_POST['modality_hidden']) AND $_POST['modality_hidden'] != '') {
-        $modality=mysqli_real_escape_string($conn, $_POST['modality_hidden']);
+    if (isset($_GET['modality']) AND $_GET['modality'] != '') {
+        $modality=mysqli_real_escape_string($conn, $_GET['modality']);
         $conditions[] = 'modality LIKE \''.$modality.'\' AND ';
     }
     
-    if (isset($_POST['subject_hidden']) AND $_POST['subject_hidden'] != '') {
-        $subject=mysqli_real_escape_string($conn, $_POST['subject_hidden']);
+    if (isset($_GET['subject']) AND $_GET['subject'] != '') {
+        $subject=mysqli_real_escape_string($conn, $_GET['subject']);
         $conditions[] = 'subject LIKE \''.$subject.'\' AND ';
     }
     
@@ -48,22 +48,14 @@
 
     if ($queryResult > 0) {
         $index = 0;
+        echo "<table>";
+        echo "<thead><tr> <th>Name</th> <th>Modality</th> <th>Subject</th></thead><tbody>";
         while ($row = mysqli_fetch_assoc($result)) {
-            if ($_POST[strval($index)] == '1') {
-                $selected_rows[] = $row;
-            }
-
-            $index += 1;
+            echo "<tr><td>".$row['name']."</td><td>".$row['modality']."</td><td>".$row['subject']."</td>";
+            echo "<td style='display: none;'>".$row['series_id']."</td><td style='display: none;'>".$row['format']."</td><td style='display: none;'>".$row['base_url']."</td>";
+            echo "<td style='display: none;'>".$row['num_frames']."</td><td style='display: none;'>".$row['imgs_per_frame']."</td><tr>";
         }
-    }
-
-    if ($selected_rows > 0) {
-        
-
-        setcookie('selected_rows', json_encode($selected_rows), time() + 60*60*24, '/');
-        echo count($selected_rows).' images selected! Return to the viewer and refresh the selected image database to view your updated image selection.';
-    } else {
-        echo 'No images selected.';
+        echo "</tbody></table>";
     }
 
 ?>

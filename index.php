@@ -120,7 +120,7 @@
                         </div>
                         <div id='layers-container'></div>
                     </div>
-                    <div id='image-database' class='sub-panel'>
+                    <!-- <div id='image-database' class='sub-panel'>
                         <div class='panel-title'>Image database
                             <input type='image' id='refresh-db' style="width:0.75em;height:0.75em;margin:6px 4px 0 0;" src='images/refresh.png'>
                             <input type='image' id='db-browser' style="width:0.75em;height:0.75em;margin:6px 5px 0 0;" src='images/plus-icon.png'>
@@ -150,7 +150,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class='panel-title sub-panel'>Metadata</div>
                     <div id='metadata-viewer' class='sub-panel'></div>
                 </div>
@@ -158,7 +158,24 @@
                     <div id='image-info'>Image: </div>
                     <div id="grid" class="container" oncontextmenu="return false" onmousedown="return false"></div>
                 </div>
-                
+                <div id='database-browser'>
+                    <div id='filters'>
+                                    <label for='name'>Name</label>
+                                    <input type='text' id='name'>
+                                    <label for='modality'>Modality</label>
+                                    <input type='text' id='modality'>
+                                    <label for='subject'>Subject</label>
+                                    <input type='text' id='subject'>
+                                    <button id='submit-filters'>Submit Filters</button>
+                                </div>
+                    <div class='tab'>
+                        <button class='tablink active'>Selected images</button>
+                        <button class='tablink'>Image database</button>
+                    </div>
+
+                    <div id='selected-image-results'></div>
+                    <div id='database-image-results'></div>
+                </div>
             </div>
         </div>
         <!-- include libraries -->
@@ -190,7 +207,7 @@
             // });
             imageSeries.push({
                 series_id: 'jpg_string',
-                baseURL: 'http://localhost:8000/test_jpg',
+                baseURL: 'http://localhost/image_viewer/test_jpg',
                 format: 'jpg',
                 numFrames: 1,
                 imgsPerFrame: 2,
@@ -200,7 +217,7 @@
             });
             imageSeries.push({
                 series_id: 'tiff_string',
-                baseURL: 'http://localhost:8000/test_tiff',
+                baseURL: 'http://localhost/image_viewer/test_tiff',
                 format: 'tif',
                 numFrames: 1,
                 imgsPerFrame: 3,
@@ -221,40 +238,9 @@
 
         </script>
 
-        <script type='text/javascript'>
-            function add_to_db() {
-                console.log('hi');
-                var selected_rows = <?php echo json_encode($_SESSION['selected_rows']); ?>;
-                index = Object.keys(imageSeriesDict).length - 1;
-
-                selected_rows.forEach(row => {
-                    if (imageSeriesDict[row.series_id] !== undefined) {
-                    console.warn('Image series ID has been repeated. Ignoring image series.');
-                    } else {
-                        entry = {
-                            series_id: row.series_id,
-                            baseURL: row.base_url,
-                            format: row['format'],
-                            numFrames: parseInt(row.num_frames),
-                            imgsPerFrame: parseInt(row.imgs_per_frame),
-                            name: row.name,
-                            modality: row.modality,
-                            subject: row.subject
-                        };
-
-                        imageSeries.push(entry);
-                        imageSeriesDict[entry.series_id] = index;
-                        index += 1;
-                    }
-                    
-                })
-            }
-        </script>
-
         <!-- side scripts -->
+        
         <script type='module' src='tools/chooseImageToAdd.js'></script>
-
-        <!-- run main script -->
         <script type="module" src="image_viewer.js"></script>
     </root>
 

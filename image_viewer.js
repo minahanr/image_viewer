@@ -77,51 +77,72 @@ document.getElementById('colormaps').addEventListener('change', evt => {
     cornerstone.updateImage(CSImage.highlightedElement());
 });
 
-document.getElementById('db-browser').addEventListener('click', evt => {
-    let url = "browser/browser.php";
-    let db_name = "database_browser";
-    let specs = "height=500,width=400,menubar=no,status=no,titlebar=no";
-    var browser = window.open(url, db_name, specs);
-});
-
-document.getElementById('refresh-db').addEventListener('click', evt => {
-    var selected_rows = document.cookie.split('; ').find(row => row.startsWith('selected_rows=')).split('=')[1];
-    selected_rows = JSON.parse(decodeURIComponent(selected_rows));
-    var index = Object.keys(imageSeriesDict).length;
-
-    selected_rows.forEach(row => {
-        if (imageSeriesDict[row.series_id] !== undefined) {
-            console.warn('Image series ID has been repeated. Ignoring image series.');
+document.getElementById('database-browser').getElementsByClassName('tablink').forEach(tab => {
+    tab.addEventListener('click', e => {
+        document.getElementById('database-browser').getElementsByClassName('tablink').forEach(tab => {
+            if (tab === e.target) {
+                tab.classList.add("active");
+            } else {
+                tab.classList.remove("active");
+            }
+        });
+        
+        if (e.target.innerHTML === "Selected images") {
+            document.getElementById('selected-image-results').style.display = "block";
+            document.getElementById('database-image-results').style.display = "none";
         } else {
-            var entry = {
-                series_id: row.series_id,
-                baseURL: row.base_url,
-                format: row['format'],
-                numFrames: parseInt(row.num_frames),
-                imgsPerFrame: parseInt(row.imgs_per_frame),
-                name: row.name,
-                modality: row.modality,
-                subject: row.subject
-            };
-
-            imageSeries.push(entry);
-            imageSeriesDict[entry.series_id] = index;
-            index += 1;
+            document.getElementById('selected-image-results').style.display = "none";
+            document.getElementById('database-image-results').style.display = "block";
         }
-
-
     });
-
-    document.getElementById('image-database').getElementsByClassName('dropdown').forEach(e => {
-        e.classList.remove('visible');
-    });
-
-    document.getElementById('image-database').getElementsByClassName('arrow').forEach(e => {
-        e.classList.remove('up');
-        e.classList.add('down');
-    });
-
-    console.log(imageSeriesDict);
 });
+
+// document.getElementById('db-browser').addEventListener('click', evt => {
+//     let url = "browser/browser.php";
+//     let db_name = "database_browser";
+//     let specs = "height=500,width=400,menubar=no,status=no,titlebar=no";
+//     var browser = window.open(url, db_name, specs);
+// });
+
+// document.getElementById('refresh-db').addEventListener('click', evt => {
+//     var selected_rows = document.cookie.split('; ').find(row => row.startsWith('selected_rows=')).split('=')[1];
+//     selected_rows = JSON.parse(decodeURIComponent(selected_rows));
+//     var index = Object.keys(imageSeriesDict).length;
+
+//     selected_rows.forEach(row => {
+//         if (imageSeriesDict[row.series_id] !== undefined) {
+//             console.warn('Image series ID has been repeated. Ignoring image series.');
+//         } else {
+//             var entry = {
+//                 series_id: row.series_id,
+//                 baseURL: row.base_url,
+//                 format: row['format'],
+//                 numFrames: parseInt(row.num_frames),
+//                 imgsPerFrame: parseInt(row.imgs_per_frame),
+//                 name: row.name,
+//                 modality: row.modality,
+//                 subject: row.subject
+//             };
+
+//             imageSeries.push(entry);
+//             imageSeriesDict[entry.series_id] = index;
+//             index += 1;
+//         }
+
+
+//     });
+
+//     document.getElementById('image-database').getElementsByClassName('dropdown').forEach(e => {
+//         e.classList.remove('visible');
+//     });
+
+//     document.getElementById('image-database').getElementsByClassName('arrow').forEach(e => {
+//         e.classList.remove('up');
+//         e.classList.add('down');
+//     });
+
+//     console.log(imageSeriesDict);
+// });
+
 createGrid(1, 1);
 populateGrid(document.getElementById('grid').getElementsByClassName('image-container')[0], imageSeriesDict[chosen_id], { name: imageSeries[imageSeriesDict[chosen_id]].name })
