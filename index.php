@@ -26,13 +26,6 @@
     <root>
         <div class="container" id="root-container">
             <div id="titlebar"><img src='images/canary_logo.png' width="60px" height="50.19px" style='margin-right: 30px; margin-top: -10px'>Canary Center Image Viewer</div>
-
-            <div id='baseURL' style='display: none'>http://localhost:8000/test_RATIB2/RATIB2/CorCTALow%20%200.75%20%20B25f%20%20Multiphase</div>
-            <div id='startingIndex' style='display: none'>9</div>
-            <div id='imgsPerFrame' style='display: none'>188</div>
-            <div id='numFrames' style='display: none'>20</div>
-            <div id='format' style='display: none'>dcm</div>
-
             <div id='viewer-container'>
                 <div id='navigation-panel'>
                     <div id='tools-viewer' class='sub-panel'>
