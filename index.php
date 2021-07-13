@@ -113,37 +113,6 @@
                         </div>
                         <div id='layers-container'></div>
                     </div>
-                    <!-- <div id='image-database' class='sub-panel'>
-                        <div class='panel-title'>Image database
-                            <input type='image' id='refresh-db' style="width:0.75em;height:0.75em;margin:6px 4px 0 0;" src='images/refresh.png'>
-                            <input type='image' id='db-browser' style="width:0.75em;height:0.75em;margin:6px 5px 0 0;" src='images/plus-icon.png'>
-                        </div>
-                        <div class='sub-title'>
-                            <div class='sub-title-name'>
-                                Filters <i class="arrow down"></i>
-                            </div>
-                            <div class='dropdown'>
-                                <div id='image-filters-container'>
-                                    <label for='name'>Name</label>
-                                    <input type='text' id='name'><br>
-                                    <label for='modality'>Modality</label>
-                                    <input type='text' id='modality'><br>
-                                    <label for='subject'>Subject</label>
-                                    <input type='text' id='subject'><br>
-                                    <button id='submit-filters'>Submit Filters</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class='sub-title'>
-                            <div class='sub-title-name'>
-                                Results <i class='arrow down'></i>
-                            </div>
-                            <div class='dropdown'>
-                                <div id='image-results'>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class='panel-title sub-panel'>Metadata</div>
                     <div id='metadata-viewer' class='sub-panel'></div>
                 </div>

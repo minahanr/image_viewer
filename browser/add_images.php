@@ -2,7 +2,7 @@
     session_start();
     $db_servername = "localhost";
     $db_username = "root";
-    $db_password = "password123";
+    $db_password = "";
     $db_name = "image_viewer";
 
     $conn = mysqli_connect($db_servername, $db_username, $db_password, $db_name);
