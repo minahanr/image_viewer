@@ -1,3 +1,4 @@
+
 import { splitImageHorizontal, splitImageVertical } from './tools/modifyImageWindows.js';
 import updateDescription from './tools/updateDescription.js';
 import CSImage from './utils/CSImage.js';
@@ -6,7 +7,8 @@ import dropdown_util from './utils/dropdown_util.js';
 import loadTiff from './imageLoaders/tiffLoader.js';
 import { loadFrontalImage, loadCoaxialImage, loadSagitalImage } from './imageLoaders/projectionLoader/loadImage.js';
 import populateGrid from './tools/populateGrid.js';
-
+    // main code here 
+  
 cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 cornerstoneWebImageLoader.external.cornerstone = cornerstone;
 cornerstone.registerImageLoader('frontal', loadFrontalImage);
